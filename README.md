@@ -1,6 +1,6 @@
-<p style="font-size: 35px" align="center">Hi, My name is <span style="font-weight: bold; padding: 5px">Rahul Lumbhani</span></p>
+<p style="font-size: '35px'" align="center">Hi, My name is <span style="font-weight: 'bold'; padding: '5px'">Rahul Lumbhani</span></p>
 
-<p style="font-size: 18px" align="center"><span style="font-weight: bold">AI / ML </span> and <span style="font-weight: bold">Backend Engineer</span></p>
+<p style="font-size: '18px'" align="center"><span style="font-weight: 'bold'">AI / ML </span> and <span style="font-weight: 'bold'">Backend Engineer</span></p>
 
 ---------------------------------
 
@@ -51,3 +51,4 @@
 
 <a href="https://github.com/Rahul-134"><img src="https://github-readme-stats.shion.dev/api/top-langs/?username=Rahul-134&theme=dark&hide_border=true&include_all_commits=false&count_private=false&layout=compact" alt="Profile stats">
 </a>
+

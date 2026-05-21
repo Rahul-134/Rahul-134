@@ -1,10 +1,17 @@
-<p style="font-size: '35px'" align="center">Hi, My name is <span style="font-weight: 'bold'; padding: '5px'">Rahul Lumbhani</span></p>
+<!-- <p style="font-size: '35px'" align="center">Hi, My name is <span style="font-weight: 'bold'; padding: '5px'">Rahul Lumbhani</span></p> -->
 
-<p style="font-size: '18px'" align="center"><span style="font-weight: 'bold'">AI / ML </span> and <span style="font-weight: 'bold'">Backend Engineer</span></p>
+<div align="center">
+  <h1>Rahul Lumbhani</h1>
+</div>
+<!-- <p style="font-size: '18px'" align="center"><span style="font-weight: 'bold'">AI / ML </span> and <span style="font-weight: 'bold'">Backend Engineer</span></p> -->
+
+<div align="center">
+ <b>AI / ML</b> and <b>Backend Engineer</b>
+</div>
 
 ---------------------------------
 
-* 🌍  I'm based in India
+* 🌍  I'm based in India 
 * 🖥️  See my portfolio at [Portfolio](http://google.com)
 * ✉️  You can contact me at [rahul.lumbhani2609@gmail.com](mailto:rahul.lumbhani2609@gmail.com)
 * 🧠  I'm currently learning DSA

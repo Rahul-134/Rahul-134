@@ -54,9 +54,7 @@
   <a href="https://ollama.com" target="_blank" rel="noreferrer"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFVZ9JJ3PrF8m-lYW-rPzJpZJVMzq3CwpdsQ&s" alt="Ollama" title="Ollama" height="36" /></a>
 </p>
 
-### Socials
-
-<p align="left"> 
+<!-- <p align="left"> 
 
 <span>&nbsp;</span>
 <a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b" target="_blank" rel="noreferrer"> <img src="linkedin_image.png" alt="LinkedIn image" width="auto" height="25" /> </a>
@@ -64,6 +62,43 @@
  <a href="https://leetcode.com/u/42Hn0eebFD/" target="_blank" rel="noreferrer"> <img src="leetcode_image.png" alt="Leetcode image" width="auto" height="25" /> </a> 
 
 <a href="https://www.github.com/rahul-134" target="_blank" rel="noreferrer"> <img src="github_image.png" alt="LinkedIn image" width="auto" height="40" /> </a> 
+
+</p> -->
+
+### Socials
+
+<p align="left">
+  &nbsp;
+  
+  <a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b" target="_blank" rel="noreferrer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="linkedin_image.png">
+      <source media="(prefers-color-scheme: light)" srcset="linkedin_image.png">
+      <img alt="LinkedIn" src="linkedin_image.png" height="25" width="auto" />
+    </picture>
+  </a>
+  <br>
+  <br>
+  &nbsp;
+  
+  <a href="https://leetcode.com/u/42Hn0eebFD/" target="_blank" rel="noreferrer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="leetcode_white_image.png">
+      <source media="(prefers-color-scheme: light)" srcset="leetcode_image.png">
+      <img alt="LeetCode" src="leetcode_image.png" height="25" width="auto" />
+    </picture>
+  </a>
+  <br>
+  <br>
+  &nbsp;
+  
+  <a href="https://www.github.com/rahul-134" target="_blank" rel="noreferrer">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="github_white_image.png">
+      <source media="(prefers-color-scheme: light)" srcset="github_image.png">
+      <img alt="GitHub" src="github_image.png" height="40" width="auto" />
+    </picture>
+  </a>
 
 </p>
 

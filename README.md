@@ -68,7 +68,7 @@
 ### Socials
 
 <p align="left">
-  &nbsp;
+  &nbsp;&nbsp;
   
   <a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b" target="_blank" rel="noreferrer">
     <picture>
@@ -91,7 +91,6 @@
   <br>
   <br>
   &nbsp;
-  
   <a href="https://www.github.com/rahul-134" target="_blank" rel="noreferrer">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="github_white_image.png">
@@ -113,3 +112,7 @@
 <a href="https://github.com/Rahul-134"><img src="https://github-readme-stats.shion.dev/api/top-langs/?username=Rahul-134&theme=dark&hide_border=true&include_all_commits=false&count_private=false&layout=compact" alt="Profile stats">
 </a>
 
+### My LeetCode Stats
+
+<a href="https://leetcode.com/Rahul_134"><img src="https://leetcard.jacoblin.cool/Rahul_134?ext=heatmap&theme=dark" alt="Profile stats">
+</a>

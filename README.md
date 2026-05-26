@@ -81,7 +81,7 @@
   <br>
   &nbsp;
   
-  <a href="https://leetcode.com/u/42Hn0eebFD/" target="_blank" rel="noreferrer">
+  <a href="https://leetcode.com/u/Rahul_134/" target="_blank" rel="noreferrer">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="leetcode_white_image.png">
       <source media="(prefers-color-scheme: light)" srcset="leetcode_image.png">

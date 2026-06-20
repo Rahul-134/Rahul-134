@@ -11,8 +11,7 @@
 
 ---------------------------------
 
-* 🌍  I'm based in India 
-* 🖥️  See my portfolio at [Portfolio](http://google.com)
+* 🌍  I'm based in India
 * ✉️  You can contact me at [rahul.lumbhani2609@gmail.com](mailto:rahul.lumbhani2609@gmail.com)
 * 🧠  I'm currently learning DSA
 

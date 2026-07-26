@@ -1,117 +1,94 @@
 <!-- <p style="font-size: '35px'" align="center">Hi, My name is <span style="font-weight: 'bold'; padding: '5px'">Rahul Lumbhani</span></p> -->
 
 <div align="center">
-  <h1>Rahul Lumbhani</h1>
-</div>
-<!-- <p style="font-size: '18px'" align="center"><span style="font-weight: 'bold'">AI / ML </span> and <span style="font-weight: 'bold'">Backend Engineer</span></p> -->
-
-<div align="center">
- <b>AI / ML</b> and <b>Backend Engineer</b>
+  <img src="https://githance.in/api/render?type=header&variant=blueprint&v=rect-v4&name=Rahul+Lumbhani&subtitle=Building+AI+powered+applications+with+real+utility&theme=midnight&a=Python&a=Generative+AI&a=AI+Workflow+Design" alt="Custom header" />
 </div>
 
----------------------------------
 
-* 🌍  I'm based in India
-* ✉️  You can contact me at [rahul.lumbhani2609@gmail.com](mailto:rahul.lumbhani2609@gmail.com)
-* 🧠  I'm currently learning DSA
+<h1>About Me</h1><p>
+</p><ul><li>Full‑stack developer leveraging JavaScript, React, Node.js, and Python to build scalable web and AI solutions.</li></ul><ul><li>Specializes in AI‑driven data platforms and productivity tools, delivering end‑to‑end products with FastAPI, SQLite, and vanilla JS.</li></ul><ul><li>Proven track record solving algorithmic challenges and building AI co‑pilot, web apps, and interactive console games.</li></ul><ul><li>Working across Python, HTML, Java, JavaScript</li></ul>
 
----
+<div align="left">
+  
+## Tech Stack
 
-### Skills
-
-<!-- >
-<table width="100%">
-  <tr>
-    <td align="center"><a href="https://www.python.org/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/python-colored.svg" alt="Python" title="Python" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/javascript-colored.svg" alt="JavaScript" title="JavaScript" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://www.oracle.com/java/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/java-colored.svg" alt="Java" title="Java" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://code.visualstudio.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/visualstudiocode-colored.svg" alt="VS Code" title="VS Code" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://getbootstrap.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/bootstrap-colored.svg" alt="Bootstrap" title="Bootstrap" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/tailwindcss-colored.svg" alt="TailwindCSS" title="TailwindCSS" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://developer.mozilla.org/en-US/docs/Glossary/HTML5" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/html5-colored.svg" alt="HTML5" title="HTML5" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://www.w3.org/TR/CSS/#css" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/css3-colored.svg" alt="CSS3" title="CSS3" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://fastapi.tiangolo.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/fastapi-colored.svg" alt="Fast API" title="Fast API" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://www.postgresql.org/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/postgresql-colored.svg" alt="PostgreSQL" title="PostgreSQL" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://www.figma.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/figma-colored.svg" alt="Figma" title="Figma" width="36" height="36" /></a></td>
-    <td align="center"><a href="https://ollama.com" target="_blank" rel="noreferrer"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFVZ9JJ3PrF8m-lYW-rPzJpZJVMzq3CwpdsQ&s" alt="Ollama" title="Ollama" height="36" /></a></td>
-  </tr>
-</table>
--->
+### Languages:
 
 <p align="left">
-  <a href="https://www.python.org/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/python-colored.svg" alt="Python" title="Python" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/javascript-colored.svg" alt="JavaScript" title="JavaScript" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://www.oracle.com/java/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/java-colored.svg" alt="Java" title="Java" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://code.visualstudio.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/visualstudiocode-colored.svg" alt="VS Code" title="VS Code" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://getbootstrap.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/bootstrap-colored.svg" alt="Bootstrap" title="Bootstrap" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/tailwindcss-colored.svg" alt="TailwindCSS" title="TailwindCSS" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://developer.mozilla.org/en-US/docs/Glossary/HTML5" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/html5-colored.svg" alt="HTML5" title="HTML5" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://www.w3.org/TR/CSS/#css" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/css3-colored.svg" alt="CSS3" title="CSS3" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://fastapi.tiangolo.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/fastapi-colored.svg" alt="Fast API" title="Fast API" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://www.postgresql.org/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/postgresql-colored.svg" alt="PostgreSQL" title="PostgreSQL" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://www.figma.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/figma-colored.svg" alt="Figma" title="Figma" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://ollama.com" target="_blank" rel="noreferrer"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFVZ9JJ3PrF8m-lYW-rPzJpZJVMzq3CwpdsQ&s" alt="Ollama" title="Ollama" height="36" /></a>
+  <img src="https://skillicons.dev/icons?i=py" alt="Python" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=java" alt="Java" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=html" alt="HTML" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=js" alt="JavaScript" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=css" alt="CSS" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
 </p>
 
-<!-- <p align="left"> 
-
-<span>&nbsp;</span>
-<a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b" target="_blank" rel="noreferrer"> <img src="linkedin_image.png" alt="LinkedIn image" width="auto" height="25" /> </a>
-
- <a href="https://leetcode.com/u/42Hn0eebFD/" target="_blank" rel="noreferrer"> <img src="leetcode_image.png" alt="Leetcode image" width="auto" height="25" /> </a> 
-
-<a href="https://www.github.com/rahul-134" target="_blank" rel="noreferrer"> <img src="github_image.png" alt="LinkedIn image" width="auto" height="40" /> </a> 
-
-</p> -->
-
-### Socials
+### Libraries & Frameworks:
 
 <p align="left">
-  &nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=fastapi" alt="FastAPI" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=tailwind" alt="Tailwind CSS" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=react" alt="React" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=nodejs" alt="Node.js" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=express" alt="Express" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=django" alt="Django" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=bootstrap" alt="Bootstrap" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />
+</p>
+
+### Tools & Platforms:
+
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=github" alt="GitHub" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=git" alt="Git" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=docker" alt="Docker" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=vercel" alt="Vercel" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=vscode" alt="VS Code" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=idea" alt="IntelliJ IDEA" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=pycharm" alt="PyCharm" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=figma" alt="Figma" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+</p>
+
+### Databases:
+
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=sqlite" alt="SQLite" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=mysql" alt="MySQL" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=postgres" alt="PostgreSQL" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+  <img src="https://skillicons.dev/icons?i=mongodb" alt="MongoDB" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
+</p>
+</div>
+
+<div align="left">
   
-  <a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b" target="_blank" rel="noreferrer">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="linkedin_image.png">
-      <source media="(prefers-color-scheme: light)" srcset="linkedin_image.png">
-      <img alt="LinkedIn" src="linkedin_image.png" height="25" width="auto" />
-    </picture>
-  </a>
-  <br>
-  <br>
-  &nbsp;
-  
-  <a href="https://leetcode.com/u/Rahul_134/" target="_blank" rel="noreferrer">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="leetcode_white_image.png">
-      <source media="(prefers-color-scheme: light)" srcset="leetcode_image.png">
-      <img alt="LeetCode" src="leetcode_image.png" height="25" width="auto" />
-    </picture>
-  </a>
-  <br>
-  <br>
-  &nbsp;
-  <a href="https://www.github.com/rahul-134" target="_blank" rel="noreferrer">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="github_white_image.png">
-      <source media="(prefers-color-scheme: light)" srcset="github_image.png">
-      <img alt="GitHub" src="github_image.png" height="40" width="auto" />
-    </picture>
-  </a>
+## Find Me Online
+
+<p align="left">
+  <a href="https://github.com/Rahul-134"><img src="https://api.iconify.design/simple-icons:github.svg?color=%23181717" alt="GitHub" width="34" height="34" /></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b/"><img src="https://api.iconify.design/simple-icons:linkedin.svg?color=%230A66C2" alt="LinkedIn" width="34" height="34" /></a>&nbsp;&nbsp;&nbsp;
+<a href="https://leetcode.com/Rahul_134">
+  <img src="https://api.iconify.design/devicon:leetcode.svg" alt="Leetcode" width="34" height="34" />
+</a>
+
 
 </p>
+</div>
+
 
 ### My GitHub Stats
 
-<a href="https://github.com/Rahul-134"><img src="http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Rahul-134&theme=github_dark" alt="Profile stats">
+<a href="https://github.com/Rahul-134"><img src="https://github-stats-extended.vercel.app/api?username=Rahul-134&rank_icon=github&custom_title=My%20Github%20Stats&show_icons=true&include_all_commits=true&theme=codeSTACKr">
 </a>
 
 <a href="https://github.com/Rahul-134"><img src="https://streak-stats.demolab.com/?user=Rahul-134&theme=dark&hide_border=true" alt="Profile stats">
 </a>
 
-<a href="https://github.com/Rahul-134"><img src="https://github-readme-stats.shion.dev/api/top-langs/?username=Rahul-134&theme=dark&hide_border=true&include_all_commits=false&count_private=false&layout=compact" alt="Profile stats">
+<a href="https://github.com/Rahul-134">
+  <img src="https://www.readmecodegen.com/api/github-stats/svg?username=Rahul-134&cardType=langs" alt="Custom GitHub Stats" />
 </a>
 
 ### My LeetCode Stats
 
-<a href="https://leetcode.com/Rahul_134"><img src="https://leetcard.jacoblin.cool/Rahul_134?ext=heatmap&theme=dark" alt="Profile stats">
+<!-- <a href="https://leetcode.com/Rahul_134"><img src="https://leetcard.jacoblin.cool/Rahul_134?ext=heatmap&theme=dark" alt="Profile stats">
+</a> -->
+<a href="https://www.leetcode.com/Rahul_134">
+  <img src="https://www.readmecodegen.com/api/leetcode-stats?username=Rahul_134&theme=github_dark&reputation=false" alt="LeetCode Stats" />
 </a>

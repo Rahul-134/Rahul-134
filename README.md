@@ -1,7 +1,7 @@
 <!-- <p style="font-size: '35px'" align="center">Hi, My name is <span style="font-weight: 'bold'; padding: '5px'">Rahul Lumbhani</span></p> -->
 
 <div align="center">
-  <img src="https://githance.in/api/render?type=header&variant=blueprint&v=rect-v4&name=Rahul+Lumbhani&subtitle=Building+AI+powered+applications+with+real+utility&theme=midnight&a=Python&a=Generative+AI&a=AI+Workflow+Design" alt="Custom header" />
+  <img src="github-header-banner.png" alt="Header Image" />
 </div>
 
 

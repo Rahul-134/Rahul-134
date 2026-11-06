@@ -1,94 +1,114 @@
-<!-- <p style="font-size: '35px'" align="center">Hi, My name is <span style="font-weight: 'bold'; padding: '5px'">Rahul Lumbhani</span></p> -->
-
 <div align="center">
-  <img src="github-header-banner.png" alt="Header Image" />
-</div>
 
+<img src="github-header-banner.png" alt="Hey I am Rahul Lumbhani — AI and Backend Engineer" width="100%" />
 
-<h1>About Me</h1><p>
-</p><ul><li>Full‑stack developer leveraging JavaScript, React, Node.js, and Python to build scalable web and AI solutions.</li></ul><ul><li>Specializes in AI‑driven data platforms and productivity tools, delivering end‑to‑end products with FastAPI, SQLite, and vanilla JS.</li></ul><ul><li>Proven track record solving algorithmic challenges and building AI co‑pilot, web apps, and interactive console games.</li></ul><ul><li>Working across Python, HTML, Java, JavaScript</li></ul>
-
-<div align="left">
-  
-## Tech Stack
-
-### Languages:
-
-<p align="left">
-  <img src="https://skillicons.dev/icons?i=py" alt="Python" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=java" alt="Java" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=html" alt="HTML" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=js" alt="JavaScript" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=css" alt="CSS" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-</p>
-
-### Libraries & Frameworks:
-
-<p align="left">
-  <img src="https://skillicons.dev/icons?i=fastapi" alt="FastAPI" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=tailwind" alt="Tailwind CSS" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=react" alt="React" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=nodejs" alt="Node.js" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=express" alt="Express" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=django" alt="Django" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=bootstrap" alt="Bootstrap" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />
-</p>
-
-### Tools & Platforms:
-
-<p align="left">
-  <img src="https://skillicons.dev/icons?i=github" alt="GitHub" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=git" alt="Git" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=docker" alt="Docker" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=vercel" alt="Vercel" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=vscode" alt="VS Code" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=idea" alt="IntelliJ IDEA" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=pycharm" alt="PyCharm" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=figma" alt="Figma" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-</p>
-
-### Databases:
-
-<p align="left">
-  <img src="https://skillicons.dev/icons?i=sqlite" alt="SQLite" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=mysql" alt="MySQL" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=postgres" alt="PostgreSQL" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-  <img src="https://skillicons.dev/icons?i=mongodb" alt="MongoDB" width="44" height="44" style="margin-right: 10px; margin-bottom: 8px;" />&nbsp;&nbsp;&nbsp;
-</p>
-</div>
-
-<div align="left">
-  
-## Find Me Online
-
-<p align="left">
-  <a href="https://github.com/Rahul-134"><img src="https://api.iconify.design/simple-icons:github.svg?color=%23181717" alt="GitHub" width="34" height="34" /></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b/"><img src="https://api.iconify.design/simple-icons:linkedin.svg?color=%230A66C2" alt="LinkedIn" width="34" height="34" /></a>&nbsp;&nbsp;&nbsp;
-<a href="https://leetcode.com/Rahul_134">
-  <img src="https://api.iconify.design/devicon:leetcode.svg" alt="Leetcode" width="34" height="34" />
-</a>
-
-
-</p>
-</div>
-
-
-### My GitHub Stats
-
-<a href="https://github.com/Rahul-134"><img src="https://github-stats-extended.vercel.app/api?username=Rahul-134&rank_icon=github&custom_title=My%20Github%20Stats&show_icons=true&include_all_commits=true&theme=codeSTACKr">
-</a>
-
-<a href="https://github.com/Rahul-134"><img src="https://streak-stats.demolab.com/?user=Rahul-134&theme=dark&hide_border=true" alt="Profile stats">
-</a>
+<br/>
 
 <a href="https://github.com/Rahul-134">
-  <img src="https://www.readmecodegen.com/api/github-stats/svg?username=Rahul-134&cardType=langs" alt="Custom GitHub Stats" />
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=20&duration=3200&pause=900&color=E8D44D&center=true&vCenter=true&width=640&lines=Full-stack+developer;AI-driven+data+platforms;FastAPI+%C2%B7+React+%C2%B7+Node.js;Turning+ideas+into+shipped+products" alt="Typing animation" />
 </a>
 
-### My LeetCode Stats
+<br/>
 
-<!-- <a href="https://leetcode.com/Rahul_134"><img src="https://leetcard.jacoblin.cool/Rahul_134?ext=heatmap&theme=dark" alt="Profile stats">
-</a> -->
+<a href="https://github.com/Rahul-134"><img src="https://img.shields.io/github/followers/Rahul-134?style=for-the-badge&logo=github&logoColor=white&label=Followers&labelColor=161616&color=E8D44D" alt="GitHub followers" /></a>
+<a href="https://github.com/Rahul-134?tab=repositories"><img src="https://img.shields.io/badge/Repositories-Explore-E8D44D?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=161616" alt="Repositories" /></a>
+<img src="https://komarev.com/ghpvc/?username=Rahul-134&style=for-the-badge&label=Profile+Views&color=E8D44D&labelColor=161616" alt="Profile views" />
+
+<br/><br/>
+
+<a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b/"><img src="https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+<a href="https://leetcode.com/Rahul_134"><img src="https://img.shields.io/badge/LeetCode-Rahul__134-FFA116?style=flat-square&logo=leetcode&logoColor=white" alt="LeetCode" /></a>
+<a href="https://github.com/Rahul-134"><img src="https://img.shields.io/badge/GitHub-Rahul--134-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub" /></a>
+
+</div>
+
+<br/>
+
+## 👨‍💻 About Me
+
+I'm a **full-stack developer** who builds scalable web and AI solutions with **JavaScript, React, Node.js and Python**. I like owning a product end to end — from the database schema to the last pixel on screen.
+
+| | |
+|---|---|
+| 🧠 **Focus** | AI-driven data platforms and productivity tools |
+| ⚙️ **Stack** | FastAPI · SQLite · vanilla JS · React · Node.js |
+| 🧩 **Problem solving** | Steady track record on algorithmic challenges |
+| 🚀 **Builds** | AI co-pilots, web apps and interactive console games |
+| 🌐 **Working across** | Python · Java · JavaScript · HTML |
+
+<br/>
+
+## 🛠️ Tech Stack
+
+<div align="center">
+
+**Languages**
+
+<img src="https://skillicons.dev/icons?i=py,java,js,html,css&perline=5" alt="Python, Java, JavaScript, HTML, CSS" />
+
+**Frameworks & Libraries**
+
+<img src="https://skillicons.dev/icons?i=fastapi,react,nodejs,express,django,tailwind,bootstrap&perline=7" alt="FastAPI, React, Node.js, Express, Django, Tailwind CSS, Bootstrap" />
+
+**Databases**
+
+<img src="https://skillicons.dev/icons?i=sqlite,mysql,postgres,mongodb&perline=4" alt="SQLite, MySQL, PostgreSQL, MongoDB" />
+
+**Tools & Platforms**
+
+<img src="https://skillicons.dev/icons?i=git,github,docker,vercel,vscode,idea,pycharm,figma&perline=8" alt="Git, GitHub, Docker, Vercel, VS Code, IntelliJ IDEA, PyCharm, Figma" />
+
+</div>
+
+<br/>
+
+## 📊 GitHub Activity
+
+<div align="center">
+
+<a href="https://github.com/Rahul-134">
+  <img height="190" src="https://github-stats-extended.vercel.app/api?username=Rahul-134&rank_icon=github&custom_title=GitHub%20Stats&show_icons=true&include_all_commits=true&hide_border=true&bg_color=161616&title_color=E8D44D&icon_color=E8D44D&text_color=D6D6D6" alt="GitHub stats" />
+</a>
+<a href="https://github.com/Rahul-134">
+  <img height="190" src="https://readmecodegen.com/api/github-stats/svg?username=Rahul-134&cardType=langs" alt="Top languages" />
+</a>
+
+<br/>
+
+<a href="https://github.com/Rahul-134">
+  <img src="https://streak-stats.demolab.com/?user=Rahul-134&theme=dark&hide_border=true&background=161616&ring=E8D44D&fire=E8D44D&currStreakLabel=E8D44D&currStreakNum=FFFFFF&sideNums=FFFFFF&sideLabels=D6D6D6&dates=8B8B8B" alt="GitHub streak" />
+</a>
+
+<br/>
+
+<a href="https://github.com/Rahul-134">
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=Rahul-134&bg_color=161616&color=D6D6D6&line=E8D44D&point=FFFFFF&area=true&area_color=E8D44D&hide_border=true" alt="Contribution graph" width="100%" />
+</a>
+
+</div>
+
+<br/>
+
+## 🧮 LeetCode
+
+<div align="center">
+
 <a href="https://www.leetcode.com/Rahul_134">
-  <img src="https://www.readmecodegen.com/api/leetcode-stats?username=Rahul_134&theme=github_dark&reputation=false" alt="LeetCode Stats" />
+  <img src="https://www.readmecodegen.com/api/leetcode-stats?username=Rahul_134&theme=github_dark&reputation=false" alt="LeetCode stats" />
 </a>
+
+</div>
+
+<br/>
+
+## 🤝 Let's Connect
+
+I'm always open to interesting projects and conversations about AI, backend engineering and building useful products. Reach out on [LinkedIn](https://www.linkedin.com/in/rahul-lumbhani-89304130b/) or follow along here on [GitHub](https://github.com/Rahul-134).
+
+<br/>
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:161616,100:E8D44D&height=110&section=footer" width="100%" alt="" />
+
+</div>

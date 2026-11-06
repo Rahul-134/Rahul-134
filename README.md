@@ -1,6 +1,8 @@
 <div align="center">
 
-<img src="github-header-banner.png" alt="Hey I am Rahul Lumbhani — AI and Backend Engineer" width="100%" />
+<a href="https://rahul-134.github.io/Rahul-134/dino/">
+  <img src="dino-banner.svg" alt="Hey I am Rahul Lumbhani — AI and Backend Engineer. Click to play the dino game." width="100%" />
+</a>
 
 <br/>
 

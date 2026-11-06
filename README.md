@@ -82,7 +82,7 @@ I'm a **full-stack developer** who builds scalable web and AI solutions with **J
 <br/>
 
 <a href="https://github.com/Rahul-134">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=Rahul-134&bg_color=161616&color=D6D6D6&line=E8D44D&point=FFFFFF&area=true&area_color=E8D44D&hide_border=true" alt="Contribution graph" width="100%" />
+  <img src="https://ghchart.rshah.org/E8D44D/Rahul-134" alt="Contribution graph" width="100%" />
 </a>
 
 </div>

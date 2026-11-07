@@ -57,42 +57,6 @@ I'm an **AI/ML engineer** and **Generative AI enthusiast** who turns models into
 </details>
 
 <details>
-<summary><b>⚙️&nbsp; Stack</b> &nbsp;—&nbsp; Python · Java · JavaScript &nbsp;|&nbsp; React · Django · FastAPI &nbsp;|&nbsp; SQL</summary>
-<br/>
-
-<div align="center">
-
-**Languages**
-
-<img src="https://skillicons.dev/icons?i=py,java,js&perline=3" alt="Python, Java, JavaScript" />
-
-**Libraries &amp; Frameworks**
-
-<img src="https://skillicons.dev/icons?i=react,django,fastapi&perline=3" alt="React, Django, FastAPI" />
-
-**Databases**
-
-<img src="https://skillicons.dev/icons?i=sqlite,postgres,mysql&perline=3" alt="SQL databases: SQLite, PostgreSQL, MySQL" />
-
-</div>
-
-<br/>
-
-| | Where I use it |
-|---|---|
-| 🐍&nbsp;**Python** | [BitNote](https://github.com/Rahul-134/bitnote), [DataPilot](https://github.com/Rahul-134/datapilot) and my [LeetCode solutions](https://github.com/Rahul-134/leetcode-solutions-python) |
-| ☕&nbsp;**Java** | [Virtual Arcade Zone](https://github.com/Rahul-134/virtual-arcade-zone) and [Business Bytes](https://github.com/Rahul-134/business-bytes-showcase) |
-| 🟨&nbsp;**JavaScript** | [BitCareer](https://github.com/Rahul-134/bitcareer-showcase)'s React frontend, BitNote's UI and the [dino game](https://rahul-134.github.io/Rahul-134/dino/) |
-| ⚛️&nbsp;**React** | [BitCareer](https://github.com/Rahul-134/bitcareer-showcase) |
-| 🧱&nbsp;**Django** | [BitCareer](https://github.com/Rahul-134/bitcareer-showcase)'s REST API |
-| ⚡&nbsp;**FastAPI** | [BitNote](https://github.com/Rahul-134/bitnote) and [DataPilot](https://github.com/Rahul-134/datapilot) |
-| 🗄️&nbsp;**SQL** | SQLite in [BitNote](https://github.com/Rahul-134/bitnote), PostgreSQL in [BitCareer](https://github.com/Rahul-134/bitcareer-showcase), MySQL in [Business Bytes](https://github.com/Rahul-134/business-bytes-showcase) |
-
-<br/>
-
-</details>
-
-<details>
 <summary><b>🧩&nbsp; Problem solving</b> &nbsp;—&nbsp; 160+ LeetCode problems solved</summary>
 <br/>
 

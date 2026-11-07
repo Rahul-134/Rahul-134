@@ -46,3 +46,7 @@ The darker shade and lighter highlight that shade the pixel dino are derived aut
 
 The generated files are committed, so the profile works without running anything. The
 tools only run when you change the theme.
+
+## What the theme tool leaves alone
+
+`dino/leaderboard.js` and `dino/leaderboard-config.js` are hand-written, not generated, so changing the theme never touches them. The leaderboard reads the accent colour from the game page's CSS, so it follows the theme automatically. See `leaderboard/README.md`.

@@ -6,7 +6,7 @@
 <title>Dino Run · Rahul Lumbhani</title>
 <meta name="description" content="A playable dino runner game from Rahul Lumbhani's GitHub profile.">
 <style>
-  :root { --bg:#161616; --card:#1d1d1d; --line:#2a2a2a; --accent:#A78BFA; --fg:#D6D6D6; --muted:#8B8B8B; }
+  :root { --bg:#161616; --card:#1d1d1d; --line:#2a2a2a; --accent:#A78BFA; --accent-rgb:167,139,250; --fg:#D6D6D6; --muted:#8B8B8B; }
   * { box-sizing: border-box; }
   html, body { margin:0; background:var(--bg); color:var(--fg); }
   body {
@@ -56,6 +56,7 @@
     <a href="https://github.com/Rahul-134">← Back to my GitHub profile</a>
   </p>
 
+<script src="leaderboard-config.js"></script>
 <script>
 (function () {
   'use strict';
@@ -120,13 +121,13 @@
 
   // ---------- State ----------
   var state = 'ready';            // ready | running | over
-  var speed, distance, score, hi = 0, frame, nextGap, diedAt;
+  var speed, distance, score, hi = 0, frame, nextGap, diedAt, runMs = 0;
   var dino, obstacles, clouds, groundOff, ducking = false;
 
   try { hi = parseInt(localStorage.getItem('dinoHi'), 10) || 0; } catch (e) {}
 
   function reset() {
-    speed = 6; distance = 0; score = 0; frame = 0; groundOff = 0;
+    speed = 6; distance = 0; score = 0; frame = 0; groundOff = 0; runMs = 0;
     dino = { x: 60, y: GROUND - dinoA.h, vy: 0, onGround: true };
     obstacles = [];
     nextGap = 380;
@@ -136,17 +137,20 @@
 
   // ---------- Input ----------
   function jump() {
-    if (state === 'ready') { state = 'running'; last = performance.now(); }
-    else if (state === 'over') { if (performance.now() - diedAt > 400) { reset(); state = 'running'; last = performance.now(); } return; }
+    if (state === 'ready') { state = 'running'; last = performance.now(); if (window.DinoLB) window.DinoLB.runStarted(); }
+    else if (state === 'over') { if (performance.now() - diedAt > 400) { reset(); state = 'running'; last = performance.now(); if (window.DinoLB) window.DinoLB.runStarted(); } return; }
     if (dino.onGround && !ducking) { dino.vy = -11.6; dino.onGround = false; }
   }
   function setDuck(v) { ducking = v; }
 
+  function typing(e) { return e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName); }
   window.addEventListener('keydown', function (e) {
+    if (typing(e)) return;
     if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') { e.preventDefault(); if (!e.repeat) jump(); }
     else if (e.code === 'ArrowDown' || e.code === 'KeyS') { e.preventDefault(); setDuck(true); }
   });
   window.addEventListener('keyup', function (e) {
+    if (typing(e)) return;
     if (e.code === 'ArrowDown' || e.code === 'KeyS') setDuck(false);
   });
   cv.addEventListener('pointerdown', function (e) { e.preventDefault(); cv.focus({ preventScroll: true }); jump(); });
@@ -192,6 +196,7 @@
 
   function update(dt) {
     frame += dt;
+    runMs += dt * 16.667;
     distance += speed * dt;
     score = Math.floor(distance * 0.025);
     speed = Math.min(6 + distance * 0.00045, 14);
@@ -225,6 +230,7 @@
   function gameOver() {
     state = 'over'; diedAt = performance.now();
     if (score > hi) { hi = score; try { localStorage.setItem('dinoHi', String(hi)); } catch (e) {} }
+    if (window.DinoLB) window.DinoLB.runEnded(score, runMs);
   }
 
   // ---------- Rendering ----------
@@ -311,5 +317,6 @@
   
 })();
 </script>
+<script src="leaderboard.js"></script>
 </body>
 </html>

@@ -27,6 +27,7 @@
   var board = [];             // [{id,name,score}] best run per name, best first
   var owner = normaliseOwner(CFG.owner);
   var mine = loadMine();      // ids of entries submitted from this browser
+  var myBest = Number(recall('dinoLbBest')) || 0;   // best score this browser has put on the board
   var run = null;             // {score, ms, id, submitted}
   var runCounter = 0;
   var lastSubmitAt = 0;
@@ -171,6 +172,10 @@
         if (v && typeof v.name === 'string' && typeof v.score === 'number') rows.push({ id: id, name: v.name, score: v.score, t: v.t || 0 });
       });
       rows.sort(function (a, b) { return b.score - a.score || a.t - b.t; });
+      var myTop = null;   // this browser's best entry; the others it submitted are hidden from its owner
+      rows.forEach(function (r) { if (!myTop && mine.indexOf(r.id) !== -1) myTop = r; });
+      if (myTop && myTop.score > myBest) { myBest = myTop.score; store('dinoLbBest', String(myBest)); }
+      rows = rows.filter(function (r) { return mine.indexOf(r.id) === -1 || r === myTop; });
       var seen = {}, best = [];
       rows.forEach(function (r) { var k = r.name.toLowerCase(); if (!seen[k]) { seen[k] = 1; best.push(r); } });
       board = best.slice(0, TOP);
@@ -194,6 +199,7 @@
     if (!run || run.submitted) return;
     sNum.textContent = pad5(run.score); subMsg.textContent = '';
     input.value = cleanName(recall('dinoLbName') || '');
+    hint.textContent = myBest > 0 ? 'Beats your best of ' + pad5(myBest) + ' — keep the same name for a single entry' : 'Add your name to the public leaderboard';
     ov.hidden = false; submitBtn.disabled = false;
     setTimeout(function () { input.focus(); input.select(); }, 30);
   }
@@ -212,6 +218,7 @@
       run.submitted = true;
       if (res && res.name) { mine.push(res.name); store('dinoLbMine', JSON.stringify(mine.slice(-40))); }
       store('dinoLbName', name);
+      myBest = Math.max(myBest, run.score); store('dinoLbBest', String(myBest));
       closeSubmit();
       return loadBoard().then(function () {
         var rank = -1;
@@ -244,7 +251,9 @@
       if (owner && score > owner.score) setStatus("👑 You beat the creator's best!", 'ok', true);
       if (score < MIN_SCORE) return;
       loadBoard().then(function () {
-        if (loadOk && run === mineRun && !mineRun.submitted && qualifies(mineRun.score)) openSubmit();
+        if (run !== mineRun || mineRun.submitted) return;
+        if (mineRun.score <= myBest) { setStatus('Not a new personal best — yours on the board is ' + pad5(myBest) + '.', null, true); return; }
+        if (loadOk && qualifies(mineRun.score)) openSubmit();
       });
     }
   };

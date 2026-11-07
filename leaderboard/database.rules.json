@@ -1,0 +1,32 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "scores": {
+      ".read": true,
+      ".indexOn": ["score"],
+      "$id": {
+        ".write": "!data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['name', 'score', 'ms', 't'])",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 12 && newData.val().matches(/^[A-Za-z0-9 ._-]+$/) && !newData.val().toLowerCase().matches(/rahul/)"
+        },
+        "score": {
+          ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 30000 && newData.val() % 1 === 0 && newData.val() <= newData.parent().child('ms').val() / 1000 * 25 + 30"
+        },
+        "ms": {
+          ".validate": "newData.isNumber() && newData.val() >= 1000 && newData.val() <= 3600000"
+        },
+        "t": {
+          ".validate": "newData.val() === now"
+        },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "owner": {
+      ".read": true
+    }
+  }
+}

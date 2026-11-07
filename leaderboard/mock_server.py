@@ -9,7 +9,8 @@ Then point dino/leaderboard-config.js at "http://127.0.0.1:9000" and open dino/i
 It applies the same checks as database.rules.json (name, score cap, score-vs-run-time, no extra
 fields, no overwrites, owner node read-only). Data lives in memory and vanishes on exit.
 Test helpers: GET /__mode?v=down makes every request fail with 503, /__mode?v=ok restores it;
-POST /__seed with a JSON list of {name,score,ms,agoSeconds} adds entries with a back-dated time.
+GET /__legacy?v=on rejects the optional player id, like rules from before it existed (v=off undoes it);
+POST /__seed with a JSON list of {name,score,ms,agoSeconds[,u]} adds entries with a back-dated time.
 """
 import argparse
 import json
@@ -22,14 +23,18 @@ from urllib.parse import parse_qs, urlparse
 
 SCORES = {}
 OWNER = {}
-MODE = {"down": False}
+MODE = {"down": False, "legacy": False}
+UID_OK = re.compile(r"^[A-Za-z0-9]{12,32}$")
 NAME_OK = re.compile(r"^[A-Za-z0-9 ._-]+$")
 
 
 def valid(entry):
     """Mirror of the .validate rules in database.rules.json."""
-    if not isinstance(entry, dict) or set(entry) != {"name", "score", "ms", "t"}:
+    base = {"name", "score", "ms", "t"}
+    if not isinstance(entry, dict) or not (set(entry) == base or set(entry) == base | {"u"}):
         return False
+    if "u" in entry and (MODE["legacy"] or not (isinstance(entry["u"], str) and UID_OK.match(entry["u"]))):
+        return False   # the optional player id (rejected by rules from before it existed)
     name, score, ms = entry["name"], entry["score"], entry["ms"]
     if not (isinstance(name, str) and 1 <= len(name) <= 12 and NAME_OK.match(name) and "rahul" not in name.lower()):
         return False
@@ -61,6 +66,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         u = urlparse(self.path)
+        if u.path == "/__legacy":
+            MODE["legacy"] = parse_qs(u.query).get("v", ["off"])[0] == "on"
+            return self._send(200, {"legacy": MODE["legacy"]})
         if u.path == "/__mode":
             MODE["down"] = parse_qs(u.query).get("v", ["ok"])[0] == "down"
             return self._send(200, {"down": MODE["down"]})
@@ -78,8 +86,11 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if urlparse(self.path).path == "/__seed":
             for e in json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"[]"):
-                SCORES["-" + secrets.token_urlsafe(9)] = {"name": e["name"], "score": e["score"], "ms": e["ms"],
-                                                           "t": int((time.time() - e.get("agoSeconds", 0)) * 1000)}
+                row = {"name": e["name"], "score": e["score"], "ms": e["ms"],
+                       "t": int((time.time() - e.get("agoSeconds", 0)) * 1000)}
+                if e.get("u"):
+                    row["u"] = e["u"]
+                SCORES["-" + secrets.token_urlsafe(9)] = row
             return self._send(200, {"seeded": len(SCORES)})
         if MODE["down"]:
             return self._send(503, {"error": "down"})

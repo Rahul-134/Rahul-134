@@ -29,6 +29,8 @@ expect "reserved name"                     401 -X POST -d "{\"name\":\"Rahul\",\
 expect "name with markup characters"       401 -X POST -d "{\"name\":\"<b>x</b>\",\"score\":40,\"ms\":4000,\"t\":$NOW}"     "$DB/scores.json"
 expect "name too long"                     401 -X POST -d "{\"name\":\"ABCDEFGHIJKLM\",\"score\":40,\"ms\":4000,\"t\":$NOW}" "$DB/scores.json"
 expect "extra field"                       401 -X POST -d "{\"name\":\"Bob\",\"score\":40,\"ms\":4000,\"t\":$NOW,\"x\":1}"  "$DB/scores.json"
+expect "player id too short"               401 -X POST -d "{\"name\":\"Bob\",\"score\":40,\"ms\":4000,\"t\":$NOW,\"u\":\"abc\"}"   "$DB/scores.json"
+expect "player id with odd characters"     401 -X POST -d "{\"name\":\"Bob\",\"score\":40,\"ms\":4000,\"t\":$NOW,\"u\":\"<script>alert(1)</script>\"}" "$DB/scores.json"
 expect "fake timestamp"                    401 -X POST -d '{"name":"Bob","score":40,"ms":4000,"t":1}'                        "$DB/scores.json"
 expect "writing the owner node"            401 -X PUT  -d '{"name":"Me","score":99999}'                                       "$DB/owner.json"
 expect "deleting all scores"               401 -X DELETE                                                                      "$DB/scores.json"

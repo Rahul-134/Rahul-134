@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 290" width="1000" height="290" role="img" aria-labelledby="t d">
-  <title id="t">Hey I am Rahul Lumbhani — AI and Backend Engineer</title>
+  <title id="t">Hey I am Rahul Lumbhani — AI/ML Engineer · GenAI Enthusiast</title>
   <desc id="d">An animated pixel dinosaur runs along the ground and jumps over cacti. Click to play the full game.</desc>
   <style>
     .mono{font-family:'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace}
@@ -49,7 +49,7 @@
 
   <!-- title -->
   <text class="mono" x="500" y="104" text-anchor="middle" font-size="42" font-weight="700" fill="#FFFFFF">Hey I am Rahul Lumbhani</text>
-  <text class="mono" x="500" y="150" text-anchor="middle" font-size="22" fill="#E8D44D" letter-spacing="3">AI and Backend Engineer<tspan class="cursor">_</tspan></text>
+  <text class="mono" x="500" y="150" text-anchor="middle" font-size="22" fill="#E8D44D" letter-spacing="3">AI/ML Engineer · GenAI Enthusiast<tspan class="cursor">_</tspan></text>
 
   <!-- ground -->
   <line x1="0" y1="236" x2="1000" y2="236" stroke="#3a3a3a" stroke-width="2"/>

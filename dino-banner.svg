@@ -23,13 +23,13 @@
   </style>
   <defs>
     <linearGradient id="glow" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#FB7185" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#FB7185" stop-opacity="0.9"/>
-      <stop offset="1" stop-color="#FB7185" stop-opacity="0"/>
+      <stop offset="0" stop-color="#22D3EE" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#22D3EE" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
     </linearGradient>
     <radialGradient id="halo" cx="0.5" cy="0.35" r="0.6">
-      <stop offset="0" stop-color="#FB7185" stop-opacity="0.10"/>
-      <stop offset="1" stop-color="#FB7185" stop-opacity="0"/>
+      <stop offset="0" stop-color="#22D3EE" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
@@ -49,7 +49,7 @@
 
   <!-- title -->
   <text class="mono" x="500" y="104" text-anchor="middle" font-size="42" font-weight="700" fill="#FFFFFF">Hey I am Rahul Lumbhani</text>
-  <text class="mono" x="500" y="150" text-anchor="middle" font-size="22" fill="#FB7185" letter-spacing="3">AI/ML Engineer · GenAI Enthusiast<tspan class="cursor">_</tspan></text>
+  <text class="mono" x="500" y="150" text-anchor="middle" font-size="22" fill="#22D3EE" letter-spacing="3">AI/ML Engineer · GenAI Enthusiast<tspan class="cursor">_</tspan></text>
 
   <!-- ground -->
   <line x1="0" y1="236" x2="1000" y2="236" stroke="#3a3a3a" stroke-width="2"/>
@@ -63,10 +63,10 @@
   <!-- dino -->
   <g transform="translate(100,157)">
     <g class="jump">
-      <g><path fill="#F20D2E" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6z"/><path fill="#FB7185" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24z"/><path fill="#FBC8CF" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></g>
+      <g><path fill="#1298AD" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6z"/><path fill="#22D3EE" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24z"/><path fill="#79DEEE" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></g>
       <g transform="translate(0,66)">
-        <g class="legA"><path fill="#F20D2E" d="M42 0h15v3h-15zM42 3h9v3h-9zM42 6h6v3h-6z"/><path fill="#FB7185" d="M21 0h15v3h-15zM21 3h9v3h-9zM21 6h9v3h-9zM21 9h12v3h-12z"/></g>
-        <g class="legB"><path fill="#F20D2E" d="M42 0h15v3h-15zM42 3h12v3h-12zM42 6h9v3h-9zM42 9h12v3h-12z"/><path fill="#FB7185" d="M21 0h15v3h-15zM21 3h6v3h-6zM21 6h3v3h-3z"/></g>
+        <g class="legA"><path fill="#1298AD" d="M42 0h15v3h-15zM42 3h9v3h-9zM42 6h6v3h-6z"/><path fill="#22D3EE" d="M21 0h15v3h-15zM21 3h9v3h-9zM21 6h9v3h-9zM21 9h12v3h-12z"/></g>
+        <g class="legB"><path fill="#1298AD" d="M42 0h15v3h-15zM42 3h12v3h-12zM42 6h9v3h-9zM42 9h12v3h-12z"/><path fill="#22D3EE" d="M21 0h15v3h-15zM21 3h6v3h-6zM21 6h3v3h-3z"/></g>
       </g>
     </g>
   </g>

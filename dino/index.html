@@ -6,14 +6,14 @@
 <title>Dino Run · Rahul Lumbhani</title>
 <meta name="description" content="A playable dino runner game from Rahul Lumbhani's GitHub profile.">
 <style>
-  :root { --bg:#161616; --card:#1d1d1d; --line:#2a2a2a; --accent:#FB7185; --fg:#D6D6D6; --muted:#8B8B8B; }
+  :root { --bg:#161616; --card:#1d1d1d; --line:#2a2a2a; --accent:#22D3EE; --fg:#D6D6D6; --muted:#8B8B8B; }
   * { box-sizing: border-box; }
   html, body { margin:0; background:var(--bg); color:var(--fg); }
   body {
     min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
     gap:18px; padding:20px 16px;
     font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,Menlo,monospace;
-    background:radial-gradient(900px 400px at 50% 0%, rgba(251,113,133,.08), transparent 70%), var(--bg);
+    background:radial-gradient(900px 400px at 50% 0%, rgba(34,211,238,.08), transparent 70%), var(--bg);
   }
   h1 { margin:0; font-size:clamp(20px,4vw,30px); color:#fff; letter-spacing:.5px; text-align:center; }
   h1 span { color:var(--accent); }
@@ -68,10 +68,10 @@
   var ctx = cv.getContext('2d');
   ctx.scale(DPR, DPR);
 
-  var COL = { bg:'#161616', ground:'#3a3a3a', dash:'#2f2f2f', cloud:'#262626', text:'#6b6b6b', hot:'#FB7185' };
+  var COL = { bg:'#161616', ground:'#3a3a3a', dash:'#2f2f2f', cloud:'#262626', text:'#6b6b6b', hot:'#22D3EE' };
 
   // ---------- Pixel art (shared with the profile banner) ----------
-    var PAL = {"Y": "#FB7185", "D": "#F20D2E", "L": "#FBC8CF", "K": "#161616", "W": "#FFFFFF", "G": "#4DAE6C", "g": "#2F7A4D", "h": "#86D7A3", "S": "#D9F2E0", "P": "#F472B6", "X": "#D6D6D6"};
+    var PAL = {"Y": "#22D3EE", "D": "#1298AD", "L": "#79DEEE", "K": "#161616", "W": "#FFFFFF", "G": "#4DAE6C", "g": "#2F7A4D", "h": "#86D7A3", "S": "#D9F2E0", "P": "#F472B6", "X": "#D6D6D6"};
   var ART = {
     dinoBody: [".............LLLLLLLL", "............LYYYYYYYYY", "............YYYYYYYYYYY", "............YYWKYYYYYYY", "............YYYYYYYYYYY", "............YYYYYYYYYYY", "............YYYYYYYYYY", "............YYYYYKKKKK", "............YYYYYYYY", "...........DYYYYYYY", "..........DDYYYYYYY", ".........DDYYYYYYYYY", "D.......DDYYYYYYYYYY.YY", "DD.....DDYYYYYYYYYYYY.Y", "DDD...DDYYYYYYYYYYYY", ".DDDDDDYYYYYYYYYYYYY", "..DDDDDYYYYYYYYYYYYY", "...DDDDYYYYYYYYYYYY", "....DDDYYYYYYYYYYYY", ".....DDLYYYYYYYYYY", "......DDYYYYYYYYY", "......DDYYYYYYYY"],
     legsA: [".......YYYYY..DDDDD", ".......YYY....DDD", ".......YYY....DD", ".......YYYY"],

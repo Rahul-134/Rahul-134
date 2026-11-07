@@ -8,10 +8,10 @@
     .cactusB{animation:run 6s linear infinite;animation-delay:-3s}
     .legA{animation:legA .24s steps(1,end) infinite}
     .legB{animation:legB .24s steps(1,end) infinite}
-    .ground{animation:scroll 1.081s linear infinite}
+    .ground{animation:scroll 1.026s linear infinite}
     .cloud1{animation:cloud 34s linear infinite}
     .cloud2{animation:cloud 34s linear infinite;animation-delay:-17s}
-    @keyframes jump{0%{transform:translateY(0)}27.46%{transform:translateY(-0px)}29.13%{transform:translateY(-27px)}32.46%{transform:translateY(-63px)}36.63%{transform:translateY(-80px)}40.79%{transform:translateY(-63px)}44.13%{transform:translateY(-27px)}45.79%{transform:translateY(-0px)}75.79%{transform:translateY(-0px)}77.46%{transform:translateY(-27px)}80.79%{transform:translateY(-63px)}84.96%{transform:translateY(-80px)}89.13%{transform:translateY(-63px)}92.46%{transform:translateY(-27px)}94.13%{transform:translateY(-0px)}100%{transform:translateY(0)}}
+    @keyframes jump{0%{transform:translateY(0)}19.89%{transform:translateY(-0px)}21.14%{transform:translateY(-19px)}22.39%{transform:translateY(-35px)}23.64%{transform:translateY(-49px)}24.89%{transform:translateY(-60px)}26.14%{transform:translateY(-69px)}27.39%{transform:translateY(-75px)}28.64%{transform:translateY(-79px)}29.89%{transform:translateY(-80px)}31.14%{transform:translateY(-79px)}32.39%{transform:translateY(-75px)}33.64%{transform:translateY(-69px)}34.89%{transform:translateY(-60px)}36.14%{transform:translateY(-49px)}37.39%{transform:translateY(-35px)}38.64%{transform:translateY(-19px)}39.89%{transform:translateY(-0px)}69.12%{transform:translateY(-0px)}70.37%{transform:translateY(-19px)}71.62%{transform:translateY(-35px)}72.87%{transform:translateY(-49px)}74.12%{transform:translateY(-60px)}75.37%{transform:translateY(-69px)}76.62%{transform:translateY(-75px)}77.87%{transform:translateY(-79px)}79.12%{transform:translateY(-80px)}80.37%{transform:translateY(-79px)}81.62%{transform:translateY(-75px)}82.87%{transform:translateY(-69px)}84.12%{transform:translateY(-60px)}85.37%{transform:translateY(-49px)}86.62%{transform:translateY(-35px)}87.87%{transform:translateY(-19px)}89.12%{transform:translateY(-0px)}100%{transform:translateY(0)}}
     @keyframes run{from{transform:translateX(1050px)}to{transform:translateX(-120px)}}
     @keyframes legA{0%{opacity:1}50%{opacity:0}100%{opacity:1}}
     @keyframes legB{0%{opacity:0}50%{opacity:1}100%{opacity:0}}

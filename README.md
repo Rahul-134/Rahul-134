@@ -93,10 +93,10 @@ I'm an **AI/ML engineer** and **Generative AI enthusiast** who turns models into
 </details>
 
 <details>
-<summary><b>🧩&nbsp; Problem solving</b> &nbsp;—&nbsp; Steady track record on algorithmic challenges</summary>
+<summary><b>🧩&nbsp; Problem solving</b> &nbsp;—&nbsp; 160+ LeetCode problems solved</summary>
 <br/>
 
-- 🧮 **60+ solutions** in [leetcode-solutions-python](https://github.com/Rahul-134/leetcode-solutions-python) — each one runnable, type-hinted and shipped with a built-in test case
+- 🧮 **160+ problems solved** on LeetCode, with 60+ of the solutions written up in [leetcode-solutions-python](https://github.com/Rahul-134/leetcode-solutions-python) — each one runnable, type-hinted and shipped with a built-in test case
 - 🗂️ Arrays &amp; hashing · strings · two pointers · sliding window · dynamic programming · bit manipulation
 - 📈 Live numbers on my [LeetCode profile](https://leetcode.com/Rahul_134), or [jump to the stats card ↓](#-leetcode)
 
@@ -294,7 +294,7 @@ More in [Featured Projects ↓](#-featured-projects)
     </td>
     <td width="50%" valign="top" align="center">
       <h4>🧮 LeetCode Solutions</h4>
-      <sub><b>60+ solved problems</b> in clean, runnable Python — arrays, DP, sliding window, bit manipulation and more — each with type hints and a built-in test case.</sub>
+      <sub><b>160+ problems solved</b> on LeetCode, 60+ of them written up here in clean, runnable Python — arrays, DP, sliding window, bit manipulation and more — each with type hints and a built-in test case.</sub>
       <br/><br/>
       <img src="https://img.shields.io/badge/Python-161616?style=flat-square&logo=python&logoColor=3776AB" alt="Python" />
       <img src="https://img.shields.io/badge/Algorithms-161616?style=flat-square&logoColor=white" alt="Algorithms" />

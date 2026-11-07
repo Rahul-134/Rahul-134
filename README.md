@@ -113,129 +113,98 @@ More in [Featured Projects ↓](#-featured-projects)
 
 <div align="center">
 
-<sub>A selection of things I've designed, built and shipped — click any card to dive in.</sub>
-
-<br/><br/>
-
-<img src="https://capsule-render.vercel.app/api?type=rect&color=0:161616,100:E8D44D&height=3&section=header" width="100%" alt="" />
+<sub>A selection of things I've designed, built and shipped — click a card to open the project, or peek inside.</sub>
 
 </div>
 
 <br/>
 
 <!-- ───────────── 01 · BitCareer ───────────── -->
-<table>
-  <tr>
-    <td width="46%" valign="middle" align="center">
-      <a href="https://github.com/Rahul-134/bitcareer-showcase">
-        <img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/dashboard.png" alt="BitCareer career readiness dashboard" width="100%" />
-      </a>
-    </td>
-    <td width="54%" valign="top">
-      <sub><code>01 &nbsp;·&nbsp; GENAI &nbsp;·&nbsp; LEARNING PLATFORM</code></sub>
-      <h3>🎯 BitCareer</h3>
-      <b>AI-powered learning &amp; career readiness platform for developers.</b>
-      <br/><br/>
-      🧭 Reads your resume + GitHub to build a <b>personalised roadmap</b> for your target role<br/>
-      🧪 Dual-pane workspace: block-based notes + a <b>Python &amp; SQL sandbox</b> in isolated Docker containers<br/>
-      🎙️ <b>Voice-enabled AI mock interviews</b> with adaptive follow-ups and detailed reports<br/>
-      🏆 Career readiness dashboard with a gamified rank system, <i>Fresher → Legend</i>
-      <br/><br/>
-      <img src="https://img.shields.io/badge/React-161616?style=flat-square&logo=react&logoColor=61DAFB" alt="React" />
-      <img src="https://img.shields.io/badge/Django-161616?style=flat-square&logo=django&logoColor=44B78B" alt="Django" />
-      <img src="https://img.shields.io/badge/PostgreSQL-161616?style=flat-square&logo=postgresql&logoColor=4169E1" alt="PostgreSQL" />
-      <img src="https://img.shields.io/badge/Docker-161616?style=flat-square&logo=docker&logoColor=2496ED" alt="Docker" />
-      <img src="https://img.shields.io/badge/Gemini-161616?style=flat-square&logo=googlegemini&logoColor=8E75B2" alt="Gemini" />
-      <br/><br/>
-      <a href="https://github.com/Rahul-134/bitcareer-showcase"><img src="https://img.shields.io/badge/View%20Project-E8D44D?style=for-the-badge&logo=github&logoColor=161616" alt="View BitCareer" /></a>
-    </td>
-  </tr>
-</table>
+<div align="center">
+
+<a href="https://github.com/Rahul-134/bitcareer-showcase"><img src="projects/bitcareer.svg" width="100%" alt="BitCareer: AI-powered learning and career-readiness platform for developers. Built with React, Django, PostgreSQL, Docker and Gemini." /></a>
+
+</div>
+
+<details>
+<summary>📸&nbsp; <b>Peek inside BitCareer</b> &nbsp;—&nbsp; 5 screens</summary>
+<br/>
+
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/dashboard.png" width="80%" alt="Career Dashboard" /><br/><sub><b>Career Dashboard</b> — readiness score, resume and GitHub analysis, skill ranks and an AI-written career analysis</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/learning-workspace.png" width="80%" alt="Learning Workspace" /><br/><sub><b>Learning Workspace</b> — roadmap sidebar, study notebook and code sandbox in one place</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/interview-dashboard.png" width="80%" alt="AI Interview Dashboard" /><br/><sub><b>AI Interview Dashboard</b> — configure a session, then review past sessions and score trends</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/interview-session.png" width="80%" alt="Live Interview Session" /><br/><sub><b>Live Interview Session</b> — speak or type your answer, or switch to the code editor</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/bitbuddy-overview.png" width="80%" alt="Ask BitBuddy" /><br/><sub><b>Ask BitBuddy</b> — a personalised career overview with daily AI insights</sub></p>
+<p align="center"><sub>Full write-up in the <a href="https://github.com/Rahul-134/bitcareer-showcase">repository ↗</a></sub></p>
+
+</details>
+
+<br/>
 
 <!-- ───────────── 02 · BitNote ───────────── -->
-<table>
-  <tr>
-    <td width="54%" valign="top">
-      <sub><code>02 &nbsp;·&nbsp; GENAI &nbsp;·&nbsp; LOCAL LLMs</code></sub>
-      <h3>📓 BitNote</h3>
-      <b>Notion-style notebooks with an AI tutor built in.</b>
-      <br/><br/>
-      🗺️ Generates <b>syllabuses and week-by-week learning roadmaps</b> from a single goal<br/>
-      🧠 <b>Recall quizzes</b> (MCQ, true/false, short answer) with AI grading and mastery tracking<br/>
-      🤖 <b>BitBuddy</b> — in-cell AI chat and one-click summaries<br/>
-      🔌 Switch between <b>local Ollama</b> and hosted Gemini with one env var; deployed on Vercel + Render + Neon
-      <br/><br/>
-      <img src="https://img.shields.io/badge/FastAPI-161616?style=flat-square&logo=fastapi&logoColor=009688" alt="FastAPI" />
-      <img src="https://img.shields.io/badge/Ollama-161616?style=flat-square&logo=ollama&logoColor=white" alt="Ollama" />
-      <img src="https://img.shields.io/badge/SQLite-161616?style=flat-square&logo=sqlite&logoColor=44A8D8" alt="SQLite" />
-      <img src="https://img.shields.io/badge/Firebase-161616?style=flat-square&logo=firebase&logoColor=FFCA28" alt="Firebase" />
-      <img src="https://img.shields.io/badge/Tailwind-161616?style=flat-square&logo=tailwindcss&logoColor=06B6D4" alt="Tailwind CSS" />
-      <br/><br/>
-      <a href="https://github.com/Rahul-134/bitnote"><img src="https://img.shields.io/badge/View%20Project-E8D44D?style=for-the-badge&logo=github&logoColor=161616" alt="View BitNote" /></a>
-    </td>
-    <td width="46%" valign="middle" align="center">
-      <a href="https://github.com/Rahul-134/bitnote">
-        <img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_8.svg" alt="BitNote notebook with learning roadmap and cell editor" width="100%" />
-      </a>
-    </td>
-  </tr>
-</table>
+<div align="center">
+
+<a href="https://github.com/Rahul-134/bitnote"><img src="projects/bitnote.svg" width="100%" alt="BitNote: Notion-style notebooks with a built-in AI tutor. Built with FastAPI, Ollama, SQLite, Firebase and Tailwind." /></a>
+
+</div>
+
+<details>
+<summary>📸&nbsp; <b>Peek inside BitNote</b> &nbsp;—&nbsp; 4 screens</summary>
+<br/>
+
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_6.svg" width="80%" alt="Sign up &amp; log in" /><br/><sub><b>Sign up &amp; log in</b> — email and password, or Google Sign-In</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_7.svg" width="80%" alt="Home" /><br/><sub><b>Home</b> — all your notebooks in one place</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_8.svg" width="80%" alt="Notebook layout" /><br/><sub><b>Notebook layout</b> — an AI-generated learning roadmap beside the cell editor</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_4.svg" width="80%" alt="In-cell AI" /><br/><sub><b>In-cell AI</b> — instant summaries and BitBuddy chat, in context of the cell</sub></p>
+<p align="center"><sub>Setup, API and deployment notes in the <a href="https://github.com/Rahul-134/bitnote">repository ↗</a></sub></p>
+
+</details>
+
+<br/>
 
 <!-- ───────────── 03 · DataPilot ───────────── -->
-<table>
-  <tr>
-    <td width="46%" valign="middle" align="center">
-      <a href="https://github.com/Rahul-134/datapilot">
-        <img src="https://capsule-render.vercel.app/api?type=venom&color=0:161616,100:E8D44D&height=240&text=DataPilot&fontColor=FFFFFF&fontSize=54&fontAlignY=42&desc=Ask%20%C2%B7%20Scrape%20%C2%B7%20Train&descSize=20&descAlignY=64" alt="DataPilot" width="100%" />
-      </a>
-    </td>
-    <td width="54%" valign="top">
-      <sub><code>03 &nbsp;·&nbsp; DATA &nbsp;·&nbsp; ML &nbsp;·&nbsp; AUTOMATION</code></sub>
-      <h3>🧭 DataPilot</h3>
-      <b>AI-powered data analysis, web scraping &amp; machine learning in one workspace.</b>
-      <br/><br/>
-      💬 Query CSV/Excel data in <b>plain English</b> — Gemini writes and runs the pandas code (voice input supported)<br/>
-      🕸️ <b>AI web scraper</b> with pagination detection, search mode and detail-page enrichment<br/>
-      🤖 <b>No-code ML trainer</b> with auto hyperparameter tuning, reports, predictions and code export
-      <br/><br/>
-      <img src="https://img.shields.io/badge/FastAPI-161616?style=flat-square&logo=fastapi&logoColor=009688" alt="FastAPI" />
-      <img src="https://img.shields.io/badge/Streamlit-161616?style=flat-square&logo=streamlit&logoColor=FF4B4B" alt="Streamlit" />
-      <img src="https://img.shields.io/badge/scikit--learn-161616?style=flat-square&logo=scikitlearn&logoColor=F7931E" alt="scikit-learn" />
-      <img src="https://img.shields.io/badge/pandas-161616?style=flat-square&logo=pandas&logoColor=white" alt="pandas" />
-      <img src="https://img.shields.io/badge/Gemini-161616?style=flat-square&logo=googlegemini&logoColor=8E75B2" alt="Gemini" />
-      <br/><br/>
-      <a href="https://github.com/Rahul-134/datapilot"><img src="https://img.shields.io/badge/View%20Project-E8D44D?style=for-the-badge&logo=github&logoColor=161616" alt="View DataPilot" /></a>
-    </td>
-  </tr>
-</table>
+<div align="center">
+
+<a href="https://github.com/Rahul-134/datapilot"><img src="projects/datapilot.svg" width="100%" alt="DataPilot: AI-powered data analysis, web scraping and machine learning in one workspace. Built with FastAPI, Streamlit, scikit-learn and Gemini." /></a>
+
+</div>
+
+<details>
+<summary>📸&nbsp; <b>Peek inside DataPilot</b> &nbsp;—&nbsp; what's inside</summary>
+<br/>
+
+- 📊 **Dashboard** — upload CSV or Excel files for instant stats, a data health score and a column profile
+- 🧹 **Data cleaning** — remove duplicates and handle nulls with a live preview, then download the cleaned file
+- 💬 **Natural-language analysis** — ask in plain English (or by voice); Gemini writes the pandas code, which is shown for transparency, and returns the results
+- 🕸️ **AI web scraper** *(beta)* — URL and search modes with pagination detection, relevance filtering and a multi-model fallback
+- 🤖 **ML trainer** — regression and classification with automatic hyperparameter tuning, reports, predictions, seven chart types and Python code export
+
+<p align="center"><sub>Architecture and API reference in the <a href="https://github.com/Rahul-134/datapilot">repository ↗</a></sub></p>
+
+</details>
+
+<br/>
 
 <!-- ───────────── 04 · Business Bytes ───────────── -->
-<table>
-  <tr>
-    <td width="54%" valign="top">
-      <sub><code>04 &nbsp;·&nbsp; DESKTOP &nbsp;·&nbsp; GAME DEV</code></sub>
-      <h3>🎲 Business Bytes</h3>
-      <b>An India-themed Monopoly board game for the desktop.</b>
-      <br/><br/>
-      🏙️ 2–4 player hot-seat play across a board of Indian cities<br/>
-      🏠 Property ownership, tiered rent, house building, debt and a shared bank<br/>
-      💾 <b>Save &amp; resume</b> multiple games per account, backed by MySQL<br/>
-      🔁 Custom <b>circular data structure</b> modelling the board, plus an end-game leaderboard
-      <br/><br/>
-      <img src="https://img.shields.io/badge/Java-161616?style=flat-square&logo=openjdk&logoColor=ED8B00" alt="Java" />
-      <img src="https://img.shields.io/badge/JavaFX-161616?style=flat-square&logo=java&logoColor=44BB44" alt="JavaFX" />
-      <img src="https://img.shields.io/badge/MySQL-161616?style=flat-square&logo=mysql&logoColor=4479A1" alt="MySQL" />
-      <img src="https://img.shields.io/badge/Maven-161616?style=flat-square&logo=apachemaven&logoColor=C71A36" alt="Maven" />
-      <br/><br/>
-      <a href="https://github.com/Rahul-134/business-bytes-showcase"><img src="https://img.shields.io/badge/View%20Project-E8D44D?style=for-the-badge&logo=github&logoColor=161616" alt="View Business Bytes" /></a>
-    </td>
-    <td width="46%" valign="middle" align="center">
-      <a href="https://github.com/Rahul-134/business-bytes-showcase">
-        <img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/board.png" alt="Business Bytes game board" width="100%" />
-      </a>
-    </td>
-  </tr>
-</table>
+<div align="center">
+
+<a href="https://github.com/Rahul-134/business-bytes-showcase"><img src="projects/business-bytes.svg" width="100%" alt="Business Bytes: an India-themed Monopoly board game for the desktop. Built with Java, JavaFX, MySQL and Maven." /></a>
+
+</div>
+
+<details>
+<summary>📸&nbsp; <b>Peek inside Business Bytes</b> &nbsp;—&nbsp; 6 screens</summary>
+<br/>
+
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/main-menu.png" width="80%" alt="Main menu" /><br/><sub><b>Main menu</b> — start, load a saved game or read how to play</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/login-signup.png" width="80%" alt="Login &amp; sign up" /><br/><sub><b>Login &amp; sign up</b> — accounts with live password-strength feedback</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/player-setup.png" width="80%" alt="Player setup" /><br/><sub><b>Player setup</b> — 2–4 players, custom names and tokens</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/board.png" width="80%" alt="Game board" /><br/><sub><b>Game board</b> — a circular board of Indian cities</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/load-game.png" width="80%" alt="Load game" /><br/><sub><b>Load game</b> — resume any of your saved games</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/leaderboard.png" width="80%" alt="Leaderboard" /><br/><sub><b>Leaderboard</b> — net-worth ranking when the game ends</sub></p>
+<p align="center"><sub>Design notes in the <a href="https://github.com/Rahul-134/business-bytes-showcase">repository ↗</a></sub></p>
+
+</details>
 
 <br/>
 
@@ -243,32 +212,8 @@ More in [Featured Projects ↓](#-featured-projects)
 
 ### 🧩 More Builds
 
-</div>
-
-<table>
-  <tr>
-    <td width="50%" valign="top" align="center">
-      <h4>🕹️ Virtual Arcade Zone</h4>
-      <sub>A console arcade with <b>7 mini-games</b> — Hangman, Simon Says, Hand Cricket and more — built in pure core Java with a class hierarchy and session score tracking.</sub>
-      <br/><br/>
-      <img src="https://img.shields.io/badge/Java-161616?style=flat-square&logo=openjdk&logoColor=ED8B00" alt="Java" />
-      <img src="https://img.shields.io/badge/OOP-161616?style=flat-square&logoColor=white" alt="OOP" />
-      <br/><br/>
-      <a href="https://github.com/Rahul-134/virtual-arcade-zone"><img src="https://img.shields.io/badge/View%20Project-E8D44D?style=flat-square&logo=github&logoColor=161616" alt="View Virtual Arcade Zone" /></a>
-    </td>
-    <td width="50%" valign="top" align="center">
-      <h4>🧮 LeetCode Solutions</h4>
-      <sub><b>160+ problems solved</b> on LeetCode, 60+ of them written up here in clean, runnable Python — arrays, DP, sliding window, bit manipulation and more — each with type hints and a built-in test case.</sub>
-      <br/><br/>
-      <img src="https://img.shields.io/badge/Python-161616?style=flat-square&logo=python&logoColor=3776AB" alt="Python" />
-      <img src="https://img.shields.io/badge/Algorithms-161616?style=flat-square&logoColor=white" alt="Algorithms" />
-      <br/><br/>
-      <a href="https://github.com/Rahul-134/leetcode-solutions-python"><img src="https://img.shields.io/badge/View%20Project-E8D44D?style=flat-square&logo=github&logoColor=161616" alt="View LeetCode Solutions" /></a>
-    </td>
-  </tr>
-</table>
-
-<div align="center">
+<a href="https://github.com/Rahul-134/virtual-arcade-zone"><img src="projects/virtual-arcade-zone.svg" width="49%" alt="Virtual Arcade Zone: seven console mini-games in pure core Java." /></a>
+<a href="https://github.com/Rahul-134/leetcode-solutions-python"><img src="projects/leetcode-solutions.svg" width="49%" alt="LeetCode Solutions: 160+ problems solved, 60+ written up in clean runnable Python." /></a>
 
 <br/>
 

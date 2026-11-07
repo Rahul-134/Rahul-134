@@ -8,7 +8,8 @@ Then point dino/leaderboard-config.js at "http://127.0.0.1:9000" and open dino/i
 
 It applies the same checks as database.rules.json (name, score cap, score-vs-run-time, no extra
 fields, no overwrites, owner node read-only). Data lives in memory and vanishes on exit.
-Test helper: GET /__mode?v=down makes every request fail with 503, /__mode?v=ok restores it.
+Test helpers: GET /__mode?v=down makes every request fail with 503, /__mode?v=ok restores it;
+POST /__seed with a JSON list of {name,score,ms,agoSeconds} adds entries with a back-dated time.
 """
 import argparse
 import json
@@ -75,6 +76,11 @@ class Handler(BaseHTTPRequestHandler):
         return self._send(401, {"error": "Permission denied"})
 
     def do_POST(self):
+        if urlparse(self.path).path == "/__seed":
+            for e in json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"[]"):
+                SCORES["-" + secrets.token_urlsafe(9)] = {"name": e["name"], "score": e["score"], "ms": e["ms"],
+                                                           "t": int((time.time() - e.get("agoSeconds", 0)) * 1000)}
+            return self._send(200, {"seeded": len(SCORES)})
         if MODE["down"]:
             return self._send(503, {"error": "down"})
         if urlparse(self.path).path != "/scores.json":

@@ -1,7 +1,9 @@
 """Accent themes. Everything yellow in this profile flows from one of these entries.
 
 Add a theme by adding a line to THEMES. Only `accent` is required; the darker shade and
-lighter highlight (used to shade the pixel dino) are derived unless you give them.
+lighter highlight (used to shade the pixel dino) are derived unless you give them. A theme can
+also recolour the cacti with `cactus` ({"G": body, "g": shadow, "h": highlight, "S": spines}),
+which `green` does so the dino does not blend into green cacti.
 """
 import colorsys
 import os
@@ -14,6 +16,8 @@ THEMES = {
     "violet": {"accent": "#A78BFA"},
     "blue":   {"accent": "#60A5FA"},
     "cyan":   {"accent": "#22D3EE"},
+    # nature: leaf-green dino on bark-brown cacti
+    "green":  {"accent": "#4ADE80", "cactus": {"G": "#A8764A", "g": "#6E4A2B", "h": "#D1A06F", "S": "#F0DEC4"}},
 }
 DEFAULT = "yellow"
 
@@ -41,6 +45,7 @@ class Theme:
         t = THEMES[name]
         self.name = name
         self.accent = t["accent"].upper()
+        self.cactus = {k: v.upper() for k, v in t.get("cactus", {}).items()}
         d, l = derive(self.accent)
         self.shade = t.get("shade", d).upper()
         self.light = t.get("light", l).upper()

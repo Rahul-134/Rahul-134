@@ -17,6 +17,7 @@ on:
           - violet
           - blue
           - cyan
+          - green
 
 permissions:
   contents: write

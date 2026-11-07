@@ -27,6 +27,20 @@ Until you finish the setup below the game behaves exactly as before and no leade
 
 Then play a run of 30+ points: when it ends you should be asked for a name.
 
+## What visitors see
+
+- A **podium** for the top three and a list with score bars for ranks 4-10, topped by a pinned
+  crown card with a "race to the crown" bar showing how close the best runner is to your score.
+- **All time / This week / Today** tabs. The choice is remembered, and the arrow keys switch tabs.
+- Click (or press Enter on) any entry to see how long that run lasted, when it happened and what
+  share of your best it reached. Your own entry also gets a **Share** button.
+- A new entry flashes, scores count up, and a **#1 or a crown-beating run** fires confetti. All
+  motion switches off for visitors who have "reduce motion" set.
+- A loading skeleton while the board loads, and an empty state with a **Play now** button.
+
+The tabs look at the 80 highest scores, so on a very busy board a recent low score can be
+missing from "This week" or "Today". For a profile game that is rarely noticeable.
+
 ## How it works
 
 - Scores are stored under `scores/<id>` as `{ name, score, ms, t }`. `ms` is how long the run

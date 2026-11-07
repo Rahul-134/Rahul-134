@@ -108,7 +108,7 @@ def card(p):
         lx = tx + tw - 112
         s.append(f'<rect x="{lx}" y="38" width="54" height="20" rx="10" fill="#27c93f" fill-opacity="0.12" stroke="#27c93f" stroke-opacity="0.45"/>')
         s.append(f'<circle class="pulse" cx="{lx + 13}" cy="48" r="3.2" fill="#27c93f"/>')
-        s.append(f'<text x="{lx + 22}" y="52" font-size="10" fill="#4ade80" letter-spacing="1.3" font-family="{MONO}">LIVE</text>')
+        s.append(f'<text x="{lx + 22}" y="52" font-size="10" fill="#5EE27A" letter-spacing="1.3" font-family="{MONO}">LIVE</text>')
     s.append(f'<text x="{tx}" y="104" font-size="34" font-weight="800" fill="#FFFFFF" font-family="{SANS}">{e(p["title"])}</text>')
     for i, line in enumerate(p["pitch"]):
         s.append(f'<text x="{tx}" y="{132 + i * 20}" font-size="14.5" fill="#9aa0a6" font-family="{SANS}">{e(line)}</text>')

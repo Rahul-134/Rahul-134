@@ -12,6 +12,7 @@ PAL = {
     "G": "#4DAE6C", "g": "#2F7A4D", "h": "#86D7A3", "S": "#D9F2E0", "P": "#F472B6",
     "X": "#D6D6D6",
 }
+PAL.update(_T.cactus)        # a theme may recolour the cacti (the green theme does)
 
 ART = {
     # ---- dino, standing (24 wide) ----

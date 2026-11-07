@@ -10,7 +10,8 @@ stat cards.
 2. Pick **Switch theme** in the left list, then **Run workflow**.
 3. Choose a colour and run it. After about half a minute the profile is recoloured.
 
-Themes: `yellow` (original), `orange`, `rose`, `violet`, `blue`, `cyan`.
+Themes: `yellow` (original), `orange`, `rose`, `violet`, `blue`, `cyan`, and `green` (a nature
+theme: leaf-green dino on bark-brown cacti, so the two don't blend together).
 
 ## Switch locally
 
@@ -31,6 +32,7 @@ Add one line to `THEMES` in `tools/theme_colors.py` (and the same name to the dr
 ```
 
 The darker shade and lighter highlight that shade the pixel dino are derived automatically.
+To recolour the cacti as well, add `"cactus": {"G": ..., "g": ..., "h": ..., "S": ...}` (see `green`).
 
 ## What lives here
 

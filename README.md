@@ -7,14 +7,14 @@
 <br/>
 
 <a href="https://github.com/Rahul-134">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=20&duration=3200&pause=900&color=22D3EE&center=true&vCenter=true&width=640&lines=AI%2FML+Engineer;Generative+AI+enthusiast;Python+%C2%B7+FastAPI+%C2%B7+Django+%C2%B7+React;Turning+ideas+into+shipped+products" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=20&duration=3200&pause=900&color=A78BFA&center=true&vCenter=true&width=640&lines=AI%2FML+Engineer;Generative+AI+enthusiast;Python+%C2%B7+FastAPI+%C2%B7+Django+%C2%B7+React;Turning+ideas+into+shipped+products" alt="Typing animation" />
 </a>
 
 <br/>
 
-<a href="https://github.com/Rahul-134"><img src="https://img.shields.io/github/followers/Rahul-134?style=for-the-badge&logo=github&logoColor=white&label=Followers&labelColor=161616&color=22D3EE" alt="GitHub followers" /></a>
-<a href="https://github.com/Rahul-134?tab=repositories"><img src="https://img.shields.io/badge/Repositories-Explore-22D3EE?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=161616" alt="Repositories" /></a>
-<img src="https://komarev.com/ghpvc/?username=Rahul-134&style=for-the-badge&label=Profile+Views&color=22D3EE&labelColor=161616" alt="Profile views" />
+<a href="https://github.com/Rahul-134"><img src="https://img.shields.io/github/followers/Rahul-134?style=for-the-badge&logo=github&logoColor=white&label=Followers&labelColor=161616&color=A78BFA" alt="GitHub followers" /></a>
+<a href="https://github.com/Rahul-134?tab=repositories"><img src="https://img.shields.io/badge/Repositories-Explore-A78BFA?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=161616" alt="Repositories" /></a>
+<img src="https://komarev.com/ghpvc/?username=Rahul-134&style=for-the-badge&label=Profile+Views&color=A78BFA&labelColor=161616" alt="Profile views" />
 
 <br/><br/>
 
@@ -250,7 +250,7 @@ More in [Featured Projects ↓](#-featured-projects)
 
 <br/>
 
-<a href="https://github.com/Rahul-134?tab=repositories"><img src="https://img.shields.io/badge/Browse%20all%20repositories%20%E2%86%92-161616?style=for-the-badge&logo=github&logoColor=22D3EE" alt="Browse all repositories" /></a>
+<a href="https://github.com/Rahul-134?tab=repositories"><img src="https://img.shields.io/badge/Browse%20all%20repositories%20%E2%86%92-161616?style=for-the-badge&logo=github&logoColor=A78BFA" alt="Browse all repositories" /></a>
 
 </div>
 
@@ -261,7 +261,7 @@ More in [Featured Projects ↓](#-featured-projects)
 <div align="center">
 
 <a href="https://github.com/Rahul-134">
-  <img height="190" src="https://github-stats-extended.vercel.app/api?username=Rahul-134&rank_icon=github&custom_title=GitHub%20Stats&show_icons=true&include_all_commits=true&hide_border=true&bg_color=161616&title_color=22D3EE&icon_color=22D3EE&text_color=D6D6D6" alt="GitHub stats" />
+  <img height="190" src="https://github-stats-extended.vercel.app/api?username=Rahul-134&rank_icon=github&custom_title=GitHub%20Stats&show_icons=true&include_all_commits=true&hide_border=true&bg_color=161616&title_color=A78BFA&icon_color=A78BFA&text_color=D6D6D6" alt="GitHub stats" />
 </a>
 <a href="https://github.com/Rahul-134">
   <img height="190" src="https://readmecodegen.com/api/github-stats/svg?username=Rahul-134&cardType=langs" alt="Top languages" />
@@ -270,13 +270,13 @@ More in [Featured Projects ↓](#-featured-projects)
 <br/>
 
 <a href="https://github.com/Rahul-134">
-  <img src="https://streak-stats.demolab.com/?user=Rahul-134&theme=dark&hide_border=true&background=161616&ring=22D3EE&fire=22D3EE&currStreakLabel=22D3EE&currStreakNum=FFFFFF&sideNums=FFFFFF&sideLabels=D6D6D6&dates=8B8B8B" alt="GitHub streak" />
+  <img src="https://streak-stats.demolab.com/?user=Rahul-134&theme=dark&hide_border=true&background=161616&ring=A78BFA&fire=A78BFA&currStreakLabel=A78BFA&currStreakNum=FFFFFF&sideNums=FFFFFF&sideLabels=D6D6D6&dates=8B8B8B" alt="GitHub streak" />
 </a>
 
 <br/>
 
 <a href="https://github.com/Rahul-134">
-  <img src="https://ghchart.rshah.org/22D3EE/Rahul-134" alt="Contribution graph" width="100%" />
+  <img src="https://ghchart.rshah.org/A78BFA/Rahul-134" alt="Contribution graph" width="100%" />
 </a>
 
 </div>
@@ -303,6 +303,6 @@ I'm always open to interesting projects and conversations about AI, backend engi
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:161616,100:22D3EE&height=110&section=footer" width="100%" alt="" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:161616,100:A78BFA&height=110&section=footer" width="100%" alt="" />
 
 </div>

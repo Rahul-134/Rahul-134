@@ -39,13 +39,13 @@
   </style>
   <defs>
     <radialGradient id="halo" cx="0.88" cy="0.95" r="0.45">
-      <stop offset="0" stop-color="#22D3EE" stop-opacity="0.10"/>
-      <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+      <stop offset="0" stop-color="#A78BFA" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#A78BFA" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#22D3EE" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#22D3EE" stop-opacity="0.85"/>
-      <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+      <stop offset="0" stop-color="#A78BFA" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#A78BFA" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#A78BFA" stop-opacity="0"/>
     </linearGradient>
   </defs>
 
@@ -60,17 +60,17 @@
 
   <!-- terminal text, revealed line by line by sliding a background-coloured cover to the right -->
   <g class="term">
-        <text class="mono" x="44" y="90" font-size="18"><tspan fill="#22D3EE">$</tspan> <tspan fill="#FFFFFF">whoami</tspan></text>
+        <text class="mono" x="44" y="90" font-size="18"><tspan fill="#A78BFA">$</tspan> <tspan fill="#FFFFFF">whoami</tspan></text>
     <text class="mono" x="44" y="117" font-size="18"><tspan fill="#FFFFFF" font-weight="700">Rahul Lumbhani</tspan><tspan fill="#9aa0a6"> — AI/ML engineer</tspan></text>
-    <text class="mono" x="44" y="144" font-size="18"><tspan fill="#22D3EE">$</tspan> <tspan fill="#FFFFFF">cat</tspan> <tspan fill="#86D7A3">interests.txt</tspan></text>
+    <text class="mono" x="44" y="144" font-size="18"><tspan fill="#A78BFA">$</tspan> <tspan fill="#FFFFFF">cat</tspan> <tspan fill="#86D7A3">interests.txt</tspan></text>
     <text class="mono" x="44" y="171" font-size="18"><tspan fill="#C9D1D9">Generative AI · LLM apps · data &amp; ML platforms</tspan></text>
-    <text class="mono" x="44" y="198" font-size="18"><tspan fill="#22D3EE">$</tspan> <tspan fill="#FFFFFF">ls</tspan> <tspan fill="#86D7A3">./stack</tspan></text>
+    <text class="mono" x="44" y="198" font-size="18"><tspan fill="#A78BFA">$</tspan> <tspan fill="#FFFFFF">ls</tspan> <tspan fill="#86D7A3">./stack</tspan></text>
     <text class="mono" x="44" y="225" font-size="18"><tspan fill="#86D7A3">languages/</tspan><tspan x="194" fill="#C9D1D9">Python · Java · JavaScript</tspan></text>
     <text class="mono" x="44" y="252" font-size="18"><tspan fill="#86D7A3">frameworks/</tspan><tspan x="194" fill="#C9D1D9">React · Django · FastAPI</tspan></text>
     <text class="mono" x="44" y="279" font-size="18"><tspan fill="#86D7A3">databases/</tspan><tspan x="194" fill="#C9D1D9">SQL</tspan></text>
-    <text class="mono" x="44" y="306" font-size="18"><tspan fill="#22D3EE">$</tspan> <tspan fill="#FFFFFF">./builds</tspan> <tspan fill="#86D7A3">--list</tspan></text>
+    <text class="mono" x="44" y="306" font-size="18"><tspan fill="#A78BFA">$</tspan> <tspan fill="#FFFFFF">./builds</tspan> <tspan fill="#86D7A3">--list</tspan></text>
     <text class="mono" x="44" y="333" font-size="18"><tspan fill="#C9D1D9">AI co-pilots · web apps · interactive console games</tspan></text>
-    <g class="last"><text class="mono" x="44" y="360" font-size="18"><tspan fill="#22D3EE">$</tspan></text><rect class="blink" x="68" y="344" width="10" height="20" fill="#22D3EE"/></g>
+    <g class="last"><text class="mono" x="44" y="360" font-size="18"><tspan fill="#A78BFA">$</tspan></text><rect class="blink" x="68" y="344" width="10" height="20" fill="#A78BFA"/></g>
         <rect class="cv c0" x="40" y="70" width="760" height="27" fill="#161616"/>
     <rect class="cv c1" x="40" y="97" width="760" height="27" fill="#161616"/>
     <rect class="cv c2" x="40" y="124" width="760" height="27" fill="#161616"/>
@@ -92,10 +92,10 @@
   <g transform="translate(730,330)"><path fill="#2F7A4D" d="M15 0h3v3h-3zM15 3h3v3h-3zM6 6h3v3h-3zM18 6h3v3h-3zM6 9h3v3h-3zM18 9h3v3h-3zM18 12h3v3h-3zM15 15h3v3h-3zM15 18h3v3h-3zM15 21h3v3h-3z"/><path fill="#4DAE6C" d="M12 0h3v3h-3zM12 3h3v3h-3zM3 6h3v3h-3zM15 6h3v3h-3zM3 9h3v3h-3zM15 9h3v3h-3zM3 12h15v3h-15zM12 15h3v3h-3zM12 18h3v3h-3zM12 21h3v3h-3z"/><path fill="#86D7A3" d="M9 0h3v3h-3zM9 3h3v3h-3zM0 6h3v3h-3zM12 6h3v3h-3zM0 9h3v3h-3zM12 9h3v3h-3zM0 12h3v3h-3zM9 15h3v3h-3zM9 18h3v3h-3zM9 21h3v3h-3z"/></g>
   <g transform="translate(862,276) scale(-1,1)">
     <g class="bob">
-      <g><path fill="#1298AD" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6z"/><path fill="#22D3EE" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24z"/><path fill="#79DEEE" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></g>
+      <g><path fill="#5521F0" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6z"/><path fill="#A78BFA" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24z"/><path fill="#E6DEFC" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></g>
       <g transform="translate(0,66)">
-        <g class="legA"><path fill="#1298AD" d="M42 0h15v3h-15zM42 3h9v3h-9zM42 6h6v3h-6z"/><path fill="#22D3EE" d="M21 0h15v3h-15zM21 3h9v3h-9zM21 6h9v3h-9zM21 9h12v3h-12z"/></g>
-        <g class="legB"><path fill="#1298AD" d="M42 0h15v3h-15zM42 3h12v3h-12zM42 6h9v3h-9zM42 9h12v3h-12z"/><path fill="#22D3EE" d="M21 0h15v3h-15zM21 3h6v3h-6zM21 6h3v3h-3z"/></g>
+        <g class="legA"><path fill="#5521F0" d="M42 0h15v3h-15zM42 3h9v3h-9zM42 6h6v3h-6z"/><path fill="#A78BFA" d="M21 0h15v3h-15zM21 3h9v3h-9zM21 6h9v3h-9zM21 9h12v3h-12z"/></g>
+        <g class="legB"><path fill="#5521F0" d="M42 0h15v3h-15zM42 3h12v3h-12zM42 6h9v3h-9zM42 9h12v3h-12z"/><path fill="#A78BFA" d="M21 0h15v3h-15zM21 3h6v3h-6zM21 6h3v3h-3z"/></g>
       </g>
     </g>
   </g>

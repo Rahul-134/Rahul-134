@@ -11,6 +11,6 @@
  * best score without redeploying anything.
  */
 window.DINO_LEADERBOARD = {
-  databaseURL: "",
+  databaseURL: "https://rahul-dino-leaderboard-default-rtdb.asia-southeast1.firebasedatabase.app",
   owner: { name: "Rahul", score: null }
 };

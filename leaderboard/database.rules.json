@@ -21,6 +21,9 @@
         "t": {
           ".validate": "newData.val() === now"
         },
+        "u": {
+          ".validate": "newData.isString() && newData.val().length >= 12 && newData.val().length <= 32 && newData.val().matches(/^[A-Za-z0-9]+$/)"
+        },
         "$other": { ".validate": false }
       }
     },

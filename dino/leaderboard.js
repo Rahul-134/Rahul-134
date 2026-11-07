@@ -28,6 +28,9 @@
   var owner = normaliseOwner(CFG.owner);
   var mine = loadMine();      // ids of entries submitted from this browser
   var myBest = Number(recall('dinoLbBest')) || 0;   // best score this browser has put on the board
+  var myUid = recall('dinoLbUid');                  // anonymous id that ties this browser's entries together
+  if (!/^[A-Za-z0-9]{12,32}$/.test(myUid || '')) { myUid = randomId(); store('dinoLbUid', myUid); }
+  var legacy = false;         // true once the database rules turned out not to accept the optional id
   var run = null;             // {score, ms, id, submitted}
   var runCounter = 0;
   var lastSubmitAt = 0;
@@ -50,6 +53,12 @@
   function pad5(n) { return ('00000' + n).slice(-5); }
   function store(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
   function recall(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+  function randomId() {
+    var s = '', n = 20, b = null;
+    try { b = new Uint8Array(n); (window.crypto || window.msCrypto).getRandomValues(b); } catch (e) { b = null; }
+    for (var i = 0; i < n; i++) s += ((b ? b[i] : Math.floor(Math.random() * 256)) % 36).toString(36);
+    return s;
+  }
   function loadMine() { try { return JSON.parse(recall('dinoLbMine') || '[]').slice(-40); } catch (e) { return []; } }
   function normaliseOwner(o) {
     if (!o || typeof o !== 'object') return null;
@@ -150,7 +159,10 @@
     '.lb .skel{display:grid;gap:6px;margin:4px 0}.lb .skel i{display:block;height:38px;border-radius:10px;background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.1) 50%,rgba(255,255,255,.04) 75%);background-size:300% 100%;animation:lbshim 1.3s linear infinite}' +
     '.lb .msg{margin:10px 0 0;min-height:1.4em;font-size:12px;color:var(--muted,#8b8b8b)}' +
     '.lb .msg.err{color:#ff8a8a}.lb .msg.ok{color:#7ee787}' +
-    '.lb .foot{display:flex;justify-content:flex-end;margin-top:2px;font-size:11px;color:var(--muted,#8b8b8b);opacity:.8}' +
+    '.lb .foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px;font-size:11px;color:var(--muted,#8b8b8b)}' +
+    '.lb .foot .who b{color:#fff}.lb .foot span:last-child{opacity:.8}' +
+    '.lb .linklike{min-height:0;padding:2px 6px;margin-left:6px;background:transparent;color:var(--accent);border:0;border-radius:6px;font-size:11px;text-decoration:underline;cursor:pointer}' +
+    '.lb .linklike:hover{background:rgba(var(--accent-rgb),.12)}' +
     /* motion */
     '@keyframes lbrise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}' +
     '@keyframes lbgrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}' +
@@ -192,7 +204,7 @@
   var body = el('div', 'lbbody');
   var detail = el('div', 'detail'); detail.hidden = true;
   var status = el('p', 'msg'); status.setAttribute('aria-live', 'polite');
-  var foot = el('div', 'foot'); var upd = el('span'); foot.appendChild(upd);
+  var foot = el('div', 'foot'); var who = el('span', 'who'); var upd = el('span'); foot.appendChild(who); foot.appendChild(upd);
   panel.appendChild(head); panel.appendChild(ownerBox); panel.appendChild(body); panel.appendChild(detail); panel.appendChild(status); panel.appendChild(foot);
   var after = $('.hint');
   if (after && after.parentNode) after.parentNode.insertBefore(panel, after); else document.body.appendChild(panel);
@@ -253,7 +265,7 @@
 
   function nameCell(e) {
     var nm = el('span', 'nm', e.name);
-    if (isMine(e.id)) nm.appendChild(el('em', null, 'YOU'));
+    if (e.mine) nm.appendChild(el('em', null, 'YOU'));
     return nm;
   }
 
@@ -269,7 +281,10 @@
     if (e.t) bits.push(ago(e.t));
     if (owner) bits.push(Math.round(e.score / owner.score * 100) + '% of ' + owner.name + "'s best");
     detail.appendChild(el('span', 'grow', bits.join(' · ')));
-    if (isMine(e.id)) {
+    if (e.mine) {
+      var ed = el('button', 'ghost', '✎ Edit name'); ed.type = 'button';
+      ed.addEventListener('click', function () { openPrompt('rename'); });
+      detail.appendChild(ed);
       var sh = el('button', 'ghost', '↗ Share'); sh.type = 'button';
       sh.addEventListener('click', function () { share(e); });
       detail.appendChild(sh);
@@ -279,7 +294,7 @@
 
   function podiumCard(e, i, rows, top) {
     var li = document.createElement('li');
-    li.className = 'pod p' + (i + 1) + (e && isMine(e.id) ? ' me' : '') + (!e ? ' empty' : '');
+    li.className = 'pod p' + (i + 1) + (e && e.mine ? ' me' : '') + (!e ? ' empty' : '');
     li.style.setProperty('--i', String(i === 0 ? 0 : i));
     var medals = ['🥇', '🥈', '🥉'];
     li.appendChild(el('span', 'medal', e ? medals[i] : '·'));
@@ -300,7 +315,7 @@
   }
 
   function rowEntry(e, i, rows, top) {
-    var li = el('li', 'row' + (isMine(e.id) ? ' me' : '')); li.dataset.id = e.id; li.style.setProperty('--i', String(i));
+    var li = el('li', 'row' + (e.mine ? ' me' : '')); li.dataset.id = e.id; li.style.setProperty('--i', String(i));
     if (e.id === selected) li.classList.add('sel');
     if (seenInit && !seen[e.id]) li.classList.add('fresh');
     var b = el('button', 'rowbtn'); b.type = 'button';
@@ -318,7 +333,7 @@
   function render(force) {
     var rows = windowed();
     var top = rows.length ? rows[0].score : 0;
-    var sig = [view, loading, loadOk, owner ? owner.score : '', rows.map(function (r) { return r.id + ':' + r.score + (isMine(r.id) ? '*' : ''); }).join(',')].join('|');
+    var sig = [view, loading, loadOk, owner ? owner.score : '', rows.map(function (r) { return r.id + ':' + r.score + ':' + r.name + (r.mine ? '*' : ''); }).join(',')].join('|');
     TABS.forEach(function (t, i) { var on = t[0] === view; tabBtns[i].setAttribute('aria-selected', on ? 'true' : 'false'); tabBtns[i].tabIndex = on ? 0 : -1; });
     if (sig === lastSig && !force) return;
     lastSig = sig;
@@ -412,13 +427,27 @@
       var rows = [];
       Object.keys(data || {}).forEach(function (id) {
         var v = data[id];
-        if (v && typeof v.name === 'string' && typeof v.score === 'number') rows.push({ id: id, name: v.name, score: v.score, ms: typeof v.ms === 'number' ? v.ms : 0, t: v.t || 0 });
+        if (v && typeof v.name === 'string' && typeof v.score === 'number') {
+          var u = typeof v.u === 'string' ? v.u : '';
+          rows.push({ id: id, name: v.name, score: v.score, ms: typeof v.ms === 'number' ? v.ms : 0, t: v.t || 0, u: u, mine: (u !== '' && u === myUid) || isMine(id) });
+        }
       });
-      rows.sort(function (a, b) { return b.score - a.score || a.t - b.t; });
-      var myTop = null;   // this browser's best entry; the others it submitted are hidden from its owner
-      rows.forEach(function (r) { if (!myTop && isMine(r.id)) myTop = r; });
-      if (myTop && myTop.score > myBest) { myBest = myTop.score; store('dinoLbBest', String(myBest)); }
-      allRows = rows.filter(function (r) { return !isMine(r.id) || r === myTop; });
+      // One row per player. Entries share a player when they carry the same anonymous id; this
+      // browser's older entries (from before ids existed) are folded into its own id.
+      var groups = {};
+      rows.forEach(function (r) { var k = r.mine ? myUid : (r.u || 'id:' + r.id); (groups[k] = groups[k] || []).push(r); });
+      var reps = Object.keys(groups).map(function (k) {
+        var g = groups[k], max = Math.max.apply(null, g.map(function (r) { return r.score; }));
+        var tops = g.filter(function (r) { return r.score === max; }).sort(function (x, y) { return x.t - y.t; });
+        var first = tops[0], last = tops[tops.length - 1];
+        // the name comes from the newest entry at the best score (so a rename wins), the time from the first
+        // (so renaming an old best does not make it look new)
+        return { id: last.id, name: last.name, score: max, ms: last.ms, t: first.t, u: last.u, mine: g.some(function (r) { return r.mine; }) };
+      });
+      reps.sort(function (x, y) { return y.score - x.score || x.t - y.t; });
+      var mineTop = reps.filter(function (r) { return r.mine; })[0];
+      if (mineTop && mineTop.score > myBest) { myBest = mineTop.score; store('dinoLbBest', String(myBest)); }
+      allRows = reps;
       var names = {}, best = [];
       allRows.forEach(function (r) { var k = r.name.toLowerCase(); if (!names[k]) { names[k] = 1; best.push(r); } });
       board = best.slice(0, TOP);
@@ -442,44 +471,123 @@
 
   function qualifies(score) { return board.length < TOP || score > board[board.length - 1].score; }
 
-  /* ---------- submit flow ---------- */
-  function openSubmit() {
-    if (!run || run.submitted) return;
-    sNum.textContent = pad5(run.score); subMsg.textContent = '';
-    input.value = cleanName(recall('dinoLbName') || '');
-    hint.textContent = myBest > 0 ? 'Beats your best of ' + pad5(myBest) + ' — keep the same name for a single entry' : 'Add your name to the public leaderboard';
-    ov.hidden = false; submitBtn.disabled = false;
+  /* ---------- submitting scores and renaming ---------- */
+  var mode = 'score';          // what the prompt is for right now: 'score' | 'rename'
+
+  function savedName() { return cleanName(recall('dinoLbName') || ''); }
+  function myEntry() { for (var i = 0; i < allRows.length; i++) if (allRows[i].mine) return allRows[i]; return null; }
+  function nameTaken(name) {   // is this name already used by somebody else on the board?
+    var k = name.toLowerCase();
+    return allRows.some(function (r) { return !r.mine && r.name.toLowerCase() === k; });
+  }
+  function failText(err) { return err && err.status === 401 ? 'The leaderboard rejected that.' : "Couldn't save — check your connection and try again."; }
+
+  function showWho() {
+    who.textContent = '';
+    var n = savedName(); if (!n) return;
+    who.appendChild(document.createTextNode('Playing as ')); who.appendChild(el('b', null, n));
+    var b = el('button', 'linklike', '✎ Edit name'); b.type = 'button';
+    b.addEventListener('click', function () { openPrompt('rename'); });
+    who.appendChild(b);
+  }
+
+  /* POST an entry. It carries this browser's anonymous id; if the database rules predate ids and reject it,
+     retry once without it so scoring keeps working. */
+  function post(name, score, ms) {
+    function send(withId) {
+      var body = { name: name, score: score, ms: ms, t: { '.sv': 'timestamp' } };
+      if (withId) body.u = myUid;
+      return request('/scores.json', { method: 'POST', body: JSON.stringify(body) });
+    }
+    if (legacy) return send(false);
+    return send(true).catch(function (err) {
+      if (!err || err.status !== 401) throw err;
+      return send(false).then(function (res) { legacy = true; return res; });
+    });
+  }
+
+  function remember(res, name, score) {
+    if (res && res.name) { mine.push(res.name); store('dinoLbMine', JSON.stringify(mine.slice(-40))); }
+    store('dinoLbName', name);
+    myBest = Math.max(myBest, score); store('dinoLbBest', String(myBest));
+    showWho();
+  }
+
+  function afterSave(score, message) {
+    return loadBoard().then(function () {
+      var rank = -1;
+      board.forEach(function (e, i) { if (e.mine) rank = i + 1; });
+      selected = null;
+      var me = windowed().filter(function (r) { return r.mine; })[0];
+      if (me) selectEntry(windowed(), me.id);
+      setStatus(message(rank), 'ok', true);
+      if (score && (rank === 1 || (owner && score > owner.score))) burst();
+      panel.scrollIntoView({ behavior: motion ? 'smooth' : 'auto', block: 'nearest' });
+    });
+  }
+
+  function openPrompt(m) {
+    if (m === 'score' && (!run || run.submitted)) return;
+    mode = m; subMsg.textContent = ''; submitBtn.disabled = false;
+    var me = myEntry();
+    input.value = savedName() || (me ? cleanName(me.name) : '');
+    if (m === 'rename') {
+      sTxt.nodeValue = 'EDIT YOUR NAME'; sNum.textContent = '';
+      hint.textContent = me ? 'Your best of ' + pad5(me.score) + ' will show under the new name' : 'This name will be used for your next score';
+      submitBtn.textContent = 'Save name';
+    } else {
+      sTxt.nodeValue = 'NEW TOP SCORE · '; sNum.textContent = pad5(run.score);
+      hint.textContent = 'Add your name to the public leaderboard';
+      submitBtn.textContent = 'Submit score';
+    }
+    ov.hidden = false;
     setTimeout(function () { input.focus(); input.select(); }, 30);
   }
   function closeSubmit() { ov.hidden = true; var c = $('#game'); if (c) c.focus({ preventScroll: true }); }
 
+  /* a returning player's new personal best is saved straight away under their saved name */
+  function autoSave(r, name) {
+    busy = true; lastSubmitAt = Date.now(); setStatus('Saving your new best…');
+    post(name, r.score, r.ms).then(function (res) {
+      r.submitted = true; remember(res, name, r.score);
+      return afterSave(r.score, function (rank) { return 'New personal best! ' + pad5(r.score) + ' saved as ' + name + (rank > 0 ? ' — you are #' + rank + '.' : '.'); });
+    }).catch(function (err) {
+      setStatus(''); openPrompt('score'); subMsg.textContent = failText(err);
+    }).then(function () { busy = false; });
+  }
+
+  function rename(name) {
+    var me = myEntry(), current = savedName() || (me ? me.name : '');
+    if (name === current) { closeSubmit(); return; }
+    if (!me) {   // nothing on the board yet: just remember the name for the next score
+      store('dinoLbName', name); showWho(); closeSubmit();
+      setStatus('Saved — "' + name + '" will be used for your next score.', 'ok', true); return;
+    }
+    busy = true; submitBtn.disabled = true; subMsg.textContent = ''; lastSubmitAt = Date.now();
+    post(name, me.score, Math.max(1000, me.ms)).then(function (res) {
+      remember(res, name, me.score); closeSubmit();
+      return afterSave(0, function () {
+        return 'Name updated to ' + name + '.' + (legacy ? ' (Other visitors may still see your old name until the database rules are updated — see leaderboard/README.md.)' : '');
+      });
+    }).catch(function (err) { submitBtn.disabled = false; subMsg.textContent = failText(err); })
+      .then(function () { busy = false; });
+  }
+
   function submit() {
-    if (!run || run.submitted || busy) return;
+    if (busy) return;
     var name = cleanName(input.value);
-    var problem = nameProblem(name);
+    var problem = nameProblem(name) || (nameTaken(name) ? 'That name is already on the board — pick another.' : '');
     if (problem) { subMsg.textContent = problem; return; }
     if (Date.now() - lastSubmitAt < 2000) { subMsg.textContent = 'One moment…'; return; }
-    busy = true; submitBtn.disabled = true; subMsg.textContent = '';
-    lastSubmitAt = Date.now();
-    var body = JSON.stringify({ name: name, score: run.score, ms: run.ms, t: { '.sv': 'timestamp' } });
-    request('/scores.json', { method: 'POST', body: body }).then(function (res) {
-      run.submitted = true;
-      if (res && res.name) { mine.push(res.name); store('dinoLbMine', JSON.stringify(mine.slice(-40))); }
-      store('dinoLbName', name);
-      myBest = Math.max(myBest, run.score); store('dinoLbBest', String(myBest));
-      closeSubmit();
-      return loadBoard().then(function () {
-        var rank = -1;
-        board.forEach(function (e, i) { if (res && e.id === res.name) rank = i + 1; });
-        setStatus(rank > 0 ? 'Submitted — you are #' + rank + '! Press Space to play again.' : 'Submitted! Press Space to play again.', 'ok', true);
-        if (res && res.name) { selected = null; var me = windowed().filter(function (r) { return r.id === res.name; })[0]; if (me) selectEntry(windowed(), me.id); }
-        if (rank === 1 || (owner && run.score > owner.score)) burst();
-        panel.scrollIntoView({ behavior: motion ? 'smooth' : 'auto', block: 'nearest' });
-      });
-    }).catch(function (err) {
-      submitBtn.disabled = false;
-      subMsg.textContent = err && err.status === 401 ? 'The leaderboard rejected that score.' : "Couldn't submit — check your connection and try again.";
-    }).then(function () { busy = false; });
+    if (mode === 'rename') { rename(name); return; }
+    if (!run || run.submitted) return;
+    busy = true; submitBtn.disabled = true; subMsg.textContent = ''; lastSubmitAt = Date.now();
+    var r = run;
+    post(name, r.score, r.ms).then(function (res) {
+      r.submitted = true; remember(res, name, r.score); closeSubmit();
+      return afterSave(r.score, function (rank) { return rank > 0 ? 'Submitted — you are #' + rank + '! Press Space to play again.' : 'Submitted! Press Space to play again.'; });
+    }).catch(function (err) { submitBtn.disabled = false; subMsg.textContent = failText(err); })
+      .then(function () { busy = false; });
   }
 
   submitBtn.addEventListener('click', submit);
@@ -504,11 +612,16 @@
       loadBoard().then(function () {
         if (run !== mineRun || mineRun.submitted) return;
         if (mineRun.score <= myBest) { setStatus('Not a new personal best — yours on the board is ' + pad5(myBest) + '.', null, true); return; }
-        if (loadOk && qualifies(mineRun.score)) openSubmit();
+        if (!loadOk || !qualifies(mineRun.score)) return;
+        var name = savedName();
+        if (name && !nameProblem(name) && !nameTaken(name)) { autoSave(mineRun, name); return; }
+        openPrompt('score');
+        if (name) subMsg.textContent = nameProblem(name) || '"' + name + '" is already on the board — pick another name.';
       });
     }
   };
 
+  showWho();
   loadBoard(); loadOwner();
   setInterval(function () { if (!document.hidden && ov.hidden) loadBoard(); }, POLL_MS);
 })();

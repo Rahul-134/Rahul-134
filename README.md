@@ -75,7 +75,7 @@ I'm an **AI/ML engineer** and **Generative AI enthusiast** who turns models into
 | | Where to look |
 |---|---|
 | 🤖&nbsp;**AI&nbsp;co&#8209;pilots** | [DataPilot](https://github.com/Rahul-134/datapilot) · [BitNote](https://github.com/Rahul-134/bitnote) |
-| 🌐&nbsp;**Web&nbsp;apps** | [BitCareer](https://github.com/Rahul-134/bitcareer-showcase) · [BitNote](https://github.com/Rahul-134/bitnote) |
+| 🌐&nbsp;**Web&nbsp;apps** | [BitCareer](https://github.com/Rahul-134/bitcareer-showcase) · [BitNote](https://github.com/Rahul-134/bitnote) · [Portfolio](https://rahul-lumbhani-portfolio.vercel.app/) |
 | 🎮&nbsp;**Games** | [Virtual Arcade Zone](https://github.com/Rahul-134/virtual-arcade-zone) — 7 console mini-games in pure Java · [Business Bytes](https://github.com/Rahul-134/business-bytes-showcase) — a desktop Monopoly · 🦖 [**play the dino game**](https://rahul-134.github.io/Rahul-134/dino/) |
 
 More in [Featured Projects ↓](#-featured-projects)
@@ -206,6 +206,29 @@ More in [Featured Projects ↓](#-featured-projects)
 
 </details>
 
+<br/>
+
+<!-- ───────────── 05 · Portfolio ───────────── -->
+<div align="center">
+
+<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="projects/portfolio.svg" width="100%" alt="Portfolio: my personal site with projects, skills, live stats and an ask-me-anything chatbot terminal. Built with Next.js, React, Tailwind CSS and Vercel." /></a>
+
+</div>
+<details>
+<summary>📸&nbsp; <b>Peek inside Portfolio</b> &nbsp;—&nbsp; a quick tour + 7 screens</summary>
+<br/>
+
+<p align="center"><img src="projects/portfolio/tour.gif" width="80%" alt="Quick tour" /><br/><sub><b>Quick tour</b> — hero, skills, tech stack, projects, live stats and the terminal, in dark theme</sub></p>
+<p align="center"><img src="projects/portfolio/themes.jpg" width="80%" alt="Light &amp; dark" /><br/><sub><b>Light &amp; dark</b> — the hero in both themes, switchable from the nav</sub></p>
+<p align="center"><img src="projects/portfolio/skills.jpg" width="80%" alt="Skills" /><br/><sub><b>Skills</b> — tap a card for its proficiency and the projects where it shipped</sub></p>
+<p align="center"><img src="projects/portfolio/techstack.jpg" width="80%" alt="Tech Stack" /><br/><sub><b>Tech Stack</b> — frameworks, databases and tools, filterable by category</sub></p>
+<p align="center"><img src="projects/portfolio/stats.jpg" width="80%" alt="Stats &amp; streaks" /><br/><sub><b>Stats &amp; streaks</b> — live GitHub and LeetCode numbers</sub></p>
+<p align="center"><img src="projects/portfolio/terminal.jpg" width="80%" alt="Ask-me-anything terminal" /><br/><sub><b>Ask-me-anything terminal</b> — ask about my projects, skills or experience</sub></p>
+<p align="center"><img src="projects/portfolio/about.jpg" width="80%" alt="About" /><br/><sub><b>About</b> — my story, what I'm exploring now (RAG, agentic AI, MCP) and education</sub></p>
+<p align="center"><img src="projects/portfolio/mobile.jpg" width="34%" alt="Responsive" /><br/><sub><b>Responsive</b> — the hero on a phone</sub></p>
+<p align="center"><sub>Take a look around the <a href="https://rahul-lumbhani-portfolio.vercel.app/">live site ↗</a></sub></p>
+
+</details>
 <br/>
 
 <div align="center">

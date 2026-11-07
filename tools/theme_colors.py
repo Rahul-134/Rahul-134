@@ -16,8 +16,8 @@ THEMES = {
     "violet": {"accent": "#A78BFA"},
     "blue":   {"accent": "#60A5FA"},
     "cyan":   {"accent": "#22D3EE"},
-    # nature: leaf-green dino on bark-brown cacti
-    "green":  {"accent": "#4ADE80", "cactus": {"G": "#A8764A", "g": "#6E4A2B", "h": "#D1A06F", "S": "#F0DEC4"}},
+    # nature: leaf-green dino on sage-olive cacti
+    "green":  {"accent": "#4ADE80", "cactus": {"G": "#6B8F52", "g": "#43602F", "h": "#9CBF80", "S": "#E6EBD2"}},
 }
 DEFAULT = "yellow"
 

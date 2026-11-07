@@ -1,0 +1,54 @@
+name: Switch theme
+
+# Run it from the Actions tab: "Switch theme" -> "Run workflow" -> pick a colour.
+# It regenerates the banner, About card, project cards, the game page and the README
+# colour codes, then commits the result.
+on:
+  workflow_dispatch:
+    inputs:
+      theme:
+        description: Accent colour for the whole profile
+        type: choice
+        default: yellow
+        options:        # keep in sync with THEMES in tools/theme_colors.py
+          - yellow
+          - orange
+          - rose
+          - violet
+          - blue
+          - cyan
+
+permissions:
+  contents: write
+
+jobs:
+  theme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pillow
+
+      - name: Apply theme
+        env:
+          THEME: ${{ inputs.theme }}
+        run: python tools/theme.py "$THEME"
+
+      - name: Commit and push
+        env:
+          THEME: ${{ inputs.theme }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Already on the $THEME theme - nothing to commit."
+          else
+            git commit -m "Switch theme to $THEME"
+            git push
+          fi

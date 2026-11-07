@@ -1,13 +1,13 @@
 <div align="center">
 
 <a href="https://rahul-134.github.io/Rahul-134/dino/">
-  <img src="dino-banner.svg" alt="Hey I am Rahul Lumbhani — AI and Backend Engineer. Click to play the dino game." width="100%" />
+  <img src="dino-banner.svg" alt="Hey I am Rahul Lumbhani — AI/ML Engineer and GenAI Enthusiast. Click to play the dino game." width="100%" />
 </a>
 
 <br/>
 
 <a href="https://github.com/Rahul-134">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=20&duration=3200&pause=900&color=E8D44D&center=true&vCenter=true&width=640&lines=Full-stack+developer;AI-driven+data+platforms;FastAPI+%C2%B7+React+%C2%B7+Node.js;Turning+ideas+into+shipped+products" alt="Typing animation" />
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=20&duration=3200&pause=900&color=E8D44D&center=true&vCenter=true&width=640&lines=AI%2FML+Engineer;Generative+AI+enthusiast;Python+%C2%B7+FastAPI+%C2%B7+Django+%C2%B7+React;Turning+ideas+into+shipped+products" alt="Typing animation" />
 </a>
 
 <br/>
@@ -30,20 +30,20 @@
 
 <div align="center">
 
-<img src="about-card.svg" alt="Animated terminal card. whoami: Rahul Lumbhani, full-stack developer. focus: AI-driven data platforms and productivity tools. stack: FastAPI, SQLite, React, Node.js, vanilla JS. builds: AI co-pilots, web apps and interactive console games." width="100%" />
+<img src="about-card.svg" alt="Animated terminal card. whoami: Rahul Lumbhani, AI/ML engineer. interests: generative AI, LLM apps, data and ML platforms. stack: languages Python, Java, JavaScript; frameworks React, Django, FastAPI; databases SQL. builds: AI co-pilots, web apps and interactive console games." width="100%" />
 
 </div>
 
 <br/>
 
-I'm a **full-stack developer** who builds scalable web and AI solutions with **JavaScript, React, Node.js and Python**. I like owning a product end to end — from the database schema to the last pixel on screen.
+I'm an **AI/ML engineer** and **Generative AI enthusiast** who turns models into products — LLM-powered apps, data platforms and ML tooling built with **Python, FastAPI, Django and React**. I like owning a project end to end, from the data and the model to the last pixel on screen.
 
 <div align="center"><sub>👇 &nbsp;Tap a row to see what's behind it</sub></div>
 
 <br/>
 
 <details>
-<summary><b>🧠&nbsp; Focus</b> &nbsp;—&nbsp; AI-driven data platforms and productivity tools</summary>
+<summary><b>🧠&nbsp; Focus</b> &nbsp;—&nbsp; Generative AI, LLM apps and data &amp; ML platforms</summary>
 <br/>
 
 | Project | What it does |
@@ -57,19 +57,36 @@ I'm a **full-stack developer** who builds scalable web and AI solutions with **J
 </details>
 
 <details>
-<summary><b>⚙️&nbsp; Stack</b> &nbsp;—&nbsp; FastAPI · SQLite · vanilla JS · React · Node.js</summary>
+<summary><b>⚙️&nbsp; Stack</b> &nbsp;—&nbsp; Python · Java · JavaScript &nbsp;|&nbsp; React · Django · FastAPI &nbsp;|&nbsp; SQL</summary>
 <br/>
 
 <div align="center">
 
-<img src="https://skillicons.dev/icons?i=fastapi,sqlite,js,react,nodejs&perline=5" alt="FastAPI, SQLite, JavaScript, React, Node.js" />
+**Languages**
+
+<img src="https://skillicons.dev/icons?i=py,java,js&perline=3" alt="Python, Java, JavaScript" />
+
+**Libraries &amp; Frameworks**
+
+<img src="https://skillicons.dev/icons?i=react,django,fastapi&perline=3" alt="React, Django, FastAPI" />
+
+**Databases**
+
+<img src="https://skillicons.dev/icons?i=sqlite,postgres,mysql&perline=3" alt="SQL databases: SQLite, PostgreSQL, MySQL" />
 
 </div>
 
-- **FastAPI** — the backends behind [BitNote](https://github.com/Rahul-134/bitnote) and [DataPilot](https://github.com/Rahul-134/datapilot)
-- **SQLite** — BitNote's zero-setup default database
-- **Vanilla JS** — BitNote's frontend, and the [dino game](https://rahul-134.github.io/Rahul-134/dino/) in my header
-- **React** — the single-page app behind [BitCareer](https://github.com/Rahul-134/bitcareer-showcase)
+<br/>
+
+| | Where I use it |
+|---|---|
+| 🐍&nbsp;**Python** | [BitNote](https://github.com/Rahul-134/bitnote), [DataPilot](https://github.com/Rahul-134/datapilot) and my [LeetCode solutions](https://github.com/Rahul-134/leetcode-solutions-python) |
+| ☕&nbsp;**Java** | [Virtual Arcade Zone](https://github.com/Rahul-134/virtual-arcade-zone) and [Business Bytes](https://github.com/Rahul-134/business-bytes-showcase) |
+| 🟨&nbsp;**JavaScript** | [BitCareer](https://github.com/Rahul-134/bitcareer-showcase)'s React frontend, BitNote's UI and the [dino game](https://rahul-134.github.io/Rahul-134/dino/) |
+| ⚛️&nbsp;**React** | [BitCareer](https://github.com/Rahul-134/bitcareer-showcase) |
+| 🧱&nbsp;**Django** | [BitCareer](https://github.com/Rahul-134/bitcareer-showcase)'s REST API |
+| ⚡&nbsp;**FastAPI** | [BitNote](https://github.com/Rahul-134/bitnote) and [DataPilot](https://github.com/Rahul-134/datapilot) |
+| 🗄️&nbsp;**SQL** | SQLite in [BitNote](https://github.com/Rahul-134/bitnote), PostgreSQL in [BitCareer](https://github.com/Rahul-134/bitcareer-showcase), MySQL in [Business Bytes](https://github.com/Rahul-134/business-bytes-showcase) |
 
 <br/>
 
@@ -98,25 +115,6 @@ I'm a **full-stack developer** who builds scalable web and AI solutions with **J
 | 🎮&nbsp;**Games** | [Virtual Arcade Zone](https://github.com/Rahul-134/virtual-arcade-zone) — 7 console mini-games in pure Java · [Business Bytes](https://github.com/Rahul-134/business-bytes-showcase) — a desktop Monopoly · 🦖 [**play the dino game**](https://rahul-134.github.io/Rahul-134/dino/) |
 
 More in [Featured Projects ↓](#-featured-projects)
-
-<br/>
-
-</details>
-
-<details>
-<summary><b>🌐&nbsp; Working across</b> &nbsp;—&nbsp; Python · Java · JavaScript · HTML</summary>
-<br/>
-
-<div align="center">
-
-<img src="https://skillicons.dev/icons?i=py,java,js,html&perline=4" alt="Python, Java, JavaScript, HTML" />
-
-</div>
-
-- **Python** — BitNote, DataPilot and my LeetCode solutions
-- **Java** — Virtual Arcade Zone and Business Bytes
-- **JavaScript** — BitCareer's React frontend, BitNote's UI and the dino game
-- **HTML** — BitNote's pages and DataPilot's server-rendered templates
 
 <br/>
 
@@ -170,7 +168,7 @@ More in [Featured Projects ↓](#-featured-projects)
       </a>
     </td>
     <td width="54%" valign="top">
-      <sub><code>01 &nbsp;·&nbsp; FULL-STACK &nbsp;·&nbsp; AI PLATFORM</code></sub>
+      <sub><code>01 &nbsp;·&nbsp; GENAI &nbsp;·&nbsp; LEARNING PLATFORM</code></sub>
       <h3>🎯 BitCareer</h3>
       <b>AI-powered learning &amp; career readiness platform for developers.</b>
       <br/><br/>
@@ -194,7 +192,7 @@ More in [Featured Projects ↓](#-featured-projects)
 <table>
   <tr>
     <td width="54%" valign="top">
-      <sub><code>02 &nbsp;·&nbsp; FULL-STACK &nbsp;·&nbsp; LOCAL LLMs</code></sub>
+      <sub><code>02 &nbsp;·&nbsp; GENAI &nbsp;·&nbsp; LOCAL LLMs</code></sub>
       <h3>📓 BitNote</h3>
       <b>Notion-style notebooks with an AI tutor built in.</b>
       <br/><br/>

@@ -170,7 +170,7 @@ More in [Featured Projects ↓](#-featured-projects)
 </div>
 
 <details>
-<summary>📸&nbsp; <b>Peek inside DataPilot</b> &nbsp;—&nbsp; what's inside</summary>
+<summary>📸&nbsp; <b>Peek inside DataPilot</b> &nbsp;—&nbsp; 7 screens</summary>
 <br/>
 
 - 📊 **Dashboard** — upload CSV or Excel files for instant stats, a data health score and a column profile
@@ -179,7 +179,17 @@ More in [Featured Projects ↓](#-featured-projects)
 - 🕸️ **AI web scraper** *(beta)* — URL and search modes with pagination detection, relevance filtering and a multi-model fallback
 - 🤖 **ML trainer** — regression and classification with automatic hyperparameter tuning, reports, predictions, seven chart types and Python code export
 
-<p align="center"><sub>Architecture and API reference in the <a href="https://github.com/Rahul-134/datapilot">repository ↗</a></sub></p>
+<p align="center"><sub>The screens below are the real app, shown on a made-up sample dataset (used-car listings).</sub></p>
+
+<p align="center"><img src="projects/datapilot/dashboard.jpg" width="80%" alt="Dashboard" /><br/><sub><b>Dashboard</b> — row and column counts, duplicates, nulls, a data health score and a column profile</sub></p>
+<p align="center"><img src="projects/datapilot/cleaning.jpg" width="80%" alt="Data cleaning" /><br/><sub><b>Data cleaning</b> — pick what to fix and preview the impact before applying</sub></p>
+<p align="center"><img src="projects/datapilot/analytics.jpg" width="80%" alt="Analytics" /><br/><sub><b>Analytics</b> — ask questions in plain English, by typing or by voice</sub></p>
+<p align="center"><img src="projects/datapilot/scraper.jpg" width="80%" alt="AI web scraper" /><br/><sub><b>AI web scraper</b> — URL mode and search mode (beta)</sub></p>
+<p align="center"><img src="projects/datapilot/trainer-clean.jpg" width="70%" alt="ML Trainer · clean" /><br/><sub><b>ML Trainer · clean</b> — null counts, duplicates and IQR outlier detection before training</sub></p>
+<p align="center"><img src="projects/datapilot/trainer-train.jpg" width="70%" alt="ML Trainer · train" /><br/><sub><b>ML Trainer · train</b> — choose a task, a model, the features and the target</sub></p>
+<p align="center"><img src="projects/datapilot/trainer-results.jpg" width="70%" alt="ML Trainer · results" /><br/><sub><b>ML Trainer · results</b> — metrics, trained models, an auto-built prediction form, and code export</sub></p>
+<p align="center"><sub>Try the <a href="https://datapilot-alpha-flame.vercel.app/">live app ↗</a> · the <a href="https://datapilot-ml-trainer.streamlit.app/">ML Trainer ↗</a> · or browse the <a href="https://github.com/Rahul-134/datapilot">repository ↗</a></sub></p>
+<br/>
 
 </details>
 
@@ -211,7 +221,7 @@ More in [Featured Projects ↓](#-featured-projects)
 <!-- ───────────── 05 · Portfolio ───────────── -->
 <div align="center">
 
-<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="projects/portfolio.svg" width="100%" alt="Portfolio: my personal site with projects, skills, live stats and an ask-me-anything chatbot terminal. Built with Next.js, React, Tailwind CSS and Vercel." /></a>
+<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="projects/portfolio.svg" width="100%" alt="Portfolio: my personal site with projects, skills, live stats and an ask-me-anything chatbot terminal. Built with Python, Django, React, Next.js and OpenRouter for the LLM API." /></a>
 
 </div>
 <details>

@@ -68,47 +68,55 @@
   var ctx = cv.getContext('2d');
   ctx.scale(DPR, DPR);
 
-  var COL = { bg:'#161616', dino:'#E8D44D', cactus:'#A3A3A3', bird:'#D6D6D6', ground:'#3a3a3a', dash:'#2f2f2f', cloud:'#262626', text:'#6b6b6b', hot:'#E8D44D' };
+  var COL = { bg:'#161616', ground:'#3a3a3a', dash:'#2f2f2f', cloud:'#262626', text:'#6b6b6b', hot:'#E8D44D' };
 
-  // ---------- Pixel art ----------
-  var BODY = [
-    "..........XXXXXXXX..","..........XXXXXXXXX.","..........XX.XXXXXXX","..........XXXXXXXXXX",
-    "..........XXXXXXXXXX","..........XXXXXXX...","..........XXXXXX....","X........XXXXXXX....",
-    "X.......XXXXXXXXX...","XX.....XXXXXXXXXX...","XXX....XXXXXXXXXX.X.",".XXXXXXXXXXXXXXXX.X.",
-    "..XXXXXXXXXXXXXXXX..","...XXXXXXXXXXXXXX...","....XXXXXXXXXXXX....",".....XXXXXXXXXXX....",
-    "......XXXXXXXXX....."
-  ];
-  var LEG_A = ["......XXXXX.XXXX....","......XXX...XX......","......XX....X.......","......XXX..........."];
-  var LEG_B = ["......XXXXX.XXXX....","......XX....XXX.....","......X.....XX......","............XXX....."];
-  var CACTUS = [
-    "....XX...","....XX...","X...XX..X","X...XX..X","XX..XX.XX",".XXXXXXXX",
-    "....XX...","....XX...","....XX...","....XX...","....XX...","....XX..."
-  ];
-  var BIRD_UP = [
-    "..........X.....",".........XX.....","........XXX.....",".......XXXX.....","......XXXXXX....",
-    "XXXXXXXXXXXXXXX.","..XXXXXXXXXXXXXX","....XXXXXXXXXX..","......XXXXX....."
-  ];
-  var BIRD_DOWN = [
-    "................","................","..........X.....","XXXXXXXXXXXXXXX.","..XXXXXXXXXXXXXX",
-    "....XXXXXXXXXX..","......XXXXXXX...",".......XXXXX....",".........XX....."
-  ];
+  // ---------- Pixel art (shared with the profile banner) ----------
+    var PAL = {"Y": "#E8D44D", "D": "#B09B28", "L": "#F6EC9A", "K": "#161616", "W": "#FFFFFF", "G": "#4DAE6C", "g": "#2F7A4D", "h": "#86D7A3", "S": "#D9F2E0", "P": "#F472B6", "X": "#D6D6D6"};
+  var ART = {
+    dinoBody: [".............LLLLLLLL", "............LYYYYYYYYY", "............YYYYYYYYYYY", "............YYWKYYYYYYY", "............YYYYYYYYYYY", "............YYYYYYYYYYY", "............YYYYYYYYYY", "............YYYYYKKKKK", "............YYYYYYYY", "...........DYYYYYYY", "..........DDYYYYYYY", ".........DDYYYYYYYYY", "D.......DDYYYYYYYYYY.YY", "DD.....DDYYYYYYYYYYYY.Y", "DDD...DDYYYYYYYYYYYY", ".DDDDDDYYYYYYYYYYYYY", "..DDDDDYYYYYYYYYYYYY", "...DDDDYYYYYYYYYYYY", "....DDDYYYYYYYYYYYY", ".....DDLYYYYYYYYYY", "......DDYYYYYYYYY", "......DDYYYYYYYY"],
+    legsA: [".......YYYYY..DDDDD", ".......YYY....DDD", ".......YYY....DD", ".......YYYY"],
+    legsB: [".......YYYYY..DDDDD", ".......YY.....DDDD", ".......Y......DDD", "..............DDDD"],
+    duckBody: ["................LLLLLLLL", "...............LYYYYYYYYY", "...............YYYYYYYYYYY", "...............YYWKYYYYYYY", "...............YYYYYYYYYYY", "...............YYYYYYYYYY", "...............YYYYYKKKKK", "..DDDDDDDDDDDDYYYYYYYY", ".DDYYYYYYYYYYYYYYYYYYY", "DDYYYYYYYYYYYYYYYYYYY", "DDDYYYYYYYYYYYYYYYYY", ".DDDDYYYYYYYYYYYYYYY", "..DDDDDYYYYYYYYYYYY", "....DDDDYYYYYYYYYY"],
+    duckLegsA: ["......YYYY...DDDD", "......YYY....DD", "......YYYY"],
+    duckLegsB: ["......YYYY...DDDD", "......YY.....DDD", ".............DDDD"],
+    saguaro: ["......hGg", "......hGg", "......hGg.hGg", "......hGg.hGg", "......hGg.hGg", "......hGGGGGg", "..hGg.hGg", "..hGg.hGg", "..hGg.hGg", "..hGGGGGg", "......hGg", "......hGg", "......hSg", "......hGg"],
+    small: ["...hGg", "...hGg", "hGg.hGg", "hGg.hGg", "hGGGGGg", "...hGg", "...hGg", "...hGg"],
+    barrel: ["....PP", "...hGGGg", "..hGGGGGg", ".hGGSGGGGg", ".hGGGGGGGg", ".hGGGGSGGg", "..hGGGGGg"],
+    birdUp: ["..........X", ".........XX", "........XXX", ".......XXXX", "......XXXXXX", "XXXXXXXXXXXXXXX", "..XXXXXXXXXXXXXX", "....XXXXXXXXXX", "......XXXXX"],
+    birdDown: ["", "", "..........X", "XXXXXXXXXXXXXXX", "..XXXXXXXXXXXXXX", "....XXXXXXXXXX", "......XXXXXXX", ".......XXXXX", ".........XX"],
+  };
 
-  function sprite(rows, color, u) {
+  function pad(rows) {
+    var w = 0; rows.forEach(function (r) { if (r.length > w) w = r.length; });
+    return rows.map(function (r) { while (r.length < w) r += '.'; return r; });
+  }
+
+  function sprite(rows, u) {
+    rows = pad(rows);
     var c = document.createElement('canvas');
     c.width = rows[0].length * u * DPR; c.height = rows.length * u * DPR;
-    var g = c.getContext('2d'); g.fillStyle = color; var s = u * DPR;
+    var g = c.getContext('2d'); var s = u * DPR;
     for (var y = 0; y < rows.length; y++)
-      for (var x = 0; x < rows[y].length; x++)
-        if (rows[y][x] === 'X') g.fillRect(x * s, y * s, s, s);
+      for (var x = 0; x < rows[y].length; x++) {
+        var ch = rows[y][x];
+        if (ch === '.') continue;
+        g.fillStyle = PAL[ch]; g.fillRect(x * s, y * s, s, s);
+      }
     return { c: c, w: rows[0].length * u, h: rows.length * u };
   }
 
   var U = 3;
-  var dinoA = sprite(BODY.concat(LEG_A), COL.dino, U);
-  var dinoB = sprite(BODY.concat(LEG_B), COL.dino, U);
-  var cactusS = sprite(CACTUS, COL.cactus, U);
-  var birdUp = sprite(BIRD_UP, COL.bird, U);
-  var birdDown = sprite(BIRD_DOWN, COL.bird, U);
+  var dinoA = sprite(ART.dinoBody.concat(ART.legsA), U);
+  var dinoB = sprite(ART.dinoBody.concat(ART.legsB), U);
+  var duckA = sprite(ART.duckBody.concat(ART.duckLegsA), U);
+  var duckB = sprite(ART.duckBody.concat(ART.duckLegsB), U);
+  var CACT = { saguaro: sprite(ART.saguaro, U), small: sprite(ART.small, U), barrel: sprite(ART.barrel, U) };
+  var birdUp = sprite(ART.birdUp, U);
+  var birdDown = sprite(ART.birdDown, U);
+
+  // cactus clusters; the harder ones only appear once the run is under way
+  var EASY_COMBOS = [['small'], ['barrel'], ['saguaro'], ['small', 'small'], ['barrel', 'small']];
+  var HARD_COMBOS = EASY_COMBOS.concat([['saguaro', 'small'], ['saguaro', 'barrel'], ['barrel', 'small', 'barrel'], ['small', 'saguaro', 'small']]);
 
   // ---------- State ----------
   var state = 'ready';            // ready | running | over
@@ -151,27 +159,36 @@
 
   // ---------- Game logic ----------
   function rnd(a, b) { return a + Math.random() * (b - a); }
+  function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 
   function spawn() {
-    var canBird = score > 250 && Math.random() < 0.3;
-    if (canBird) {
+    if (score > 250 && Math.random() < 0.3) {
       var low = Math.random() < 0.5;                       // low: jump over · mid: duck under
       var h = birdUp.h;
-      obstacles.push({ type: 'bird', x: W + 20, w: birdUp.w, h: h, y: low ? GROUND - 18 - h : GROUND - 44 - h, f: 0 });
+      obstacles.push({ type: 'bird', x: W + 20, w: birdUp.w, h: h, y: low ? GROUND - 18 - h : GROUND - 56 - h, f: 0 });
     } else {
-      var n = score > 150 ? Math.floor(rnd(1, 4)) : Math.floor(rnd(1, 3));
-      obstacles.push({ type: 'cactus', x: W + 20, n: n, w: cactusS.w * n + (n - 1) * 4, h: cactusS.h, y: GROUND - cactusS.h });
+      var combo = pick(score > 150 ? HARD_COMBOS : EASY_COMBOS);
+      var parts = [], dx = 0;
+      combo.forEach(function (name) {
+        parts.push({ name: name, s: CACT[name], dx: dx });
+        dx += CACT[name].w + 5;
+      });
+      obstacles.push({ type: 'cactus', x: W + 20, parts: parts, w: dx - 5 });
     }
     nextGap = speed * rnd(26, 46) + 120;
   }
 
   function dinoBox() {
-    var w = dinoA.w, h = dinoA.h;
-    if (ducking && dino.onGround) return { x: dino.x + 6, y: GROUND - h * 0.6 + 4, w: w * 1.15 - 18, h: h * 0.6 - 6 };
-    return { x: dino.x + 8, y: dino.y + 4, w: w - 22, h: h - 8 };
+    if (ducking && dino.onGround) return { x: dino.x + 6, y: GROUND - duckA.h + 4, w: duckA.w - 20, h: duckA.h - 6 };
+    return { x: dino.x + 12, y: dino.y + 4, w: dinoA.w - 22, h: dinoA.h - 8 };
   }
 
   function hit(a, b) { return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y; }
+
+  function boxesOf(o) {                          // slightly forgiving hitboxes
+    if (o.type === 'bird') return [{ x: o.x + 5, y: o.y + 5, w: o.w - 10, h: o.h - 8 }];
+    return o.parts.map(function (p) { return { x: o.x + p.dx + 4, y: GROUND - p.s.h + 3, w: p.s.w - 8, h: p.s.h - 5 }; });
+  }
 
   function update(dt) {
     frame += dt;
@@ -197,12 +214,11 @@
     var lastO = obstacles[obstacles.length - 1];
     if (!lastO || (W - (lastO.x + lastO.w)) > nextGap) spawn();
 
-    // collisions (hitboxes slightly forgiving)
+    // collisions
     var d = dinoBox();
     for (var i = 0; i < obstacles.length; i++) {
-      var o = obstacles[i];
-      var b = { x: o.x + 5, y: o.y + 5, w: o.w - 10, h: o.h - 8 };
-      if (hit(d, b)) { gameOver(); break; }
+      var bs = boxesOf(obstacles[i]);
+      for (var j = 0; j < bs.length; j++) if (hit(d, bs[j])) { gameOver(); return; }
     }
   }
 
@@ -212,7 +228,7 @@
   }
 
   // ---------- Rendering ----------
-  function pad(n) { return ('00000' + n).slice(-5); }
+  function padScore(n) { return ('00000' + n).slice(-5); }
 
   function drawCloud(x, y) {
     ctx.fillStyle = COL.cloud;
@@ -233,11 +249,12 @@
   }
 
   function drawDino() {
-    var s = (!dino.onGround || state !== 'running') ? dinoA : (Math.floor(frame / 6) % 2 ? dinoA : dinoB);
+    var step = state === 'running' && Math.floor(frame / 6) % 2;
     if (ducking && dino.onGround) {
-      var w = s.w * 1.15, h = s.h * 0.6;
-      ctx.drawImage(s.c, dino.x, GROUND - h, w, h);
+      var d = step ? duckA : duckB;
+      ctx.drawImage(d.c, dino.x, GROUND - d.h, d.w, d.h);
     } else {
+      var s = (!dino.onGround || state !== 'running') ? dinoA : (step ? dinoA : dinoB);
       ctx.drawImage(s.c, dino.x, dino.y, s.w, s.h);
     }
   }
@@ -245,7 +262,7 @@
   function drawObstacles() {
     obstacles.forEach(function (o) {
       if (o.type === 'cactus') {
-        for (var i = 0; i < o.n; i++) ctx.drawImage(cactusS.c, o.x + i * (cactusS.w + 4), o.y, cactusS.w, cactusS.h);
+        o.parts.forEach(function (p) { ctx.drawImage(p.s.c, o.x + p.dx, GROUND - p.s.h, p.s.w, p.s.h); });
       } else {
         var s = Math.floor(o.f / 8) % 2 ? birdUp : birdDown;
         ctx.drawImage(s.c, o.x, o.y, s.w, s.h);
@@ -268,8 +285,8 @@
     ctx.font = '700 18px "JetBrains Mono",ui-monospace,Consolas,Menlo,monospace';
     ctx.textAlign = 'right';
     var flash = state === 'running' && score > 0 && score % 100 < 6 && Math.floor(frame / 5) % 2;
-    ctx.fillStyle = COL.text; ctx.fillText('HI ' + pad(hi), W - 120, 32);
-    ctx.fillStyle = flash ? '#fff' : COL.hot; ctx.fillText(pad(score), W - 24, 32);
+    ctx.fillStyle = COL.text; ctx.fillText('HI ' + padScore(hi), W - 120, 32);
+    ctx.fillStyle = flash ? '#fff' : COL.hot; ctx.fillText(padScore(score), W - 24, 32);
 
     if (state === 'ready') {
       centerText('PRESS SPACE OR TAP TO START', 100, 22, '#FFFFFF');
@@ -291,6 +308,7 @@
   }
   document.addEventListener('visibilitychange', function () { last = performance.now(); });
   requestAnimationFrame(loop);
+  
 })();
 </script>
 </body>

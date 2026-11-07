@@ -28,16 +28,99 @@
 
 ## 👨‍💻 About Me
 
+<div align="center">
+
+<img src="about-card.svg" alt="Animated terminal card. whoami: Rahul Lumbhani, full-stack developer. focus: AI-driven data platforms and productivity tools. stack: FastAPI, SQLite, React, Node.js, vanilla JS. builds: AI co-pilots, web apps and interactive console games." width="100%" />
+
+</div>
+
+<br/>
+
 I'm a **full-stack developer** who builds scalable web and AI solutions with **JavaScript, React, Node.js and Python**. I like owning a product end to end — from the database schema to the last pixel on screen.
 
-| | |
-|---|---|
-| 🧠 **Focus** | AI-driven data platforms and productivity tools |
-| ⚙️ **Stack** | FastAPI · SQLite · vanilla JS · React · Node.js |
-| 🧩 **Problem solving** | Steady track record on algorithmic challenges |
-| 🚀 **Builds** | AI co-pilots, web apps and interactive console games |
-| 🌐 **Working across** | Python · Java · JavaScript · HTML |
+<div align="center"><sub>👇 &nbsp;Tap a row to see what's behind it</sub></div>
 
+<br/>
+
+<details>
+<summary><b>🧠&nbsp; Focus</b> &nbsp;—&nbsp; AI-driven data platforms and productivity tools</summary>
+<br/>
+
+| Project | What it does |
+|---|---|
+| 🧭&nbsp;[**DataPilot**](https://github.com/Rahul-134/datapilot) | Ask questions of your data in plain English, scrape the web with AI, and train ML models — all in one workspace |
+| 📓&nbsp;[**BitNote**](https://github.com/Rahul-134/bitnote) | Notion-style notebooks with an AI tutor: syllabuses, learning roadmaps and recall quizzes |
+| 🎯&nbsp;[**BitCareer**](https://github.com/Rahul-134/bitcareer-showcase) | A learning and career-readiness platform with AI mock interviews and skill analysis |
+
+<br/>
+
+</details>
+
+<details>
+<summary><b>⚙️&nbsp; Stack</b> &nbsp;—&nbsp; FastAPI · SQLite · vanilla JS · React · Node.js</summary>
+<br/>
+
+<div align="center">
+
+<img src="https://skillicons.dev/icons?i=fastapi,sqlite,js,react,nodejs&perline=5" alt="FastAPI, SQLite, JavaScript, React, Node.js" />
+
+</div>
+
+- **FastAPI** — the backends behind [BitNote](https://github.com/Rahul-134/bitnote) and [DataPilot](https://github.com/Rahul-134/datapilot)
+- **SQLite** — BitNote's zero-setup default database
+- **Vanilla JS** — BitNote's frontend, and the [dino game](https://rahul-134.github.io/Rahul-134/dino/) in my header
+- **React** — the single-page app behind [BitCareer](https://github.com/Rahul-134/bitcareer-showcase)
+
+<br/>
+
+</details>
+
+<details>
+<summary><b>🧩&nbsp; Problem solving</b> &nbsp;—&nbsp; Steady track record on algorithmic challenges</summary>
+<br/>
+
+- 🧮 **60+ solutions** in [leetcode-solutions-python](https://github.com/Rahul-134/leetcode-solutions-python) — each one runnable, type-hinted and shipped with a built-in test case
+- 🗂️ Arrays &amp; hashing · strings · two pointers · sliding window · dynamic programming · bit manipulation
+- 📈 Live numbers on my [LeetCode profile](https://leetcode.com/Rahul_134), or [jump to the stats card ↓](#-leetcode)
+
+<br/>
+
+</details>
+
+<details>
+<summary><b>🚀&nbsp; Builds</b> &nbsp;—&nbsp; AI co-pilots, web apps and interactive console games</summary>
+<br/>
+
+| | Where to look |
+|---|---|
+| 🤖&nbsp;**AI&nbsp;co&#8209;pilots** | [DataPilot](https://github.com/Rahul-134/datapilot) · [BitNote](https://github.com/Rahul-134/bitnote) |
+| 🌐&nbsp;**Web&nbsp;apps** | [BitCareer](https://github.com/Rahul-134/bitcareer-showcase) · [BitNote](https://github.com/Rahul-134/bitnote) |
+| 🎮&nbsp;**Games** | [Virtual Arcade Zone](https://github.com/Rahul-134/virtual-arcade-zone) — 7 console mini-games in pure Java · [Business Bytes](https://github.com/Rahul-134/business-bytes-showcase) — a desktop Monopoly · 🦖 [**play the dino game**](https://rahul-134.github.io/Rahul-134/dino/) |
+
+More in [Featured Projects ↓](#-featured-projects)
+
+<br/>
+
+</details>
+
+<details>
+<summary><b>🌐&nbsp; Working across</b> &nbsp;—&nbsp; Python · Java · JavaScript · HTML</summary>
+<br/>
+
+<div align="center">
+
+<img src="https://skillicons.dev/icons?i=py,java,js,html&perline=4" alt="Python, Java, JavaScript, HTML" />
+
+</div>
+
+- **Python** — BitNote, DataPilot and my LeetCode solutions
+- **Java** — Virtual Arcade Zone and Business Bytes
+- **JavaScript** — BitCareer's React frontend, BitNote's UI and the dino game
+- **HTML** — BitNote's pages and DataPilot's server-rendered templates
+
+<br/>
+
+</details>
 <br/>
 
 ## 🛠️ Tech Stack

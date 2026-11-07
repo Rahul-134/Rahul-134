@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 336" width="900" height="336" role="img" aria-labelledby="t d">
+  <title id="t">About Rahul Lumbhani</title>
+  <desc id="d">A terminal window types out: whoami, Rahul Lumbhani, full-stack developer; focus, AI-driven data platforms and productivity tools; stack, FastAPI, SQLite, React, Node.js and vanilla JS; builds, AI co-pilots, web apps and interactive console games. A pixel dinosaur stands beside a cactus.</desc>
+  <style>
+    .mono{font-family:'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace}
+    .c0{animation:k0 18s linear infinite}
+    @keyframes k0{0%,3.333%{transform:translateX(0);animation-timing-function:steps(8,end)}6.667%,100%{transform:translateX(96px)}}
+    .c1{animation:k1 18s linear infinite}
+    @keyframes k1{0%,9.444%{transform:translateX(0);animation-timing-function:steps(37,end)}13.556%,100%{transform:translateX(410px)}}
+    .c2{animation:k2 18s linear infinite}
+    @keyframes k2{0%,16.667%{transform:translateX(0);animation-timing-function:steps(15,end)}22.500%,100%{transform:translateX(172px)}}
+    .c3{animation:k3 18s linear infinite}
+    @keyframes k3{0%,23.889%{transform:translateX(0);animation-timing-function:steps(47,end)}29.111%,100%{transform:translateX(518px)}}
+    .c4{animation:k4 18s linear infinite}
+    @keyframes k4{0%,32.222%{transform:translateX(0);animation-timing-function:steps(12,end)}36.889%,100%{transform:translateX(140px)}}
+    .c5{animation:k5 18s linear infinite}
+    @keyframes k5{0%,38.889%{transform:translateX(0);animation-timing-function:steps(43,end)}43.667%,100%{transform:translateX(474px)}}
+    .c6{animation:k6 18s linear infinite}
+    @keyframes k6{0%,47.222%{transform:translateX(0);animation-timing-function:steps(17,end)}53.833%,100%{transform:translateX(194px)}}
+    .c7{animation:k7 18s linear infinite}
+    @keyframes k7{0%,55.000%{transform:translateX(0);animation-timing-function:steps(51,end)}60.667%,100%{transform:translateX(561px)}}
+    .last{animation:last 18s linear infinite}
+    @keyframes last{0%,63.323%{opacity:0}63.333%,100%{opacity:1}}
+    .blink{animation:blink 1.05s steps(1,end) infinite}
+    @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+    .term{animation:fade 18s linear infinite}
+    @keyframes fade{0%,90.000%{opacity:1}95.556%,100%{opacity:0}}
+    .bob{animation:bob 2.4s ease-in-out infinite}
+    @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+    .legA{animation:legA .5s steps(1,end) infinite}
+    .legB{animation:legB .5s steps(1,end) infinite}
+    @keyframes legA{0%{opacity:1}50%{opacity:0}100%{opacity:1}}
+    @keyframes legB{0%{opacity:0}50%{opacity:1}100%{opacity:0}}
+    @media (prefers-reduced-motion:reduce){.cv{display:none}.term,.last,.blink,.bob,.legA,.legB{animation:none}.legB{opacity:0}}
+  </style>
+  <defs>
+    <radialGradient id="halo" cx="0.88" cy="0.95" r="0.45">
+      <stop offset="0" stop-color="#E8D44D" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#E8D44D" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E8D44D" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#E8D44D" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#E8D44D" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- window -->
+  <rect width="900" height="336" rx="14" fill="#161616"/>
+  <path d="M0 14a14 14 0 0 1 14-14h872a14 14 0 0 1 14 14v26H0z" fill="#1d1d1d"/>
+  <rect x="0.5" y="0.5" width="899" height="335" rx="13.5" fill="none" stroke="#2a2a2a"/>
+  <rect x="200" y="0" width="500" height="2" fill="url(#edge)"/>
+  <circle cx="26" cy="20" r="6" fill="#ff5f56"/><circle cx="48" cy="20" r="6" fill="#ffbd2e"/><circle cx="70" cy="20" r="6" fill="#27c93f"/>
+  <text class="mono" x="450" y="25" text-anchor="middle" font-size="13" fill="#7d8590" letter-spacing="1">rahul@github: ~/about</text>
+  <line x1="0" y1="40" x2="900" y2="40" stroke="#2a2a2a"/>
+
+  <!-- terminal text, revealed line by line by sliding a background-coloured cover to the right -->
+  <g class="term">
+        <text class="mono" x="44" y="90" font-size="18"><tspan fill="#E8D44D">$</tspan> <tspan fill="#FFFFFF">whoami</tspan></text>
+    <text class="mono" x="44" y="118" font-size="18"><tspan fill="#FFFFFF" font-weight="700">Rahul Lumbhani</tspan><tspan fill="#9aa0a6"> — full-stack developer</tspan></text>
+    <text class="mono" x="44" y="146" font-size="18"><tspan fill="#E8D44D">$</tspan> <tspan fill="#FFFFFF">cat</tspan> <tspan fill="#86D7A3">focus.txt</tspan></text>
+    <text class="mono" x="44" y="174" font-size="18"><tspan fill="#C9D1D9">AI-driven data platforms and productivity tools</tspan></text>
+    <text class="mono" x="44" y="202" font-size="18"><tspan fill="#E8D44D">$</tspan> <tspan fill="#FFFFFF">ls</tspan> <tspan fill="#86D7A3">./stack</tspan></text>
+    <text class="mono" x="44" y="230" font-size="18"><tspan fill="#C9D1D9">FastAPI  SQLite  React  Node.js  vanilla-JS</tspan></text>
+    <text class="mono" x="44" y="258" font-size="18"><tspan fill="#E8D44D">$</tspan> <tspan fill="#FFFFFF">./builds</tspan> <tspan fill="#86D7A3">--list</tspan></text>
+    <text class="mono" x="44" y="286" font-size="18"><tspan fill="#C9D1D9">AI co-pilots · web apps · interactive console games</tspan></text>
+    <g class="last"><text class="mono" x="44" y="314" font-size="18"><tspan fill="#E8D44D">$</tspan></text><rect class="blink" x="68" y="298" width="10" height="20" fill="#E8D44D"/></g>
+        <rect class="cv c0" x="40" y="70" width="760" height="28" fill="#161616"/>
+    <rect class="cv c1" x="40" y="98" width="760" height="28" fill="#161616"/>
+    <rect class="cv c2" x="40" y="126" width="760" height="28" fill="#161616"/>
+    <rect class="cv c3" x="40" y="154" width="760" height="28" fill="#161616"/>
+    <rect class="cv c4" x="40" y="182" width="760" height="28" fill="#161616"/>
+    <rect class="cv c5" x="40" y="210" width="760" height="28" fill="#161616"/>
+    <rect class="cv c6" x="40" y="238" width="760" height="28" fill="#161616"/>
+    <rect class="cv c7" x="40" y="266" width="760" height="28" fill="#161616"/>
+  </g>
+
+  <rect width="900" height="336" rx="14" fill="url(#halo)"/>
+
+  <!-- dino + cactus, facing each other -->
+  <line x1="640" y1="297" x2="884" y2="297" stroke="#3a3a3a" stroke-width="2"/>
+  <line x1="650" y1="307" x2="870" y2="307" stroke="#2a2a2a" stroke-width="2" stroke-dasharray="14 36 6 50 4 60"/>
+  <g transform="translate(676,254)"><path fill="#2F7A4D" d="M24 0h3v3h-3zM24 3h3v3h-3zM24 6h3v3h-3zM36 6h3v3h-3zM24 9h3v3h-3zM36 9h3v3h-3zM24 12h3v3h-3zM36 12h3v3h-3zM36 15h3v3h-3zM12 18h3v3h-3zM24 18h3v3h-3zM12 21h3v3h-3zM24 21h3v3h-3zM12 24h3v3h-3zM24 24h3v3h-3zM24 27h3v3h-3zM24 30h3v3h-3zM24 33h3v3h-3zM24 36h3v3h-3zM24 39h3v3h-3z"/><path fill="#4DAE6C" d="M21 0h3v3h-3zM21 3h3v3h-3zM21 6h3v3h-3zM33 6h3v3h-3zM21 9h3v3h-3zM33 9h3v3h-3zM21 12h3v3h-3zM33 12h3v3h-3zM21 15h15v3h-15zM9 18h3v3h-3zM21 18h3v3h-3zM9 21h3v3h-3zM21 21h3v3h-3zM9 24h3v3h-3zM21 24h3v3h-3zM9 27h15v3h-15zM21 30h3v3h-3zM21 33h3v3h-3zM21 39h3v3h-3z"/><path fill="#86D7A3" d="M18 0h3v3h-3zM18 3h3v3h-3zM18 6h3v3h-3zM30 6h3v3h-3zM18 9h3v3h-3zM30 9h3v3h-3zM18 12h3v3h-3zM30 12h3v3h-3zM18 15h3v3h-3zM6 18h3v3h-3zM18 18h3v3h-3zM6 21h3v3h-3zM18 21h3v3h-3zM6 24h3v3h-3zM18 24h3v3h-3zM6 27h3v3h-3zM18 30h3v3h-3zM18 33h3v3h-3zM18 36h3v3h-3zM18 39h3v3h-3z"/><path fill="#D9F2E0" d="M21 36h3v3h-3z"/></g>
+  <g transform="translate(730,272)"><path fill="#2F7A4D" d="M15 0h3v3h-3zM15 3h3v3h-3zM6 6h3v3h-3zM18 6h3v3h-3zM6 9h3v3h-3zM18 9h3v3h-3zM18 12h3v3h-3zM15 15h3v3h-3zM15 18h3v3h-3zM15 21h3v3h-3z"/><path fill="#4DAE6C" d="M12 0h3v3h-3zM12 3h3v3h-3zM3 6h3v3h-3zM15 6h3v3h-3zM3 9h3v3h-3zM15 9h3v3h-3zM3 12h15v3h-15zM12 15h3v3h-3zM12 18h3v3h-3zM12 21h3v3h-3z"/><path fill="#86D7A3" d="M9 0h3v3h-3zM9 3h3v3h-3zM0 6h3v3h-3zM12 6h3v3h-3zM0 9h3v3h-3zM12 9h3v3h-3zM0 12h3v3h-3zM9 15h3v3h-3zM9 18h3v3h-3zM9 21h3v3h-3z"/></g>
+  <g transform="translate(862,218) scale(-1,1)">
+    <g class="bob">
+      <g><path fill="#B09B28" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6z"/><path fill="#E8D44D" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24z"/><path fill="#F6EC9A" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></g>
+      <g transform="translate(0,66)">
+        <g class="legA"><path fill="#B09B28" d="M42 0h15v3h-15zM42 3h9v3h-9zM42 6h6v3h-6z"/><path fill="#E8D44D" d="M21 0h15v3h-15zM21 3h9v3h-9zM21 6h9v3h-9zM21 9h12v3h-12z"/></g>
+        <g class="legB"><path fill="#B09B28" d="M42 0h15v3h-15zM42 3h12v3h-12zM42 6h9v3h-9zM42 9h12v3h-12z"/><path fill="#E8D44D" d="M21 0h15v3h-15zM21 3h6v3h-6zM21 6h3v3h-3z"/></g>
+      </g>
+    </g>
+  </g>
+</svg>

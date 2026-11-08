@@ -5,7 +5,7 @@
     python tools/theme.py cyan       # apply a theme
 
 What it regenerates (everything that used to be yellow):
-  * dino-banner.svg, about-card.svg and projects/*.svg
+  * dino-banner.svg, about-card.svg, projects/*.svg and connect/*.svg
   * dino/index.html (the playable game)
   * the colour codes inside README.md badges and stat cards
 It needs Python 3 and Pillow (`pip install pillow`). Nothing else.
@@ -63,6 +63,7 @@ def apply(name):
     run("gen_dino.py", ROOT, env=env)              # dino-banner.svg + dino/index.html
     run("gen_about.py", ROOT, env=env)             # about-card.svg
     run("gen_projects.py", os.path.join(ROOT, "projects"), env=env)
+    run("gen_connect.py", ROOT, env=env)           # connect/*.svg (the Let's Connect section)
     changed = recolour_readme(theme)
     with open(STATE, "w") as f:
         json.dump({"theme": name, "accent": theme.accent}, f, indent=2)

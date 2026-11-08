@@ -144,21 +144,22 @@ def recolour_readme(sec):
     path = os.path.join(ROOT, "README.md")
     with open(path, encoding="utf-8") as f:
         text = f.read()
+    # heal stray region names left right after a marker by an earlier version of this tool
+    text = re.sub(r"(<!-- theme:(\w+) -->)(?:\2)+", r"\1", text)
     pieces = MARK.split(text)          # [before, marker, name, body, marker, name, body, ...]
-    count = 0
-    for i in range(3, len(pieces), 3):
-        name = pieces[i - 1]
+    out, count = [pieces[0]], 0
+    for i in range(1, len(pieces), 3):
+        marker, name, body = pieces[i], pieces[i + 1], pieces[i + 2]
         if name not in sec:
             raise SystemExit(f"README.md has an unknown theme region <!-- theme:{name} -->")
         new = theme_colors.Theme(sec[name]).bare
-        body = pieces[i]
         for old in theme_colors.all_accents():
             if old != new:
                 body, n = re.subn(old, new, body, flags=re.I)
                 count += n
-        pieces[i] = body
+        out += [marker, body]          # the captured name is not part of the text, so it is not written back
     with open(path, "w", encoding="utf-8") as f:
-        f.write("".join(pieces))
+        f.write("".join(out))
     return count
 
 

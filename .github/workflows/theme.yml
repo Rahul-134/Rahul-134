@@ -1,16 +1,20 @@
 name: Switch theme
 
-# Run it from the Actions tab: "Switch theme" -> "Run workflow" -> pick a colour.
-# It regenerates the banner, About card, project cards, the game page and the README
-# colour codes, then commits the result.
+# Run it from the Actions tab: "Switch theme" -> "Run workflow".
+#   * pick one colour in "theme" to recolour the whole profile, and/or
+#   * pick a colour for individual sections (header, about, projects, activity, connect, game)
+#     to mix themes, e.g. a green banner with a blue About card.
+# "keep" leaves a section exactly as it is. It regenerates the banner, About card, project cards,
+# Let's Connect, the game page and the README colour codes, then commits the result.
 on:
   workflow_dispatch:
     inputs:
       theme:
-        description: Accent colour for the whole profile
+        description: One colour for the WHOLE profile (resets any mix); keep = leave as it is
         type: choice
-        default: yellow
+        default: keep
         options:        # keep in sync with THEMES in tools/theme_colors.py
+          - keep
           - yellow
           - orange
           - rose
@@ -18,6 +22,88 @@ on:
           - blue
           - cyan
           - green
+      header:
+        description: Banner, typing line and badges only; keep = leave as it is
+        type: choice
+        default: keep
+        options:        # keep in sync with THEMES in tools/theme_colors.py
+          - keep
+          - yellow
+          - orange
+          - rose
+          - violet
+          - blue
+          - cyan
+          - green
+      about:
+        description: About card and Tech Stack only; keep = leave as it is
+        type: choice
+        default: keep
+        options:        # keep in sync with THEMES in tools/theme_colors.py
+          - keep
+          - yellow
+          - orange
+          - rose
+          - violet
+          - blue
+          - cyan
+          - green
+      projects:
+        description: Project cards only; keep = leave as it is
+        type: choice
+        default: keep
+        options:        # keep in sync with THEMES in tools/theme_colors.py
+          - keep
+          - yellow
+          - orange
+          - rose
+          - violet
+          - blue
+          - cyan
+          - green
+      activity:
+        description: GitHub stats and LeetCode only; keep = leave as it is
+        type: choice
+        default: keep
+        options:        # keep in sync with THEMES in tools/theme_colors.py
+          - keep
+          - yellow
+          - orange
+          - rose
+          - violet
+          - blue
+          - cyan
+          - green
+      connect:
+        description: Let's Connect only; keep = leave as it is
+        type: choice
+        default: keep
+        options:        # keep in sync with THEMES in tools/theme_colors.py
+          - keep
+          - yellow
+          - orange
+          - rose
+          - violet
+          - blue
+          - cyan
+          - green
+      game:
+        description: Game page only; keep = leave as it is
+        type: choice
+        default: keep
+        options:        # keep in sync with THEMES in tools/theme_colors.py
+          - keep
+          - yellow
+          - orange
+          - rose
+          - violet
+          - blue
+          - cyan
+          - green
+      extra:
+        description: "Optional single project cards, e.g. bitnote=rose datapilot=cyan (card names are in tools/README.md)"
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -38,18 +124,36 @@ jobs:
       - name: Apply theme
         env:
           THEME: ${{ inputs.theme }}
-        run: python tools/theme.py "$THEME"
+          HEADER: ${{ inputs.header }}
+          ABOUT: ${{ inputs.about }}
+          PROJECTS: ${{ inputs.projects }}
+          ACTIVITY: ${{ inputs.activity }}
+          CONNECT: ${{ inputs.connect }}
+          GAME: ${{ inputs.game }}
+          EXTRA: ${{ inputs.extra }}
+        run: |
+          args=()
+          [ "$THEME" != "keep" ] && args+=("$THEME")
+          for pair in "header=$HEADER" "about=$ABOUT" "projects=$PROJECTS" "activity=$ACTIVITY" "connect=$CONNECT" "game=$GAME"; do
+            [ "${pair#*=}" != "keep" ] && args+=("$pair")
+          done
+          # free text, passed as plain words; theme.py rejects anything that is not a known name
+          read -r -a extra <<< "$EXTRA"
+          args+=("${extra[@]}")
+          if [ "${#args[@]}" -eq 0 ]; then
+            echo "Nothing selected - every option is on 'keep'."
+            exit 0
+          fi
+          python tools/theme.py "${args[@]}"
 
       - name: Commit and push
-        env:
-          THEME: ${{ inputs.theme }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           if git diff --cached --quiet; then
-            echo "Already on the $THEME theme - nothing to commit."
+            echo "Nothing changed - already on that theme."
           else
-            git commit -m "Switch theme to $THEME"
+            git commit -m "Switch theme to $(python tools/theme.py --summary)"
             git push
           fi

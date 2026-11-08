@@ -297,12 +297,15 @@ More in [Featured Projects ↓](#-featured-projects)
 
 ## 🤝 Let's Connect
 
-I'm always open to interesting projects and conversations about AI, backend engineering and building useful products. Reach out on [LinkedIn](https://www.linkedin.com/in/rahul-lumbhani-89304130b/) or follow along here on [GitHub](https://github.com/Rahul-134).
-
-<br/>
-
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:161616,100:4ADE80&height=110&section=footer" width="100%" alt="" />
+<img src="connect/card.svg" width="100%" alt="Let's build something useful, together. I'm open to interesting projects and conversations about AI, backend engineering and building useful products." />
+
+<a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b/"><img src="connect/linkedin.svg" width="49%" alt="LinkedIn: say hello and let's talk." /></a>
+<a href="https://github.com/Rahul-134"><img src="connect/github.svg" width="49%" alt="GitHub: follow along at Rahul-134." /></a>
+<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="connect/portfolio.svg" width="49%" alt="Portfolio: projects, skills, live stats and an ask-me-anything terminal." /></a>
+<a href="https://rahul-134.github.io/Rahul-134/dino/"><img src="connect/play.svg" width="49%" alt="Play my dino game and try to top the leaderboard." /></a>
+
+<img src="connect/wave.svg" width="100%" alt="" />
 
 </div>

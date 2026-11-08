@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 116" width="440" height="116" role="img" aria-labelledby="t">
+  <title id="t">Play the dino game and try to top the leaderboard.</title>
+  <style>
+    .pulse{animation:pulse 2s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+    .caret{animation:caret 1.1s steps(1,end) infinite}
+    @keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}
+    .shine{animation:shine 7s ease-in-out infinite}
+    @keyframes shine{0%,62%{transform:translateX(0)}100%{transform:translateX(800px)}}
+    .nudge{animation:nudge 2.4s ease-in-out infinite}
+    @keyframes nudge{0%,100%{transform:translate(0,0)}50%{transform:translate(3px,-3px)}}
+    @media (prefers-reduced-motion:reduce){.pulse,.shine,.nudge{animation:none}}
+  </style>
+  <defs>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4ADE80" stop-opacity="0.55"/>
+      <stop offset="0.45" stop-color="#2a2a2a"/>
+      <stop offset="1" stop-color="#4ADE80" stop-opacity="0.30"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.12" cy="0.35" r="0.6">
+      <stop offset="0" stop-color="#4ADE80" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#4ADE80" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#fff" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="card"><rect width="440" height="116" rx="20"/></clipPath>
+  </defs>
+  
+  <rect width="440" height="116" rx="20" fill="#151515"/>
+  <rect width="440" height="116" rx="20" fill="url(#glow)"/>
+  <rect x="0.75" y="0.75" width="438.5" height="114.5" rx="19.25" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
+  <g clip-path="url(#card)"><g class="shine" style="animation-delay:3.9000000000000004s"><rect x="-260" y="-40" width="130" height="196" fill="url(#beam)" transform="skewX(-18)"/></g></g>
+  <circle cx="60" cy="58" r="31" fill="#4ADE80" fill-opacity="0.12" stroke="#4ADE80" stroke-opacity="0.4"/>
+  <g transform="translate(42,40) scale(1.5)"><path fill="#4ADE80" d="M8 5.2v13.6L19.2 12z"/></g>
+  <text x="112" y="56" font-size="26" font-weight="800" fill="#FFFFFF" font-family="system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif">Play my dino game</text>
+  <text x="112" y="82" font-size="14" fill="#9aa0a6" font-family="'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace">Can you top the leaderboard?</text>
+  
+  <text class="nudge" x="406" y="40" text-anchor="end" font-size="20" fill="#4ADE80" font-family="'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace">↗</text>
+</svg>

@@ -13,13 +13,13 @@
   </style>
   <defs>
     <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#4ADE80" stop-opacity="0.55"/>
+      <stop offset="0" stop-color="#60A5FA" stop-opacity="0.55"/>
       <stop offset="0.45" stop-color="#2a2a2a"/>
-      <stop offset="1" stop-color="#4ADE80" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#60A5FA" stop-opacity="0.30"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.12" cy="0.35" r="0.6">
-      <stop offset="0" stop-color="#4ADE80" stop-opacity="0.16"/>
-      <stop offset="1" stop-color="#4ADE80" stop-opacity="0"/>
+      <stop offset="0" stop-color="#60A5FA" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#60A5FA" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
@@ -33,10 +33,10 @@
   <rect width="440" height="116" rx="20" fill="url(#glow)"/>
   <rect x="0.75" y="0.75" width="438.5" height="114.5" rx="19.25" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
   <g clip-path="url(#card)"><g class="shine" style="animation-delay:1.3s"><rect x="-260" y="-40" width="130" height="196" fill="url(#beam)" transform="skewX(-18)"/></g></g>
-  <circle cx="60" cy="58" r="31" fill="#4ADE80" fill-opacity="0.12" stroke="#4ADE80" stroke-opacity="0.4"/>
-  <g transform="translate(42,40) scale(1.5)"><path fill="#4ADE80" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></g>
+  <circle cx="60" cy="58" r="31" fill="#60A5FA" fill-opacity="0.12" stroke="#60A5FA" stroke-opacity="0.4"/>
+  <g transform="translate(42,40) scale(1.5)"><path fill="#60A5FA" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></g>
   <text x="112" y="56" font-size="26" font-weight="800" fill="#FFFFFF" font-family="system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif">Follow along</text>
   <text x="112" y="82" font-size="14" fill="#9aa0a6" font-family="'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace">GitHub · @Rahul-134</text>
   
-  <text class="nudge" x="406" y="40" text-anchor="end" font-size="20" fill="#4ADE80" font-family="'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace">↗</text>
+  <text class="nudge" x="406" y="40" text-anchor="end" font-size="20" fill="#60A5FA" font-family="'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace">↗</text>
 </svg>

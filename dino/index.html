@@ -6,18 +6,26 @@
 <title>Dino Run · Rahul Lumbhani</title>
 <meta name="description" content="A playable dino runner game from Rahul Lumbhani's GitHub profile.">
 <style>
-  :root { --bg:#161616; --card:#1d1d1d; --line:#2a2a2a; --accent:#4ADE80; --accent-rgb:74,222,128; --fg:#D6D6D6; --muted:#8B8B8B; }
+  @font-face { font-family:Nunito; font-style:normal; font-weight:200 1000; font-display:swap; src:url(fonts/nunito-latin-wght-normal.woff2) format("woff2"); }
+  :root { --bg:#161616; --card:#1d1d1d; --line:#2a2a2a; --accent:#4ADE80; --accent-rgb:74,222,128; --fg:#D6D6D6; --muted:#8B8B8B;
+          --ink:#f6f2ea; --ink2:#c3bdb2; --ink3:#948f86; --glass:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.045)); --rim:inset 0 1px 0 rgba(255,255,255,.2); }
   * { box-sizing: border-box; }
-  html, body { margin:0; background:var(--bg); color:var(--fg); }
+  html, body { margin:0; background:#18181d; color:var(--fg); }
   body {
     min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:18px; padding:20px 16px;
-    font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,Menlo,monospace;
-    background:radial-gradient(900px 400px at 50% 0%, rgba(74,222,128,.08), transparent 70%), var(--bg);
+    gap:20px; padding:26px 16px;
+    font-family:Nunito,ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",sans-serif; font-weight:600;
+    background:
+      radial-gradient(560px 340px at 8% -4%, rgba(74,222,128,.26), transparent 70%),
+      radial-gradient(520px 380px at 104% 18%, rgba(255,168,140,.15), transparent 70%),
+      radial-gradient(560px 400px at 40% 104%, rgba(140,150,255,.17), transparent 70%),
+      linear-gradient(160deg,#26262c,#16161a);
   }
-  h1 { margin:0; font-size:clamp(20px,4vw,30px); color:#fff; letter-spacing:.5px; text-align:center; }
-  h1 span { color:var(--accent); }
-  p.sub { margin:0; color:var(--muted); font-size:13px; text-align:center; }
+  .top { width:min(100%,900px); text-align:center; padding:20px 24px 18px; border-radius:32px; background:var(--glass); border:1px solid rgba(255,255,255,.13); box-shadow:var(--rim),0 18px 40px -12px rgba(0,0,0,.55); -webkit-backdrop-filter:blur(16px) saturate(1.4); backdrop-filter:blur(16px) saturate(1.4); }
+  h1 { margin:0; font-size:clamp(22px,4.4vw,36px); font-weight:900; letter-spacing:-.01em; color:var(--ink); text-align:center; line-height:1.25; }
+  h1 .nw { white-space:nowrap; }
+  h1 .hl { display:inline-block; margin:0 2px; padding:0 16px 3px; border-radius:99px; background:var(--accent); color:#1d1a15; box-shadow:inset 0 3px 4px rgba(255,255,255,.55), inset 0 -4px 6px rgba(0,0,0,.2), 0 8px 16px rgba(0,0,0,.35); }
+  p.sub { margin:8px 0 0; color:var(--ink2); font-size:clamp(14px,2.4vw,16px); font-weight:600; text-align:center; }
   .stage { width:min(100%,900px); }
   canvas {
     display:block; width:100%; height:auto; background:var(--bg);
@@ -25,23 +33,31 @@
     touch-action:manipulation; -webkit-tap-highlight-color:transparent; cursor:pointer;
   }
   canvas:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
-  .controls { display:flex; gap:10px; margin-top:12px; justify-content:center; flex-wrap:wrap; }
-  button {
-    font:inherit; font-size:14px; color:#161616; background:var(--accent); border:0; border-radius:10px;
-    padding:12px 22px; cursor:pointer; user-select:none; touch-action:manipulation; min-height:44px;
+  .controls { display:flex; gap:12px; margin-top:16px; justify-content:center; flex-wrap:wrap; }
+  .controls button {
+    font:inherit; font-size:15px; font-weight:800; color:#1d1a15; background:var(--accent); border:0; border-radius:99px;
+    padding:12px 28px; cursor:pointer; user-select:none; touch-action:manipulation; min-height:48px;
+    box-shadow:inset 0 3px 4px rgba(255,255,255,.55), inset 0 -4px 6px rgba(0,0,0,.18), 0 8px 16px rgba(0,0,0,.38);
+    transition:transform .2s, filter .2s;
   }
-  button.ghost { background:transparent; color:var(--fg); border:1px solid var(--line); }
-  button:active { transform:translateY(1px); }
-  button:focus-visible { outline:2px solid #fff; outline-offset:2px; }
-  .hint { color:var(--muted); font-size:12px; text-align:center; line-height:1.7; }
-  kbd { border:1px solid var(--line); border-bottom-width:2px; border-radius:6px; padding:1px 7px; background:var(--card); color:var(--fg); font:inherit; font-size:11px; }
+  .controls button:hover { filter:brightness(1.06); transform:translateY(-1px); }
+  .controls button.ghost { color:var(--ink); background:var(--glass); border:1px solid rgba(255,255,255,.14); box-shadow:var(--rim), 0 8px 16px rgba(0,0,0,.32); }
+  .controls button:active { transform:translateY(1px); }
+  .controls button:focus-visible { outline:2px solid #fff; outline-offset:3px; }
+  .hint { width:min(100%,900px); margin:0; padding:16px 22px; border-radius:28px; color:var(--ink2); font-size:14px; font-weight:600; text-align:center; line-height:2; background:var(--glass); border:1px solid rgba(255,255,255,.12); box-shadow:var(--rim), 0 14px 30px -10px rgba(0,0,0,.5); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
+  kbd { display:inline-block; font:inherit; font-size:12px; font-weight:800; line-height:1.4; padding:2px 11px; border-radius:10px; color:var(--ink); background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.07)); border:1px solid rgba(255,255,255,.15); box-shadow:inset 0 1px 0 rgba(255,255,255,.25), 0 3px 0 rgba(0,0,0,.4); }
   a { color:var(--accent); text-decoration:none; }
   a:hover { text-decoration:underline; }
+  .hint a { display:inline-block; margin-top:6px; padding:8px 20px; border-radius:99px; color:var(--ink); font-weight:800; background:var(--glass); border:1px solid rgba(255,255,255,.14); box-shadow:var(--rim), 0 6px 14px rgba(0,0,0,.3); transition:transform .2s, filter .2s; }
+  .hint a:hover { text-decoration:none; transform:translateY(-1px); filter:brightness(1.1); }
+  @media (max-width:560px) { body { padding:18px 12px; gap:16px; } .top { padding:16px 16px 14px; border-radius:26px; } .hint { padding:14px 14px; border-radius:24px; } }
 </style>
 </head>
 <body>
-  <h1>Hey, I'm Rahul — <span>let's play</span> 🦖</h1>
-  <p class="sub">Dodge the cacti and birds. How far can you go?</p>
+  <header class="top">
+    <h1>Hey, I'm Rahul — <span class="nw"><span class="hl">let's play</span> 🦖</span></h1>
+    <p class="sub">Dodge the cacti and birds. How far can you go?</p>
+  </header>
 
   <div class="stage">
     <canvas id="game" tabindex="0" aria-label="Dino runner game. Press space or tap to jump, down arrow to duck."></canvas>

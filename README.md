@@ -1,4 +1,4 @@
-<!-- theme:header -->headerheaderheader
+<!-- theme:header -->
 <div align="center">
 
 <a href="https://rahul-134.github.io/Rahul-134/dino/">
@@ -27,7 +27,7 @@
 
 <br/>
 
-<!-- theme:about -->aboutaboutabout
+<!-- theme:about -->
 ## 👨‍💻 About Me
 
 <div align="center">
@@ -111,7 +111,7 @@ More in [Featured Projects ↓](#-featured-projects)
 
 <br/>
 
-<!-- theme:projects -->projectsprojectsprojects
+<!-- theme:projects -->
 ## 🚀 Featured Projects
 
 <div align="center">
@@ -259,7 +259,7 @@ More in [Featured Projects ↓](#-featured-projects)
 
 <br/>
 
-<!-- theme:activity -->activityactivityactivity
+<!-- theme:activity -->
 ## 📊 GitHub Activity
 
 <div align="center">
@@ -299,7 +299,7 @@ More in [Featured Projects ↓](#-featured-projects)
 
 <br/>
 
-<!-- theme:connect -->connectconnectconnect
+<!-- theme:connect -->
 ## 🤝 Let's Connect
 
 <div align="center">

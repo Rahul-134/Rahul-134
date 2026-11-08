@@ -3,7 +3,10 @@
   "accent": "#60A5FA",
   "sections": {
     "activity": "green",
+    "bitnote": "green",
     "connect": "green",
+    "datapilot": "green",
+    "game": "green",
     "header": "green"
   }
 }

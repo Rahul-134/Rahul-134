@@ -7,7 +7,7 @@
 <meta name="description" content="A playable dino runner game from Rahul Lumbhani's GitHub profile.">
 <style>
   @font-face { font-family:Nunito; font-style:normal; font-weight:200 1000; font-display:swap; src:url(fonts/nunito-latin-wght-normal.woff2) format("woff2"); }
-  :root { --bg:#161616; --card:#1d1d1d; --line:#2a2a2a; --accent:#60A5FA; --accent-rgb:96,165,250; --fg:#D6D6D6; --muted:#8B8B8B;
+  :root { --bg:#161616; --card:#1d1d1d; --line:#2a2a2a; --accent:#4ADE80; --accent-rgb:74,222,128; --fg:#D6D6D6; --muted:#8B8B8B;
           --ink:#f6f2ea; --ink2:#c3bdb2; --ink3:#948f86; --glass:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.045)); --rim:inset 0 1px 0 rgba(255,255,255,.2); }
   * { box-sizing: border-box; }
   html, body { margin:0; background:#18181d; color:var(--fg); }
@@ -16,7 +16,7 @@
     gap:20px; padding:26px 16px;
     font-family:Nunito,ui-rounded,"SF Pro Rounded",system-ui,-apple-system,"Segoe UI",sans-serif; font-weight:600;
     background:
-      radial-gradient(560px 340px at 8% -4%, rgba(96,165,250,.26), transparent 70%),
+      radial-gradient(560px 340px at 8% -4%, rgba(74,222,128,.26), transparent 70%),
       radial-gradient(520px 380px at 104% 18%, rgba(255,168,140,.15), transparent 70%),
       radial-gradient(560px 400px at 40% 104%, rgba(140,150,255,.17), transparent 70%),
       linear-gradient(160deg,#26262c,#16161a);
@@ -85,10 +85,10 @@
   var ctx = cv.getContext('2d');
   ctx.scale(DPR, DPR);
 
-  var COL = { bg:'#161616', ground:'#3a3a3a', dash:'#2f2f2f', cloud:'#262626', text:'#6b6b6b', hot:'#60A5FA' };
+  var COL = { bg:'#161616', ground:'#3a3a3a', dash:'#2f2f2f', cloud:'#262626', text:'#6b6b6b', hot:'#4ADE80' };
 
   // ---------- Pixel art (shared with the profile banner) ----------
-    var PAL = {"Y": "#60A5FA", "D": "#0D6EE5", "L": "#B8D5F9", "K": "#161616", "W": "#FFFFFF", "G": "#4DAE6C", "g": "#2F7A4D", "h": "#86D7A3", "S": "#D9F2E0", "P": "#F472B6", "X": "#D6D6D6"};
+    var PAL = {"Y": "#4ADE80", "D": "#24AC55", "L": "#98E7B5", "K": "#161616", "W": "#FFFFFF", "G": "#6B8F52", "g": "#43602F", "h": "#9CBF80", "S": "#E6EBD2", "P": "#F472B6", "X": "#D6D6D6"};
   var ART = {
     dinoBody: [".............LLLLLLLL", "............LYYYYYYYYY", "............YYYYYYYYYYY", "............YYWKYYYYYYY", "............YYYYYYYYYYY", "............YYYYYYYYYYY", "............YYYYYYYYYY", "............YYYYYKKKKK", "............YYYYYYYY", "...........DYYYYYYY", "..........DDYYYYYYY", ".........DDYYYYYYYYY", "D.......DDYYYYYYYYYY.YY", "DD.....DDYYYYYYYYYYYY.Y", "DDD...DDYYYYYYYYYYYY", ".DDDDDDYYYYYYYYYYYYY", "..DDDDDYYYYYYYYYYYYY", "...DDDDYYYYYYYYYYYY", "....DDDYYYYYYYYYYYY", ".....DDLYYYYYYYYYY", "......DDYYYYYYYYY", "......DDYYYYYYYY"],
     legsA: [".......YYYYY..DDDDD", ".......YYY....DDD", ".......YYY....DD", ".......YYYY"],

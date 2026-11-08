@@ -1,4 +1,9 @@
 {
   "theme": "blue",
-  "accent": "#60A5FA"
+  "accent": "#60A5FA",
+  "sections": {
+    "activity": "green",
+    "connect": "green",
+    "header": "green"
+  }
 }

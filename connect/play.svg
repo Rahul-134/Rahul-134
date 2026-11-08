@@ -13,13 +13,13 @@
   </style>
   <defs>
     <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#60A5FA" stop-opacity="0.55"/>
+      <stop offset="0" stop-color="#4ADE80" stop-opacity="0.55"/>
       <stop offset="0.45" stop-color="#2a2a2a"/>
-      <stop offset="1" stop-color="#60A5FA" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#4ADE80" stop-opacity="0.30"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.12" cy="0.35" r="0.6">
-      <stop offset="0" stop-color="#60A5FA" stop-opacity="0.16"/>
-      <stop offset="1" stop-color="#60A5FA" stop-opacity="0"/>
+      <stop offset="0" stop-color="#4ADE80" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#4ADE80" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#fff" stop-opacity="0"/>
@@ -33,10 +33,10 @@
   <rect width="440" height="116" rx="20" fill="url(#glow)"/>
   <rect x="0.75" y="0.75" width="438.5" height="114.5" rx="19.25" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
   <g clip-path="url(#card)"><g class="shine" style="animation-delay:3.9000000000000004s"><rect x="-260" y="-40" width="130" height="196" fill="url(#beam)" transform="skewX(-18)"/></g></g>
-  <circle cx="60" cy="58" r="31" fill="#60A5FA" fill-opacity="0.12" stroke="#60A5FA" stroke-opacity="0.4"/>
-  <g transform="translate(42,40) scale(1.5)"><path fill="#60A5FA" d="M8 5.2v13.6L19.2 12z"/></g>
+  <circle cx="60" cy="58" r="31" fill="#4ADE80" fill-opacity="0.12" stroke="#4ADE80" stroke-opacity="0.4"/>
+  <g transform="translate(42,40) scale(1.5)"><path fill="#4ADE80" d="M8 5.2v13.6L19.2 12z"/></g>
   <text x="112" y="56" font-size="26" font-weight="800" fill="#FFFFFF" font-family="system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif">Play my dino game</text>
   <text x="112" y="82" font-size="14" fill="#9aa0a6" font-family="'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace">Can you top the leaderboard?</text>
   
-  <text class="nudge" x="406" y="40" text-anchor="end" font-size="20" fill="#60A5FA" font-family="'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace">↗</text>
+  <text class="nudge" x="406" y="40" text-anchor="end" font-size="20" fill="#4ADE80" font-family="'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace">↗</text>
 </svg>

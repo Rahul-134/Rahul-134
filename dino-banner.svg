@@ -23,13 +23,13 @@
   </style>
   <defs>
     <linearGradient id="glow" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#60A5FA" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#60A5FA" stop-opacity="0.9"/>
-      <stop offset="1" stop-color="#60A5FA" stop-opacity="0"/>
+      <stop offset="0" stop-color="#4ADE80" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#4ADE80" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#4ADE80" stop-opacity="0"/>
     </linearGradient>
     <radialGradient id="halo" cx="0.5" cy="0.35" r="0.6">
-      <stop offset="0" stop-color="#60A5FA" stop-opacity="0.10"/>
-      <stop offset="1" stop-color="#60A5FA" stop-opacity="0"/>
+      <stop offset="0" stop-color="#4ADE80" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#4ADE80" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
@@ -49,7 +49,7 @@
 
   <!-- title -->
   <text class="mono" x="500" y="104" text-anchor="middle" font-size="42" font-weight="700" fill="#FFFFFF">Hey I am Rahul Lumbhani</text>
-  <text class="mono" x="500" y="150" text-anchor="middle" font-size="22" fill="#60A5FA" letter-spacing="3">AI/ML Engineer · GenAI Enthusiast<tspan class="cursor">_</tspan></text>
+  <text class="mono" x="500" y="150" text-anchor="middle" font-size="22" fill="#4ADE80" letter-spacing="3">AI/ML Engineer · GenAI Enthusiast<tspan class="cursor">_</tspan></text>
 
   <!-- ground -->
   <line x1="0" y1="236" x2="1000" y2="236" stroke="#3a3a3a" stroke-width="2"/>
@@ -57,16 +57,16 @@
   <line class="ground" x1="-70" y1="257" x2="1330" y2="257" stroke="#262626" stroke-width="2" stroke-dasharray="6 54 14 40 4 82"/>
 
   <!-- cacti -->
-  <g class="cactus"><g transform="translate(0,193)"><path fill="#2F7A4D" d="M24 0h3v3h-3zM24 3h3v3h-3zM24 6h3v3h-3zM36 6h3v3h-3zM24 9h3v3h-3zM36 9h3v3h-3zM24 12h3v3h-3zM36 12h3v3h-3zM36 15h3v3h-3zM12 18h3v3h-3zM24 18h3v3h-3zM12 21h3v3h-3zM24 21h3v3h-3zM12 24h3v3h-3zM24 24h3v3h-3zM24 27h3v3h-3zM24 30h3v3h-3zM24 33h3v3h-3zM24 36h3v3h-3zM24 39h3v3h-3z"/><path fill="#4DAE6C" d="M21 0h3v3h-3zM21 3h3v3h-3zM21 6h3v3h-3zM33 6h3v3h-3zM21 9h3v3h-3zM33 9h3v3h-3zM21 12h3v3h-3zM33 12h3v3h-3zM21 15h15v3h-15zM9 18h3v3h-3zM21 18h3v3h-3zM9 21h3v3h-3zM21 21h3v3h-3zM9 24h3v3h-3zM21 24h3v3h-3zM9 27h15v3h-15zM21 30h3v3h-3zM21 33h3v3h-3zM21 39h3v3h-3z"/><path fill="#86D7A3" d="M18 0h3v3h-3zM18 3h3v3h-3zM18 6h3v3h-3zM30 6h3v3h-3zM18 9h3v3h-3zM30 9h3v3h-3zM18 12h3v3h-3zM30 12h3v3h-3zM18 15h3v3h-3zM6 18h3v3h-3zM18 18h3v3h-3zM6 21h3v3h-3zM18 21h3v3h-3zM6 24h3v3h-3zM18 24h3v3h-3zM6 27h3v3h-3zM18 30h3v3h-3zM18 33h3v3h-3zM18 36h3v3h-3zM18 39h3v3h-3z"/><path fill="#D9F2E0" d="M21 36h3v3h-3z"/></g></g>
-  <g class="cactusB"><g transform="translate(0,211)"><path fill="#2F7A4D" d="M15 0h3v3h-3zM15 3h3v3h-3zM6 6h3v3h-3zM18 6h3v3h-3zM6 9h3v3h-3zM18 9h3v3h-3zM18 12h3v3h-3zM15 15h3v3h-3zM15 18h3v3h-3zM15 21h3v3h-3z"/><path fill="#4DAE6C" d="M12 0h3v3h-3zM12 3h3v3h-3zM3 6h3v3h-3zM15 6h3v3h-3zM3 9h3v3h-3zM15 9h3v3h-3zM3 12h15v3h-15zM12 15h3v3h-3zM12 18h3v3h-3zM12 21h3v3h-3z"/><path fill="#86D7A3" d="M9 0h3v3h-3zM9 3h3v3h-3zM0 6h3v3h-3zM12 6h3v3h-3zM0 9h3v3h-3zM12 9h3v3h-3zM0 12h3v3h-3zM9 15h3v3h-3zM9 18h3v3h-3zM9 21h3v3h-3z"/></g><g transform="translate(27,214)"><path fill="#2F7A4D" d="M21 3h3v3h-3zM24 6h3v3h-3zM27 9h3v3h-3zM27 12h3v3h-3zM27 15h3v3h-3zM24 18h3v3h-3z"/><path fill="#4DAE6C" d="M12 3h9v3h-9zM9 6h15v3h-15zM6 9h6v3h-6zM15 9h12v3h-12zM6 12h21v3h-21zM6 15h12v3h-12zM21 15h6v3h-6zM9 18h15v3h-15z"/><path fill="#86D7A3" d="M9 3h3v3h-3zM6 6h3v3h-3zM3 9h3v3h-3zM3 12h3v3h-3zM3 15h3v3h-3zM6 18h3v3h-3z"/><path fill="#D9F2E0" d="M12 9h3v3h-3zM18 15h3v3h-3z"/><path fill="#F472B6" d="M12 0h6v3h-6z"/></g></g>
+  <g class="cactus"><g transform="translate(0,193)"><path fill="#43602F" d="M24 0h3v3h-3zM24 3h3v3h-3zM24 6h3v3h-3zM36 6h3v3h-3zM24 9h3v3h-3zM36 9h3v3h-3zM24 12h3v3h-3zM36 12h3v3h-3zM36 15h3v3h-3zM12 18h3v3h-3zM24 18h3v3h-3zM12 21h3v3h-3zM24 21h3v3h-3zM12 24h3v3h-3zM24 24h3v3h-3zM24 27h3v3h-3zM24 30h3v3h-3zM24 33h3v3h-3zM24 36h3v3h-3zM24 39h3v3h-3z"/><path fill="#6B8F52" d="M21 0h3v3h-3zM21 3h3v3h-3zM21 6h3v3h-3zM33 6h3v3h-3zM21 9h3v3h-3zM33 9h3v3h-3zM21 12h3v3h-3zM33 12h3v3h-3zM21 15h15v3h-15zM9 18h3v3h-3zM21 18h3v3h-3zM9 21h3v3h-3zM21 21h3v3h-3zM9 24h3v3h-3zM21 24h3v3h-3zM9 27h15v3h-15zM21 30h3v3h-3zM21 33h3v3h-3zM21 39h3v3h-3z"/><path fill="#9CBF80" d="M18 0h3v3h-3zM18 3h3v3h-3zM18 6h3v3h-3zM30 6h3v3h-3zM18 9h3v3h-3zM30 9h3v3h-3zM18 12h3v3h-3zM30 12h3v3h-3zM18 15h3v3h-3zM6 18h3v3h-3zM18 18h3v3h-3zM6 21h3v3h-3zM18 21h3v3h-3zM6 24h3v3h-3zM18 24h3v3h-3zM6 27h3v3h-3zM18 30h3v3h-3zM18 33h3v3h-3zM18 36h3v3h-3zM18 39h3v3h-3z"/><path fill="#E6EBD2" d="M21 36h3v3h-3z"/></g></g>
+  <g class="cactusB"><g transform="translate(0,211)"><path fill="#43602F" d="M15 0h3v3h-3zM15 3h3v3h-3zM6 6h3v3h-3zM18 6h3v3h-3zM6 9h3v3h-3zM18 9h3v3h-3zM18 12h3v3h-3zM15 15h3v3h-3zM15 18h3v3h-3zM15 21h3v3h-3z"/><path fill="#6B8F52" d="M12 0h3v3h-3zM12 3h3v3h-3zM3 6h3v3h-3zM15 6h3v3h-3zM3 9h3v3h-3zM15 9h3v3h-3zM3 12h15v3h-15zM12 15h3v3h-3zM12 18h3v3h-3zM12 21h3v3h-3z"/><path fill="#9CBF80" d="M9 0h3v3h-3zM9 3h3v3h-3zM0 6h3v3h-3zM12 6h3v3h-3zM0 9h3v3h-3zM12 9h3v3h-3zM0 12h3v3h-3zM9 15h3v3h-3zM9 18h3v3h-3zM9 21h3v3h-3z"/></g><g transform="translate(27,214)"><path fill="#43602F" d="M21 3h3v3h-3zM24 6h3v3h-3zM27 9h3v3h-3zM27 12h3v3h-3zM27 15h3v3h-3zM24 18h3v3h-3z"/><path fill="#6B8F52" d="M12 3h9v3h-9zM9 6h15v3h-15zM6 9h6v3h-6zM15 9h12v3h-12zM6 12h21v3h-21zM6 15h12v3h-12zM21 15h6v3h-6zM9 18h15v3h-15z"/><path fill="#9CBF80" d="M9 3h3v3h-3zM6 6h3v3h-3zM3 9h3v3h-3zM3 12h3v3h-3zM3 15h3v3h-3zM6 18h3v3h-3z"/><path fill="#E6EBD2" d="M12 9h3v3h-3zM18 15h3v3h-3z"/><path fill="#F472B6" d="M12 0h6v3h-6z"/></g></g>
 
   <!-- dino -->
   <g transform="translate(100,157)">
     <g class="jump">
-      <g><path fill="#0D6EE5" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6z"/><path fill="#60A5FA" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24z"/><path fill="#B8D5F9" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></g>
+      <g><path fill="#24AC55" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6z"/><path fill="#4ADE80" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24z"/><path fill="#98E7B5" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></g>
       <g transform="translate(0,66)">
-        <g class="legA"><path fill="#0D6EE5" d="M42 0h15v3h-15zM42 3h9v3h-9zM42 6h6v3h-6z"/><path fill="#60A5FA" d="M21 0h15v3h-15zM21 3h9v3h-9zM21 6h9v3h-9zM21 9h12v3h-12z"/></g>
-        <g class="legB"><path fill="#0D6EE5" d="M42 0h15v3h-15zM42 3h12v3h-12zM42 6h9v3h-9zM42 9h12v3h-12z"/><path fill="#60A5FA" d="M21 0h15v3h-15zM21 3h6v3h-6zM21 6h3v3h-3z"/></g>
+        <g class="legA"><path fill="#24AC55" d="M42 0h15v3h-15zM42 3h9v3h-9zM42 6h6v3h-6z"/><path fill="#4ADE80" d="M21 0h15v3h-15zM21 3h9v3h-9zM21 6h9v3h-9zM21 9h12v3h-12z"/></g>
+        <g class="legB"><path fill="#24AC55" d="M42 0h15v3h-15zM42 3h12v3h-12zM42 6h9v3h-9zM42 9h12v3h-12z"/><path fill="#4ADE80" d="M21 0h15v3h-15zM21 3h6v3h-6zM21 6h3v3h-3z"/></g>
       </g>
     </g>
   </g>

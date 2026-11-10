@@ -274,7 +274,7 @@
     return { paths: order.map(function (c) { return [c, byCol[c]]; }), sil: sil, base: base, w: rows[0].length * u, h: rows.length * u };
   }
 
-  var U = 3, DU = {{DINO_U}};            // the dino is drawn on a finer grid than the cacti and birds
+  var U = {{OBJ_U}}, DU = {{DINO_U}};    // px per cell of the cacti/birds and of the dino
   var dinoA = sprite(ART.dinoBody.concat(ART.legsA), DU);
   var dinoB = sprite(ART.dinoBody.concat(ART.legsB), DU);
   var duckA = sprite(ART.duckBody.concat(ART.duckLegsA), DU);
@@ -288,12 +288,11 @@
   var INK = '#2B1A12', OUT = 3;
   function outlined(rows, u, pal) { var s = sprite(rows, u, pal); s.o = OUT; return s; }
   function buildPlayful() {
-    var slate = { X: '#5B6B80' };
     PSET = {
       dinoA: outlined(ART.dinoBody.concat(ART.legsA), DU), dinoB: outlined(ART.dinoBody.concat(ART.legsB), DU),
       duckA: outlined(ART.duckBody.concat(ART.duckLegsA), DU), duckB: outlined(ART.duckBody.concat(ART.duckLegsB), DU),
       CACT: { saguaro: outlined(ART.saguaro, U), small: outlined(ART.small, U), barrel: outlined(ART.barrel, U) },
-      birdUp: outlined(ART.birdUp, U, slate), birdDown: outlined(ART.birdDown, U, slate)
+      birdUp: outlined(ART.birdUp, U), birdDown: outlined(ART.birdDown, U)
     };
   }
   function setSkin(name) {

@@ -18,7 +18,7 @@ test_hook = "--test-hook" in sys.argv
 os.makedirs(os.path.join(out_dir, "dino"), exist_ok=True)
 
 # ------------------------------------------------------------------ SVG banner
-U = 3
+U = S.OBJ_U                        # px per cell of the cacti (and birds)
 GROUND = 235
 CYCLE = 6.0
 START_X, END_X = 1050, -120
@@ -27,7 +27,7 @@ SPEED = (START_X - END_X) / CYCLE   # px/s: derived from the actual cactus trave
 
 def shapes(rows, u=U, cls=None):
     paths = S.path_by_colour(rows, u)
-    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "Q", "X", "Z", "N", "R", "I"]
     items = []
     for c in order:
         if c in paths:
@@ -212,12 +212,12 @@ js += "  };"
 here = os.path.dirname(os.path.abspath(__file__))
 tpl = open(os.path.join(here, "index.template.html")).read()
 assert "/*__SPRITES__*/" in tpl
-def art_svg(rows, u=3, pal=None):
+def art_svg(rows, u=S.OBJ_U, pal=None):
     """A standalone inline <svg> of pixel art, used for the stickers and the logo on the game page."""
     rows = S.pad(rows)
     paths = S.path_by_colour(rows, u)
     pal = dict(S.PAL, **(pal or {}))
-    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "Q", "X", "Z", "N", "R", "I"]
     body = "".join(f'<path fill="{pal[c]}" d="{paths[c]}"/>' for c in order if c in paths)
     return (f'<svg viewBox="0 0 {len(rows[0]) * u} {len(rows) * u}" aria-hidden="true" focusable="false" '
             f'shape-rendering="crispEdges">{body}</svg>')
@@ -227,16 +227,16 @@ ART_HTML = {
     "{{ART_DINO}}": art_svg(S.pad(S.ART["dinoBody"], S.DINO_W) + S.pad(S.ART["legsA"], S.DINO_W), S.DINO_U),
     "{{ART_SAGUARO}}": art_svg(S.ART["saguaro"]),
     "{{ART_SMALL}}": art_svg(S.ART["small"]),
-    "{{ART_BIRD}}": art_svg(S.ART["birdUp"], pal={"X": "#5B6B80"}),
+    "{{ART_BIRD}}": art_svg(S.ART["birdUp"]),
     "{{ART_DINO_B}}": art_svg(S.pad(S.ART["dinoBody"], S.DINO_W) + S.pad(S.ART["legsB"], S.DINO_W), S.DINO_U),
     "{{ART_DUCK_A}}": art_svg(S.pad(S.ART["duckBody"], S.DUCK_W) + S.pad(S.ART["duckLegsA"], S.DUCK_W), S.DINO_U),
     "{{ART_DUCK_B}}": art_svg(S.pad(S.ART["duckBody"], S.DUCK_W) + S.pad(S.ART["duckLegsB"], S.DUCK_W), S.DINO_U),
-    "{{ART_BIRD_UP}}": art_svg(S.ART["birdUp"], pal={"X": "#5B6B80"}),
-    "{{ART_BIRD_DOWN}}": art_svg(S.pad(S.ART["birdDown"], 16), pal={"X": "#5B6B80"}),
+    "{{ART_BIRD_UP}}": art_svg(S.ART["birdUp"]),
+    "{{ART_BIRD_DOWN}}": art_svg(S.pad(S.ART["birdDown"], S.width(S.ART["birdUp"]))),
 }
 
 html = tpl.replace("/*__SPRITES__*/", js).replace("{{ACCENT}}", T.accent).replace("{{ACCENT_RGB}}", T.rgb)
-html = html.replace("{{DINO_U}}", str(S.DINO_U))
+html = html.replace("{{DINO_U}}", str(S.DINO_U)).replace("{{OBJ_U}}", str(S.OBJ_U))
 for key, markup in ART_HTML.items():
     html = html.replace(key, markup)
 hook = (

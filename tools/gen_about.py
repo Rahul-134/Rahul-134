@@ -114,9 +114,9 @@ styles.append(
 )
 
 
-def shapes(rows_, u=3):
+def shapes(rows_, u=S.OBJ_U):
     paths = S.path_by_colour(rows_, u)
-    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "Q", "X", "Z", "N", "R", "I"]
     return "".join(f'<path fill="{S.PAL[c]}" d="{paths[c]}"/>' for c in order if c in paths)
 
 
@@ -127,8 +127,8 @@ body = shapes(S.pad(S.ART["dinoBody"], S.DINO_W), S.DINO_U)
 legsA = shapes(S.pad(S.ART["legsA"], S.DINO_W), S.DINO_U)
 legsB = shapes(S.pad(S.ART["legsB"], S.DINO_W), S.DINO_U)
 body_h = len(S.ART["dinoBody"]) * S.DINO_U
-cactus_h = len(S.ART["small"]) * 3
-sag_h = len(S.ART["saguaro"]) * 3
+cactus_h = len(S.ART["small"]) * S.OBJ_U
+sag_h = len(S.ART["saguaro"]) * S.OBJ_U
 
 svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-labelledby="t d">
   <title id="t">About Rahul Lumbhani</title>

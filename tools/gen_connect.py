@@ -29,9 +29,9 @@ def write(name, text):
         f.write(text)
 
 
-def shapes(rows_, u=3):
+def shapes(rows_, u=S.OBJ_U):
     paths = S.path_by_colour(rows_, u)
-    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "Q", "X", "Z", "N", "R", "I"]
     return "".join(f'<path fill="{S.PAL[c]}" d="{paths[c]}"/>' for c in order if c in paths)
 
 
@@ -81,9 +81,9 @@ def hero():
     legs = shapes(S.pad(S.ART["legsA"], S.DINO_W), S.DINO_U)
     body_h = len(S.ART["dinoBody"]) * S.DINO_U
     cactus = shapes(S.ART["small"])
-    cactus_h = len(S.ART["small"]) * 3
+    cactus_h = len(S.ART["small"]) * S.OBJ_U
     sag = shapes(S.ART["saguaro"])
-    sag_h = len(S.ART["saguaro"]) * 3
+    sag_h = len(S.ART["saguaro"]) * S.OBJ_U
 
     pill = "OPEN TO CONVERSATIONS"
     pill_w = round(len(pill) * 8.1 + 48)

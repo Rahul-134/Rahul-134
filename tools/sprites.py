@@ -3,7 +3,7 @@
 Rows are left-aligned strings; shorter rows are right-padded with '.' to the sprite width.
 Palette letters: Y body, D shade, L highlight, O outline, B belly, E belly stripe, V spike, M mouth, T tongue,
 K dark, W white,
-G/g/h/S/P cactus colours, X bird. The dino is drawn on a finer grid (DINO_U px per cell) than the cacti and birds.
+G/g/h/S/P cactus colours, X/Z/N/R/I bird, Q cactus outline. The dino is drawn on a finer grid (DINO_U px per cell) than the cacti and birds.
 """
 
 import theme_colors
@@ -12,13 +12,25 @@ _T = theme_colors.current()
 PAL = {
     "Y": _T.accent, "D": _T.shade, "L": _T.light, "K": "#161616", "W": "#FFFFFF",
     "G": "#4DAE6C", "g": "#2F7A4D", "h": "#86D7A3", "S": "#D9F2E0", "P": "#F472B6",
-    "X": "#D6D6D6",
+    # the cartoon bird: body, wing, beak, outline, belly
+    "X": "#B79CF2", "Z": "#8E6FD8", "N": "#FF9F43", "R": "#2E2157", "I": "#E4D9FB",
     # the cartoon T-rex: outline, belly, belly stripes, back spikes, mouth, tongue
     "O": _T.outline, "B": _T.belly, "E": _T.stripe, "V": _T.spike, "M": "#8E2B3A", "T": "#F4758F",
 }
 PAL.update(_T.cactus)        # a theme may recolour the cacti (the green theme does)
 
+
+def _darker(hex_, k=0.42):
+    import colorsys
+    r, g, b = (int(hex_.lstrip("#")[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    h, l, sat = colorsys.rgb_to_hls(r, g, b)
+    return "#%02X%02X%02X" % tuple(round(v * 255) for v in colorsys.hls_to_rgb(h, l * k, sat))
+
+
+PAL["Q"] = _darker(PAL["G"])     # cactus outline, from whatever colour the cacti are
+
 DINO_U, DINO_W, DUCK_W = 2, 36, 40      # px per cell and grid widths of the standing and ducking dino
+OBJ_U = 2                               # px per cell of the cacti and birds (same fine grid as the dino)
 
 ART = {
     # ---- dino, standing (36 wide, 2px cells): a cartoon T-rex, side view ----
@@ -117,62 +129,86 @@ ART = {
     ],
     # ---- cacti ----
     "saguaro": [
-        "......hGg",
-        "......hGg",
-        "......hGg.hGg",
-        "......hGg.hGg",
-        "......hGg.hGg",
-        "......hGGGGGg",
-        "..hGg.hGg",
-        "..hGg.hGg",
-        "..hGg.hGg",
-        "..hGGGGGg",
-        "......hGg",
-        "......hGg",
-        "......hSg",
-        "......hGg",
+        ".......QGPPGQ.......",
+        "......QGPPWPGQ......",
+        "......QGGPPGGQQQQ...",
+        "......QGgGGhGQGGGQ..",
+        "...QQ.QGgGGhGQGGGGQ.",
+        "..QGGQQGgGGhGQGGhGQ.",
+        ".QGGGGQggGGhSQGShGQ.",
+        ".QGGhGQggGGhGQGGhGQ.",
+        ".QGGhGQgggGhGGGGhGQ.",
+        ".QGGhSQggSGhGGGGhGQ.",
+        ".QGGhGQgggGhGGGGGGQ.",
+        ".QGGhGGgggGhGGGGGQ..",
+        ".QGGGGGgggGhGQQQQ...",
+        "..QGGGGgggGhSQ......",
+        "...QQQQgggGhGQ......",
+        "......QgggGhGQ......",
+        "......QggSGhGQ......",
+        "......QggGGhSQ......",
+        "......QGgGGhGQ......",
+        "......QGgGGhGQ......",
+        "......QGgGGGGQ......",
     ],
     "small": [
-        "...hGg",
-        "...hGg",
-        "hGg.hGg",
-        "hGg.hGg",
-        "hGGGGGg",
-        "...hGg",
-        "...hGg",
-        "...hGg",
+        "....QPPQ...",
+        "...QGPPGQ..",
+        ".QQQGPPGQ..",
+        "QGGQgGGhQ..",
+        "QGGQgGGhQ..",
+        "QGGQgGGhSQ.",
+        "QGGGgGGhQ..",
+        "QGGGgGGhQ..",
+        "QGGGgGGhQ..",
+        ".QQQgSGhSQ.",
+        "...QgGGhQ..",
+        "...QgGGhQ..",
     ],
     "barrel": [
-        "....PP",
-        "...hGGGg",
-        "..hGGGGGg",
-        ".hGGSGGGGg",
-        ".hGGGGGGGg",
-        ".hGGGGSGGg",
-        "..hGGGGGg",
+        "......QPQ......",
+        ".....QPWPQ.....",
+        "...QQGPPPGQQ...",
+        "..QGGGhGGhGGQ..",
+        ".QGggGhGGhGGGQ.",
+        "QGGSgghGGhGSGGQ",
+        "QGGggghGGhGGGGQ",
+        ".QGggghGGhGGGQ.",
+        "..QggShGShGGQ..",
+        "...QQGhGGhQQ...",
     ],
     # ---- birds (single colour) ----
     "birdUp": [
-        "..........X",
-        ".........XX",
-        "........XXX",
-        ".......XXXX",
-        "......XXXXXX",
-        "XXXXXXXXXXXXXXX",
-        "..XXXXXXXXXXXXXX",
-        "....XXXXXXXXXX",
-        "......XXXXX",
+        ".............RRR.R......",
+        "..........RRRZZZRZR.....",
+        ".....RRRRRZZZZZZZZR.....",
+        "....RXXXXRZZZZZZZR......",
+        "...RXWWXXXZZZZZZZR..RRR.",
+        "..RXWKWWXXXXXXXXXRRRZZZR",
+        "RRRNXKWWXXXXXXXXXXZZZZR.",
+        "NNNNXXWXXXXXXXXXXXXZZZR.",
+        "RRRNXXXXPXXXXXXXXXXZZZR.",
+        "...RRXXXIIIIIIIXXXZZZZZR",
+        ".....RRIIIIIIIIIXRRRRRR.",
+        ".......RRRIIIIXRR.......",
+        "..........RRRRR.........",
+        "........................",
     ],
     "birdDown": [
-        "",
-        "",
-        "..........X",
-        "XXXXXXXXXXXXXXX",
-        "..XXXXXXXXXXXXXX",
-        "....XXXXXXXXXX",
-        "......XXXXXXX",
-        ".......XXXXX",
-        ".........XX",
+        "........................",
+        "........................",
+        ".....RRRR...............",
+        "....RXXXXR..............",
+        "...RXWWXXXRRRRRRR...RRR.",
+        "..RXWKWWXXXXXXXXXRRRZZZR",
+        "RRRNXKWWXXXXXXXXXXZZZZR.",
+        "NNNNXXWXRRRRRRRRRXXZZZR.",
+        "RRRNXXXXPZZZZZZZRXXZZZR.",
+        "...RRXXXIRZZZZZZRXZZZZZR",
+        ".....RRIIRRZZZZZZRRRRRR.",
+        ".......RRRRZZZZZZR......",
+        "..........RRZZZZZR......",
+        "............RRRRR.......",
     ],
 }
 

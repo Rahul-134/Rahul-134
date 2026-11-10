@@ -1,22 +1,25 @@
-"""Build the "Let's Connect" section art: connect/card.svg, connect/<link>.svg and connect/wave.svg.
+"""Build the "Let's Connect" section art in the Playful style: connect/card.svg, connect/<link>.svg and
+connect/wave.svg.
 
-The card is an animated hero (hopping pixel dino saying hi, pulsing status pill, blinking prompt); each link is
-its own SVG so the README can wrap it in a normal <a>. Everything follows the active accent theme.
+The card is a sky-blue scene (sun, clouds, sand, cacti) with the cartoon T-rex hopping and saying "hey!"; each
+link is its own cream button card so the README can wrap it in a normal <a>; the footer is a strip of sand dunes
+with a little dino walking across. Everything follows the active accent theme.
 
 usage: python3 gen_connect.py OUT_DIR      # writes OUT_DIR/connect/*.svg
 """
 import html
-import math
 import os
 import sys
 
 sys.dont_write_bytecode = True
 import sprites as S
 import theme_colors
+import banner
 
 T = theme_colors.current()
-ACCENT, SHADE, LIGHT = T.accent, T.shade, T.light
-SANS = "system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif"
+ACCENT = T.accent
+INK, SKY, PAPER, LIVE_GREEN = banner.INK, banner.SKY, "#FFFDF7", "#5BD68A"
+ROUND = "'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif"
 MONO = "'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace"
 
 out_dir = os.path.join(sys.argv[1], "connect")
@@ -35,111 +38,100 @@ def shapes(rows_, u=S.OBJ_U):
     return "".join(f'<path fill="{S.PAL[c]}" d="{paths[c]}"/>' for c in order if c in paths)
 
 
-# ------------------------------------------------------------------ shared bits
-def frame_defs(w, h, glow_x=0.2):
-    return f'''
-    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="{ACCENT}" stop-opacity="0.55"/>
-      <stop offset="0.45" stop-color="#2a2a2a"/>
-      <stop offset="1" stop-color="{ACCENT}" stop-opacity="0.30"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="{glow_x}" cy="0.35" r="0.6">
-      <stop offset="0" stop-color="{ACCENT}" stop-opacity="0.16"/>
-      <stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#fff" stop-opacity="0.07"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-    </linearGradient>
-    <clipPath id="card"><rect width="{w}" height="{h}" rx="20"/></clipPath>'''
+def shell(w, h, fill, rx=24):
+    return (f'<rect x="11" y="11" width="{w - 14}" height="{h - 14}" rx="{rx}" fill="{INK}"/>'
+            f'<rect x="3" y="3" width="{w - 14}" height="{h - 14}" rx="{rx}" fill="{fill}" stroke="{INK}" stroke-width="4"/>')
 
 
-def frame(w, h, delay=0.0, period=7):
-    return f'''
-  <rect width="{w}" height="{h}" rx="20" fill="#151515"/>
-  <rect width="{w}" height="{h}" rx="20" fill="url(#glow)"/>
-  <rect x="0.75" y="0.75" width="{w - 1.5}" height="{h - 1.5}" rx="19.25" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
-  <g clip-path="url(#card)"><g class="shine" style="animation-delay:{delay}s"><rect x="-260" y="-40" width="130" height="{h + 80}" fill="url(#beam)" transform="skewX(-18)"/></g></g>'''
+def tw_(text, size):
+    return len(text) * size * 0.56
 
 
 COMMON_CSS = """
-    .pulse{animation:pulse 2s ease-in-out infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+    .pulse{animation:pulse 1.8s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
     .caret{animation:caret 1.1s steps(1,end) infinite}
     @keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}"""
 
-
-# ------------------------------------------------------------------ hero card
-W, H = 900, 300
-GROUND = 246
 DINO_H = (len(S.ART["dinoBody"]) + len(S.ART["legsA"])) * S.DINO_U
 
 
-def hero():
+def dino(legs="legsA"):
     body = shapes(S.pad(S.ART["dinoBody"], S.DINO_W), S.DINO_U)
-    legs = shapes(S.pad(S.ART["legsA"], S.DINO_W), S.DINO_U)
-    body_h = len(S.ART["dinoBody"]) * S.DINO_U
-    cactus = shapes(S.ART["small"])
-    cactus_h = len(S.ART["small"]) * S.OBJ_U
-    sag = shapes(S.ART["saguaro"])
-    sag_h = len(S.ART["saguaro"]) * S.OBJ_U
+    lg = shapes(S.pad(S.ART[legs], S.DINO_W), S.DINO_U)
+    return f'{body}<g transform="translate(0,{len(S.ART["dinoBody"]) * S.DINO_U})">{lg}</g>'
 
-    pill = "OPEN TO CONVERSATIONS"
-    pill_w = round(len(pill) * 8.1 + 48)
-    dino_x = 846                                    # right edge; flipped so the dino faces the text
-    sparkles = "".join(
-        f'<g class="tw" style="animation-delay:{d}s"><path d="M{x} {y - 6}v12M{x - 6} {y}h12" stroke="{ACCENT}" stroke-width="2" stroke-linecap="round" fill="none"/></g>'
-        for x, y, d in [(588, 78, 0), (872, 112, 0.9), (700, 52, 1.7), (560, 160, 2.4)])
 
-    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-labelledby="t d">
+# ------------------------------------------------------------------ hero card
+W, H = 900, 350
+GROUND = 296
+BUB = GROUND - 238                                  # speech bubble follows the dino down
+
+
+def hero():
+    cactus, cactus_h = shapes(S.ART["small"]), len(S.ART["small"]) * S.OBJ_U
+    sag, sag_h = shapes(S.ART["saguaro"]), len(S.ART["saguaro"]) * S.OBJ_U
+    pill_txt = "OPEN TO CONVERSATIONS"
+    pill_w = tw_(pill_txt, 12.5) + 1.5 * len(pill_txt) + 44
+    dino_x = 850                                    # right edge; flipped so the dino faces the text
+    mark_w = tw_("useful, together.", 40) + 28
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-labelledby="t d">
   <title id="t">Let's connect</title>
-  <desc id="d">Let's build something useful, together. Open to interesting projects and conversations about AI, backend engineering and building useful products. A pixel dinosaur hops and says hey.</desc>
-  <style>{COMMON_CSS}
-    .shine{{animation:shine 7s ease-in-out infinite}}
-    @keyframes shine{{0%,62%{{transform:translateX(0)}}100%{{transform:translateX({W + 420}px)}}}}
+  <desc id="d">Let's build something useful, together. Open to interesting projects and conversations about AI, backend engineering and building useful products. A cartoon T-rex hops in a sunny desert and says hey.</desc>
+  <style>
+    {banner.font_face()}
+    text{{font-family:{ROUND}}}{COMMON_CSS}
     .hop{{animation:hop 3.6s cubic-bezier(.3,.6,.4,1) infinite}}
     @keyframes hop{{0%,6%{{transform:translateY(0)}}16%{{transform:translateY(-34px)}}28%,100%{{transform:translateY(0)}}}}
     .say{{transform-box:fill-box;transform-origin:85% 100%;animation:say 3.6s ease-out infinite}}
     @keyframes say{{0%,22%{{opacity:0;transform:scale(.6)}}30%{{opacity:1;transform:scale(1.06)}}34%{{transform:scale(1)}}78%{{opacity:1;transform:scale(1)}}90%,100%{{opacity:0;transform:scale(.9)}}}}
-    .tw{{animation:tw 3.2s ease-in-out infinite;opacity:.15}}
-    @keyframes tw{{0%,100%{{opacity:.1}}50%{{opacity:.8}}}}
-    @media (prefers-reduced-motion:reduce){{.pulse,.caret,.shine,.hop,.say,.tw{{animation:none}}.say{{opacity:1}}.tw{{opacity:.5}}}}
+    .cl{{animation:drift 46s linear infinite}}
+    @keyframes drift{{0%{{transform:translateX(880px);opacity:0}}12%{{opacity:1}}82%{{opacity:1}}100%{{transform:translateX(480px);opacity:0}}}}
+    .rays{{animation:spin 60s linear infinite}}
+    @keyframes spin{{to{{transform:rotate(360deg)}}}}
+    @media (prefers-reduced-motion:reduce){{.pulse,.caret,.hop,.say,.cl,.rays{{animation:none}}.say{{opacity:1}}.cl{{transform:translateX(640px)}}}}
   </style>
-  <defs>{frame_defs(W, H)}
+  <defs>
+    <clipPath id="card"><rect x="3" y="3" width="{W - 14}" height="{H - 14}" rx="24"/></clipPath>
+    {banner.ground_tile(60)}
   </defs>
-  {frame(W, H)}
+  {shell(W, H, SKY)}
+  <g clip-path="url(#card)">
+    {banner.sun(818, 60, 0.95)}
+    <g class="cl">{banner.cloud(0, 18, 0.8)}</g>
+    <g class="cl" style="animation-duration:62s;animation-delay:-30s">{banner.cloud(0, 100, 0.62)}</g>
+    <g transform="translate(0,{GROUND - 10})"><rect width="{W}" height="70" fill="url(#sand)"/></g>
+    <g transform="translate(590,{GROUND - sag_h})">{sag}</g>
+    <g transform="translate(642,{GROUND - cactus_h})">{cactus}</g>
+    <g class="hop"><g transform="translate({dino_x},{GROUND - DINO_H}) scale(-1,1)">{dino()}</g></g>
+    <g class="say">
+      <rect x="682" y="{98 + BUB}" width="98" height="42" rx="16" fill="#fff" stroke="{INK}" stroke-width="3"/>
+      <path d="M760 {138 + BUB} L782 {156 + BUB} L770 {136 + BUB} Z" fill="#fff" stroke="{INK}" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="752" y="{133 + BUB}" width="18" height="6" fill="#fff"/>
+      <text x="731" y="{126 + BUB}" text-anchor="middle" font-size="21" font-weight="800" fill="{INK}">hey!</text>
+    </g>
+  </g>
 
   <!-- status pill -->
-  <rect x="44" y="40" width="{pill_w}" height="26" rx="13" fill="{ACCENT}" fill-opacity="0.10" stroke="{ACCENT}" stroke-opacity="0.35"/>
-  <circle class="pulse" cx="60" cy="53" r="4" fill="{ACCENT}"/>
-  <text x="74" y="58" font-size="11.5" fill="{ACCENT}" letter-spacing="1.5" font-family="{MONO}">{pill}</text>
+  <rect x="38" y="34" width="{pill_w:.0f}" height="30" rx="15" fill="{ACCENT}" stroke="{INK}" stroke-width="2.5"/>
+  <circle class="pulse" cx="57" cy="49" r="5.5" fill="#fff" stroke="{INK}" stroke-width="1.8"/>
+  <text x="72" y="54" font-size="12.5" font-weight="800" fill="{INK}" letter-spacing="1.5">{pill_txt}</text>
 
-  <!-- headline -->
-  <text x="44" y="124" font-size="40" font-weight="800" fill="#FFFFFF" font-family="{SANS}">Let's build something</text>
-  <text x="44" y="170" font-size="40" font-weight="800" fill="{ACCENT}" font-family="{SANS}">useful, together.</text>
-  <text x="44" y="206" font-size="14.5" fill="#9aa0a6" font-family="{SANS}">Interesting projects and conversations about AI,</text>
-  <text x="44" y="226" font-size="14.5" fill="#9aa0a6" font-family="{SANS}">backend engineering and building useful products.</text>
-
-  <!-- prompt -->
-  <text x="44" y="268" font-size="14" font-family="{MONO}"><tspan fill="{ACCENT}">$</tspan><tspan fill="#FFFFFF"> say hello</tspan><tspan class="caret" fill="{ACCENT}">_</tspan></text>
-
-  <!-- scene -->
-  {sparkles}
-  <path d="M520 {GROUND} H {W - 28}" stroke="#3a3a3a" stroke-width="2" stroke-linecap="round"/>
-  <path d="M560 {GROUND + 9} h14 M640 {GROUND + 9} h30 M760 {GROUND + 9} h10 M820 {GROUND + 9} h22" stroke="#2f2f2f" stroke-width="2" stroke-linecap="round"/>
-  <g transform="translate(586,{GROUND - sag_h})">{sag}</g>
-  <g transform="translate(634,{GROUND - cactus_h})">{cactus}</g>
-  <g class="hop">
-    <g transform="translate({dino_x},{GROUND - DINO_H}) scale(-1,1)">{body}<g transform="translate(0,{body_h})">{legs}</g></g>
+  <!-- headline: the second line sits on a marker pill in the theme colour -->
+  <text x="40" y="118" font-size="42" font-weight="800" fill="{INK}">Let's build something</text>
+  <g transform="rotate(-2 {40 + mark_w / 2:.0f} 150)">
+    <rect x="40" y="{126 + 5}" width="{mark_w:.0f}" height="50" rx="16" fill="{INK}" transform="translate(4,4)"/>
+    <rect x="40" y="{126 + 5}" width="{mark_w:.0f}" height="50" rx="16" fill="{ACCENT}" stroke="{INK}" stroke-width="3"/>
+    <text x="54" y="168" font-size="40" font-weight="800" fill="{INK}">useful, together.</text>
   </g>
-  <g class="say">
-    <rect x="662" y="104" width="96" height="40" rx="14" fill="#FFFFFF"/>
-    <path d="M750 142 L772 160 L764 138 Z" fill="#FFFFFF"/>
-    <text x="710" y="130" text-anchor="middle" font-size="19" font-weight="800" fill="#161616" font-family="{SANS}">hey!</text>
-  </g>
+  <text x="40" y="214" font-size="16" font-weight="600" fill="{INK}" fill-opacity=".75">Interesting projects and conversations about AI,</text>
+  <text x="40" y="236" font-size="16" font-weight="600" fill="{INK}" fill-opacity=".75">backend engineering and building useful products.</text>
+
+  <!-- prompt chip -->
+  <rect x="40" y="254" width="168" height="30" rx="12" fill="{INK}"/>
+  <text x="54" y="274" font-size="15" font-family="{MONO}"><tspan fill="{ACCENT}">$</tspan><tspan fill="#FFFFFF"> say hello</tspan><tspan class="caret" fill="{ACCENT}">_</tspan></text>
 </svg>
-'''
+"""
     write("card.svg", svg)
 
 
@@ -167,85 +159,92 @@ LINKS = [
 
 
 def glyph(kind, primary):
-    cx, cy = 60, 58
-    ink = "#161616" if primary else ACCENT
+    cx, cy = 62, 57
     if kind == "in":
-        return f'<text x="{cx}" y="{cy + 8}" text-anchor="middle" font-size="22" font-weight="800" fill="{ink}" font-family="{SANS}">in</text>'
+        return f'<text x="{cx}" y="{cy + 9}" text-anchor="middle" font-size="27" font-weight="800" fill="{INK}">in</text>'
     if kind == "github":
-        return f'<g transform="translate({cx - 18},{cy - 18}) scale(1.5)"><path fill="{ink}" d="{GITHUB}"/></g>'
+        return f'<g transform="translate({cx - 17},{cy - 17}) scale(1.42)"><path fill="{INK}" d="{GITHUB}"/></g>'
     if kind == "globe":
-        return (f'<g transform="translate({cx - 18},{cy - 18}) scale(1.5)" fill="none" stroke="{ink}" stroke-width="1.7" stroke-linecap="round">'
+        return (f'<g transform="translate({cx - 17},{cy - 17}) scale(1.42)" fill="none" stroke="{INK}" stroke-width="1.9" stroke-linecap="round">'
                 '<circle cx="12" cy="12" r="9.6"/><ellipse cx="12" cy="12" rx="4.2" ry="9.6"/><path d="M2.4 12h19.2M4 7h16M4 17h16"/></g>')
-    return f'<g transform="translate({cx - 18},{cy - 18}) scale(1.5)"><path fill="{ink}" d="M8 5.2v13.6L19.2 12z"/></g>'
+    # the dino game: the T-rex itself, peeking out of the icon
+    k = 44 / DINO_H                                  # 44 px tall, inside the 66 px circle
+    w, h = S.DINO_W * S.DINO_U * k, DINO_H * k
+    return f'<g transform="translate({cx - w / 2 + 1:.1f},{cy - h / 2 + 1:.1f}) scale({k:.3f})">{dino()}</g>'
 
 
 def link(i, p):
     primary = p.get("primary")
-    sub_size = 12.5 if len(p["sub"]) > 30 else 14
+    sub_size = 13 if len(p["sub"]) > 30 else 15
+    card_fill = ACCENT if primary else PAPER
+    icon_fill = "#FFFFFF" if primary else (SKY if p["glyph"] == "play" else ACCENT)   # the dino needs sky behind it
     live = ""
     if p.get("live"):
-        lx = BW - 118
-        live = (f'<rect x="{lx}" y="22" width="54" height="20" rx="10" fill="#27c93f" fill-opacity="0.12" stroke="#27c93f" stroke-opacity="0.45"/>'
-                f'<circle class="pulse" cx="{lx + 13}" cy="32" r="3.2" fill="#27c93f"/>'
-                f'<text x="{lx + 22}" y="36" font-size="10" fill="#5EE27A" letter-spacing="1.3" font-family="{MONO}">LIVE</text>')
-    circle_fill = f'fill="{ACCENT}"' if primary else f'fill="{ACCENT}" fill-opacity="0.12" stroke="{ACCENT}" stroke-opacity="0.4"'
-    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {BW} {BH}" width="{BW}" height="{BH}" role="img" aria-labelledby="t">
+        live = (f'<g transform="rotate(-8 340 26)"><rect x="300" y="15" width="74" height="26" rx="13" fill="{INK}"/>'
+                f'<rect x="297" y="11" width="74" height="26" rx="13" fill="{LIVE_GREEN}" stroke="{INK}" stroke-width="2.4"/>'
+                f'<circle class="pulse" cx="313" cy="24" r="4.4" fill="#fff" stroke="{INK}" stroke-width="1.5"/>'
+                f'<text x="323" y="29" font-size="13.5" font-weight="800" fill="{INK}" letter-spacing="1.3">LIVE</text></g>')
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {BW} {BH}" width="{BW}" height="{BH}" role="img" aria-labelledby="t">
   <title id="t">{e(p["desc"])}</title>
-  <style>{COMMON_CSS}
-    .shine{{animation:shine 7s ease-in-out infinite}}
-    @keyframes shine{{0%,62%{{transform:translateX(0)}}100%{{transform:translateX({BW + 360}px)}}}}
+  <style>
+    {banner.font_face()}
+    text{{font-family:{ROUND}}}{COMMON_CSS}
     .nudge{{animation:nudge 2.4s ease-in-out infinite}}
     @keyframes nudge{{0%,100%{{transform:translate(0,0)}}50%{{transform:translate(3px,-3px)}}}}
-    @media (prefers-reduced-motion:reduce){{.pulse,.shine,.nudge{{animation:none}}}}
+    @media (prefers-reduced-motion:reduce){{.pulse,.nudge{{animation:none}}}}
   </style>
-  <defs>{frame_defs(BW, BH, 0.12)}
-  </defs>
-  {frame(BW, BH, delay=i * 1.3)}
-  <circle cx="60" cy="58" r="31" {circle_fill}/>
+  {shell(BW, BH, card_fill, 22)}
+  <circle cx="66" cy="61" r="33" fill="{INK}"/>
+  <circle cx="62" cy="57" r="33" fill="{icon_fill}" stroke="{INK}" stroke-width="3"/>
   {glyph(p["glyph"], primary)}
-  <text x="112" y="56" font-size="26" font-weight="800" fill="#FFFFFF" font-family="{SANS}">{e(p["label"])}</text>
-  <text x="112" y="82" font-size="{sub_size}" fill="#9aa0a6" font-family="{MONO}">{e(p["sub"])}</text>
+  <text x="114" y="55" font-size="28" font-weight="800" fill="{INK}">{e(p["label"])}</text>
+  <text x="114" y="80" font-size="{sub_size}" font-weight="600" fill="{INK}" fill-opacity=".68">{e(p["sub"])}</text>
   {live}
-  <text class="nudge" x="{BW - 34}" y="40" text-anchor="end" font-size="20" fill="{ACCENT}" font-family="{MONO}">↗</text>
+  <g class="nudge"><circle cx="{BW - 44}" cy="80" r="17" fill="#fff" stroke="{INK}" stroke-width="2.6"/>
+  <text x="{BW - 44}" y="87" text-anchor="middle" font-size="19" font-weight="800" fill="{INK}">↗</text></g>
 </svg>
-'''
+"""
     write(f'{p["slug"]}.svg', svg)
 
 
-# ------------------------------------------------------------------ footer wave
+# ------------------------------------------------------------------ footer: dunes with a dino strolling across
 def wave():
-    WW, WH, P = 900, 110, 450
+    WW, WH = 900, 120
+    import math
+    def top(x, base=72, amp=34, period=420, phase=1.2):
+        return base - amp * (0.5 + 0.5 * math.sin(x / period * 2 * math.pi + phase))
 
-    def layer(base, amp, phase):
-        pts = []
-        for x in range(0, WW + P + 1, 6):
-            y = base + amp * math.sin(2 * math.pi * x / P + phase) + 0.35 * amp * math.sin(4 * math.pi * x / P + phase * 1.7)
-            pts.append(f"{x},{y:.1f}")
-        return "M" + " L".join(pts) + f" L{WW + P},{WH} L0,{WH} Z"
-
-    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {WW} {WH}" width="{WW}" height="{WH}" role="img" aria-label="">
+    def dune(base, amp, period, phase):
+        pts = " ".join(f"L{x} {base - amp * (0.5 + 0.5 * math.sin(x / period * 2 * math.pi + phase)):.1f}" for x in range(0, WW + 1, 6))
+        return f"M0 {WH} {pts[1:] if pts.startswith('L') else pts} L{WW} {WH} Z"
+    small, small_h = shapes(S.ART["small"]), len(S.ART["small"]) * S.OBJ_U
+    sag, sag_h = shapes(S.ART["saguaro"]), len(S.ART["saguaro"]) * S.OBJ_U
+    ground = 92
+    dino_s = 0.75
+    dh = DINO_H * dino_s
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {WW} {WH}" width="{WW}" height="{WH}" role="img" aria-label="">
   <style>
-    .w1{{animation:slide {P / 28:g}s linear infinite}}
-    .w2{{animation:slide {P / 18:g}s linear infinite reverse}}
-    .w3{{animation:slide {P / 40:g}s linear infinite}}
-    @keyframes slide{{from{{transform:translateX(0)}}to{{transform:translateX(-{P}px)}}}}
-    @media (prefers-reduced-motion:reduce){{.w1,.w2,.w3{{animation:none}}}}
+    .walk{{animation:walk 22s linear infinite}}
+    @keyframes walk{{from{{transform:translateX(-90px)}}to{{transform:translateX({WW + 20}px)}}}}
+    .legA{{animation:legA .32s steps(1,end) infinite}}.legB{{animation:legB .32s steps(1,end) infinite}}
+    @keyframes legA{{0%{{opacity:1}}50%{{opacity:0}}100%{{opacity:1}}}}
+    @keyframes legB{{0%{{opacity:0}}50%{{opacity:1}}100%{{opacity:0}}}}
+    @media (prefers-reduced-motion:reduce){{.walk,.legA,.legB{{animation:none}}.walk{{transform:translateX(420px)}}.legB{{opacity:0}}}}
   </style>
-  <defs>
-    <linearGradient id="fadeX" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#fff"/>
-      <stop offset="0.55" stop-color="#fff" stop-opacity="0.55"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0.04"/>
-    </linearGradient>
-    <mask id="m"><rect width="{WW}" height="{WH}" fill="url(#fadeX)"/></mask>
-  </defs>
-  <g mask="url(#m)">
-    <g class="w3"><path d="{layer(46, 9, 2.1)}" fill="{SHADE}" fill-opacity="0.30"/></g>
-    <g class="w2"><path d="{layer(58, 11, 0.6)}" fill="{ACCENT}" fill-opacity="0.38"/></g>
-    <g class="w1"><path d="{layer(72, 10, 4.0)}" fill="{ACCENT}" fill-opacity="0.85"/></g>
-  </g>
+  <defs>{banner.ground_tile(30)}</defs>
+  <path d="{dune(72, 34, 420, 1.2)}" fill="#F9E8C4" stroke="{INK}" stroke-width="3" stroke-linejoin="round"/>
+  <g transform="translate(150,{max(top(x) for x in range(150, 191)) + 2 - sag_h:.1f})">{sag}</g>
+  <g transform="translate(640,{max(top(x) for x in range(640, 663)) + 2 - small_h:.1f})">{small}</g>
+  <g transform="translate(0,{ground - 10})"><rect width="{WW}" height="40" fill="url(#sand)"/></g>
+  <g class="walk"><g transform="translate(0,{ground - dh:.1f}) scale({dino_s})">
+    {shapes(S.pad(S.ART["dinoBody"], S.DINO_W), S.DINO_U)}
+    <g transform="translate(0,{len(S.ART["dinoBody"]) * S.DINO_U})">
+      <g class="legA">{shapes(S.pad(S.ART["legsA"], S.DINO_W), S.DINO_U)}</g>
+      <g class="legB">{shapes(S.pad(S.ART["legsB"], S.DINO_W), S.DINO_U)}</g>
+    </g>
+  </g></g>
 </svg>
-'''
+"""
     write("wave.svg", svg)
 
 

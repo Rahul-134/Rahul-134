@@ -217,18 +217,23 @@
   // The world is 900 wide on big screens. On narrow screens it shows less of the road (down to 500), so
   // everything is drawn larger instead of being shrunk to a thin strip.
   function fitWidth() { var w = cv.clientWidth || 900; return Math.round(Math.min(900, Math.max(500, w * 1.55))); }
+  // The backing store matches the canvas's real size in device pixels, so the browser never stretches the
+  // finished picture; the world (W x H) is mapped onto it by the transform instead.
   function resize() {
-    var nw = fitWidth();
-    if (nw === W && cv.width === W * DPR) return;
-    W = nw; cv.width = W * DPR; cv.height = H * DPR;
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    var nw = fitWidth(), cssW = cv.clientWidth || nw;
+    var pw = Math.max(1, Math.round(cssW * DPR)), ph = Math.max(1, Math.round(cssW * DPR * H / nw));
+    if (nw === W && cv.width === pw && cv.height === ph) return;
+    W = nw; cv.width = pw; cv.height = ph;
+    ctx.setTransform(pw / W, 0, 0, ph / H, 0, 0);
   }
   resize();
   var resizeQueued = false;
-  window.addEventListener('resize', function () {
+  function queueResize() {
     if (resizeQueued) return; resizeQueued = true;
     requestAnimationFrame(function () { resizeQueued = false; resize(); });
-  });
+  }
+  window.addEventListener('resize', queueResize);
+  if (window.ResizeObserver) new ResizeObserver(queueResize).observe(cv);
 
   // Two looks for the same game: Classic (the dark original) and Playful (sky, sand and outlined sprites).
   var MONO = '"JetBrains Mono",ui-monospace,Consolas,Menlo,monospace';
@@ -247,18 +252,26 @@
     return rows.map(function (r) { while (r.length < w) r += '.'; return r; });
   }
 
+  // Sprites are vector shapes: one Path2D per colour (each row's runs merged into single rectangles), drawn
+  // straight through the canvas transform. Nothing is scaled as a bitmap, so the art stays crisp and seamless
+  // at any screen size or pixel ratio, like the SVG banner (no grid of hairline gaps between the pixels).
   function sprite(rows, u, pal) {
     rows = pad(rows);
-    var c = document.createElement('canvas');
-    c.width = rows[0].length * u * DPR; c.height = rows.length * u * DPR;
-    var g = c.getContext('2d'); var s = u * DPR;
-    for (var y = 0; y < rows.length; y++)
-      for (var x = 0; x < rows[y].length; x++) {
-        var ch = rows[y][x];
-        if (ch === '.') continue;
-        g.fillStyle = (pal && pal[ch]) || PAL[ch]; g.fillRect(x * s, y * s, s, s);
+    var byCol = {}, count = {}, order = [], sil = new Path2D();
+    for (var y = 0; y < rows.length; y++) {
+      var r = rows[y], x = 0;
+      while (x < r.length) {
+        var ch = r[x];
+        if (ch === '.') { x++; continue; }
+        var x0 = x; while (x < r.length && r[x] === ch) x++;
+        var col = (pal && pal[ch]) || PAL[ch];
+        if (!byCol[col]) { byCol[col] = new Path2D(); count[col] = 0; order.push(col); }
+        byCol[col].rect(x0 * u, y * u, (x - x0) * u, u); count[col] += x - x0;
+        sil.rect(x0 * u, y * u, (x - x0) * u, u);
       }
-    return { c: c, w: rows[0].length * u, h: rows.length * u };
+    }
+    var base = order.slice().sort(function (a, b) { return count[b] - count[a]; })[0];
+    return { paths: order.map(function (c) { return [c, byCol[c]]; }), sil: sil, base: base, w: rows[0].length * u, h: rows.length * u };
   }
 
   var U = 3, DU = {{DINO_U}};            // the dino is drawn on a finer grid than the cacti and birds
@@ -273,15 +286,7 @@
   // The Playful skin draws the same sprites with a dark outline (and a darker bird), built the first time it is used.
   var CSET = { dinoA: dinoA, dinoB: dinoB, duckA: duckA, duckB: duckB, CACT: CACT, birdUp: birdUp, birdDown: birdDown }, PSET = null;
   var INK = '#2B1A12', OUT = 3;
-  function outlined(rows, u, pal) {
-    var s0 = sprite(rows, u, pal), c = document.createElement('canvas');
-    c.width = (s0.w + 2 * OUT) * DPR; c.height = (s0.h + 2 * OUT) * DPR;
-    var g = c.getContext('2d'), sil = document.createElement('canvas'); sil.width = s0.c.width; sil.height = s0.c.height;
-    var sg = sil.getContext('2d'); sg.drawImage(s0.c, 0, 0); sg.globalCompositeOperation = 'source-in'; sg.fillStyle = INK; sg.fillRect(0, 0, sil.width, sil.height);
-    [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (o) { g.drawImage(sil, (OUT + o[0] * OUT) * DPR, (OUT + o[1] * OUT) * DPR); });
-    g.drawImage(s0.c, OUT * DPR, OUT * DPR);
-    return { c: c, w: s0.w, h: s0.h, o: OUT };
-  }
+  function outlined(rows, u, pal) { var s = sprite(rows, u, pal); s.o = OUT; return s; }
   function buildPlayful() {
     var slate = { X: '#5B6B80' };
     PSET = {
@@ -298,7 +303,17 @@
     Object.keys(SKINS[name]).forEach(function (k) { COL[k] = SKINS[name][k]; });
     if (playful && document.fonts && document.fonts.load) document.fonts.load('800 22px "Baloo 2"');
   }
-  function blit(s, x, y) { if (s.o) ctx.drawImage(s.c, x - s.o, y - s.o, s.w + 2 * s.o, s.h + 2 * s.o); else ctx.drawImage(s.c, x, y, s.w, s.h); }
+  var AROUND = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]];
+  function blit(s, x, y) {
+    ctx.save(); ctx.translate(x, y);
+    if (s.o) {                                       // Playful: a dark outline from the silhouette, offset all around
+      ctx.fillStyle = INK;
+      AROUND.forEach(function (d) { ctx.translate(d[0] * s.o, d[1] * s.o); ctx.fill(s.sil); ctx.translate(-d[0] * s.o, -d[1] * s.o); });
+    }
+    ctx.fillStyle = s.base; ctx.fill(s.sil);         // one solid underlay, so colour boundaries never show the background
+    for (var i = 0; i < s.paths.length; i++) { ctx.fillStyle = s.paths[i][0]; ctx.fill(s.paths[i][1]); }
+    ctx.restore();
+  }
 
   // cactus clusters; the harder ones only appear once the run is under way
   var EASY_COMBOS = [['small'], ['barrel'], ['saguaro'], ['small', 'small'], ['barrel', 'small']];

@@ -47,11 +47,13 @@
   .btn.alt { background:var(--paper); }
   .btn .tri { width:26px; height:26px; display:grid; place-items:center; border-radius:50%; background:var(--teal); border:2.5px solid var(--ink); color:#fff; font-size:11px; }
   .scene { position:relative; height:230px; background:var(--sky); border:3px solid var(--ink); border-radius:28px; box-shadow:6px 8px 0 var(--ink); overflow:hidden; }
-  .scene .sun { position:absolute; top:22px; right:30px; width:54px; height:54px; border-radius:50%; background:var(--sun); border:3px solid var(--ink); }
-  .scene .cloud { position:absolute; width:78px; height:26px; background:#fff; border:3px solid var(--ink); border-radius:99px; animation:drift 14s linear infinite; }
-  .scene .cloud::before { content:""; position:absolute; left:14px; top:-16px; width:34px; height:30px; background:#fff; border:3px solid var(--ink); border-bottom:0; border-radius:99px 99px 0 0; }
-  .scene .cloud.c1 { top:34px; left:-90px; }
-  .scene .cloud.c2 { top:92px; left:-90px; animation-duration:19s; animation-delay:-8s; transform:scale(.8); }
+  .scene .sun { position:absolute; top:8px; right:14px; width:84px; height:84px; }
+  .scene .sun svg, .scene .cloud svg { display:block; width:100%; height:auto; overflow:visible; }
+  .scene .sun .rays { transform-origin:0 0; animation:spin 60s linear infinite; }
+  .scene .cloud { position:absolute; width:96px; animation:drift 14s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .scene .cloud.c1 { top:24px; left:-110px; }
+  .scene .cloud.c2 { top:84px; left:-110px; width:76px; animation-duration:19s; animation-delay:-8s; }
   .scene .ground { position:absolute; left:0; right:0; bottom:0; height:62px; background:#F2D9A6; border-top:3px solid var(--ink); }
   .scene .ground::after { content:""; position:absolute; left:0; right:0; top:14px; height:6px; background:repeating-linear-gradient(90deg, rgba(43,26,18,.35) 0 14px, transparent 14px 40px); }
   .scene .dino { position:absolute; left:46px; bottom:50px; width:62px; height:68px; }
@@ -67,7 +69,7 @@
   .scene .bird .f1 { animation:fa .4s linear infinite; } .scene .bird .f2 { animation:fb .4s linear infinite; }
   @keyframes fa { 0%,49.9% { opacity:1; } 50%,100% { opacity:0; } }
   @keyframes fb { 0%,49.9% { opacity:0; } 50%,100% { opacity:1; } }
-  @keyframes drift { to { transform:translateX(520px); } }
+  @keyframes drift { to { transform:translateX(560px); } }
 
   /* the game console */
   .console { width:min(100%,940px); padding:14px 16px 20px; background:var(--accent); border:3px solid var(--ink); border-radius:36px; box-shadow:8px 10px 0 var(--ink); }
@@ -160,7 +162,7 @@
       </div>
     </div>
     <div class="scene" aria-hidden="true">
-      <div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div>
+      <div class="sun"><svg viewBox="-38 -38 76 76" aria-hidden="true"><circle r="28" fill="#FFC83D" opacity=".22"/><g class="rays" stroke="#FFB547" stroke-width="4.6" stroke-linecap="round"><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(0)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(30)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(60)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(90)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(120)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(150)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(180)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(210)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(240)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(270)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(300)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(330)"/></g><circle r="21.5" fill="#FFC83D" stroke="#2B1A12" stroke-width="3"/><path d="M-14 -9 A15.5 15.5 0 0 1 -3 -16.5" stroke="#FFE7A0" stroke-width="3.6" fill="none" stroke-linecap="round"/></svg></div><div class="cloud c1"><svg viewBox="8 2 88 46" aria-hidden="true"><defs><clipPath id="cc1"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></clipPath></defs><g fill="#2B1A12" stroke="#2B1A12" stroke-width="6" stroke-linejoin="round"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g fill="#fff"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g clip-path="url(#cc1)"><rect x="8" y="36" width="88" height="10" fill="#DCEBF5"/><ellipse cx="40" cy="14" rx="7" ry="3.2" fill="#fff" opacity=".9"/></g></svg></div><div class="cloud c2"><svg viewBox="8 2 88 46" aria-hidden="true"><defs><clipPath id="cc2"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></clipPath></defs><g fill="#2B1A12" stroke="#2B1A12" stroke-width="6" stroke-linejoin="round"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g fill="#fff"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g clip-path="url(#cc2)"><rect x="8" y="36" width="88" height="10" fill="#DCEBF5"/><ellipse cx="40" cy="14" rx="7" ry="3.2" fill="#fff" opacity=".9"/></g></svg></div>
       <div class="ground"></div>
       <div class="dino">
         <div class="pose run"><span class="f1">{{ART_DINO}}</span><span class="f2">{{ART_DINO_B}}</span></div>
@@ -199,7 +201,7 @@
   <div class="stk s2" aria-hidden="true">{{ART_BIRD}}</div>
   <div class="stk s3" aria-hidden="true"><svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="12" fill="#FFC83D" stroke="#2B1A12" stroke-width="2.5"/><circle cx="15" cy="15" r="6" fill="none" stroke="#2B1A12" stroke-width="2.2"/></svg></div>
   <div class="stk s4" aria-hidden="true"><svg viewBox="0 0 30 30"><path d="M15 3 L18.6 11 L27 12 L20.8 17.8 L22.6 26.4 L15 22 L7.4 26.4 L9.2 17.8 L3 12 L11.4 11 Z" fill="#FF6B4A" stroke="#2B1A12" stroke-width="2.4" stroke-linejoin="round"/></svg></div>
-  <div class="stk s5" aria-hidden="true"><svg viewBox="0 0 60 30"><path d="M8 26 Q2 26 3 19 Q4 13 11 14 Q13 6 22 7 Q28 1 36 7 Q46 5 48 14 Q57 14 56 21 Q55 26 49 26 Z" fill="#fff" stroke="#2B1A12" stroke-width="2.4" stroke-linejoin="round"/></svg></div>
+  <div class="stk s5" aria-hidden="true"><svg viewBox="8 2 88 46" aria-hidden="true"><defs><clipPath id="cs5"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></clipPath></defs><g fill="#2B1A12" stroke="#2B1A12" stroke-width="6" stroke-linejoin="round"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g fill="#fff"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g clip-path="url(#cs5)"><rect x="8" y="36" width="88" height="10" fill="#DCEBF5"/><ellipse cx="40" cy="14" rx="7" ry="3.2" fill="#fff" opacity=".9"/></g></svg></div>
   <div class="stk s6" aria-hidden="true">{{ART_SMALL}}</div>
   <div class="stk s7" aria-hidden="true"><svg viewBox="0 0 30 30"><path d="M15 3 L18.6 11 L27 12 L20.8 17.8 L22.6 26.4 L15 22 L7.4 26.4 L9.2 17.8 L3 12 L11.4 11 Z" fill="#1FB5A8" stroke="#2B1A12" stroke-width="2.4" stroke-linejoin="round"/></svg></div>
 
@@ -454,11 +456,39 @@
   // ---------- Rendering ----------
   function padScore(n) { return ('00000' + n).slice(-5); }
 
+  // Playful sun and clouds: drawn once into bitmaps at the canvas's device scale (like the sprites), then copied.
+  var ART_CACHE = {};
+  function cachedArt(key, w, h, paint) {
+    var c = ART_CACHE[key];
+    if (c && c.scale === SCALE) return c;
+    c = document.createElement('canvas'); c.scale = SCALE;
+    c.width = Math.ceil(w * SCALE); c.height = Math.ceil(h * SCALE);
+    var g = c.getContext('2d'); g.setTransform(SCALE, 0, 0, SCALE, 0, 0); paint(g);
+    ART_CACHE[key] = c; return c;
+  }
+  function blitArt(c, x, y) { ctx.drawImage(c, Math.round(x * SCALE) / SCALE, Math.round(y * SCALE) / SCALE, c.width / SCALE, c.height / SCALE); }
+  var PUFFS = [[19, 21, 9], [32, 15, 12], [47, 18, 10], [59, 23, 7]];          // cloud circles: x, y, r (box 72 x 36)
+  function cloudPath(g) {
+    g.beginPath();
+    PUFFS.forEach(function (p) { g.moveTo(p[0] + p[2], p[1]); g.arc(p[0], p[1], p[2], 0, 6.2832); });
+    if (g.roundRect) g.roundRect(10, 21, 56, 10, 5); else g.rect(10, 21, 56, 10);
+  }
+  function paintCloud(g) {
+    cloudPath(g); g.lineJoin = 'round'; g.lineWidth = 5; g.strokeStyle = INK; g.stroke();       // outer outline
+    cloudPath(g); g.fillStyle = '#FFFFFF'; g.fill();
+    g.save(); cloudPath(g); g.clip(); g.fillStyle = '#DCEBF5'; g.fillRect(0, 26, 72, 10); g.restore();   // shaded underside
+    g.fillStyle = 'rgba(255,255,255,.95)'; g.beginPath(); g.ellipse(29, 10, 5, 2.4, 0, 0, 6.2832); g.fill();
+  }
+  function paintSun(g) {                            // calm: no face, soft rounded rays and a faint glow
+    g.translate(30, 30);
+    g.fillStyle = 'rgba(255,200,61,.22)'; g.beginPath(); g.arc(0, 0, 22, 0, 6.2832); g.fill();
+    g.strokeStyle = '#FFB547'; g.lineWidth = 3.6; g.lineCap = 'round';
+    for (var i = 0; i < 12; i++) { var a = i * 0.5236, c = Math.cos(a), s = Math.sin(a); g.beginPath(); g.moveTo(c * 21, s * 21); g.lineTo(c * 25.5, s * 25.5); g.stroke(); }
+    g.beginPath(); g.arc(0, 0, 17, 0, 6.2832); g.fillStyle = '#FFC83D'; g.fill(); g.strokeStyle = INK; g.lineWidth = 2.6; g.stroke();
+    g.beginPath(); g.arc(0, 0, 12.2, 3.75, 4.55); g.strokeStyle = '#FFE7A0'; g.lineWidth = 2.8; g.stroke();
+  }
   function drawCloud(x, y) {
-    if (playful) {                                  // white puffs with a dark outline
-      ctx.strokeStyle = INK; ctx.lineWidth = 6;
-      [[x + 12, y, 52, 8], [x, y + 8, 84, 8], [x + 24, y - 8, 28, 8]].forEach(function (r) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(r[0], r[1], r[2], r[3], 4); else ctx.rect(r[0], r[1], r[2], r[3]); ctx.stroke(); });
-    }
+    if (playful) { blitArt(cachedArt('cloud', 72, 36, paintCloud), x + 6, y - 14); return; }
     ctx.fillStyle = COL.cloud;
     rr(x + 12, y, 52, 8); rr(x, y + 8, 84, 8); rr(x + 24, y - 8, 28, 8);
   }
@@ -508,7 +538,7 @@
   function render() {
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H);
-    if (playful) { ctx.fillStyle = '#FFC83D'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(104, 44, 23, 0, 6.2832); ctx.fill(); ctx.stroke(); }
+    if (playful) blitArt(cachedArt('sun', 60, 60, paintSun), 104 - 30, 44 - 30);
     clouds.forEach(function (c) { drawCloud(c.x, c.y); });
     drawGround(); drawObstacles(); drawDino();
 

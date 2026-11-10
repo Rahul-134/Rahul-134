@@ -15,7 +15,7 @@ Sections: header (banner, typing line, badge row), about (About card + Tech Stac
 projects (the project cards), activity (GitHub stats + LeetCode), connect (Let's Connect) and
 game (the playable game page).
 
-What it regenerates: dino-banner.svg (+ dino-banner-mobile.svg), about-card.svg, projects/*.svg, connect/*.svg,
+What it regenerates: dino-banner.svg (+ dino-banner-mobile.svg), about-card.svg, tech-stack.svg, projects/*.svg, connect/*.svg,
 stats/*.svg (from the numbers saved in tools/stats.json), dino/index.html
 and the colour codes inside README.md (each region of the README follows its own section's theme).
 It needs Python 3 and Pillow (`pip install pillow`). Nothing else.
@@ -172,6 +172,7 @@ def apply(state):
             run("gen_dino.py", tmp, sec["game"])
             shutil.copyfile(os.path.join(tmp, "dino", "index.html"), os.path.join(ROOT, "dino", "index.html"))
     run("gen_about.py", ROOT, sec["about"])                       # about-card.svg
+    run("gen_stack.py", ROOT, sec["about"])                       # tech-stack.svg
     build_projects(cards)                                         # projects/*.svg
     run("gen_connect.py", ROOT, sec["connect"])                   # connect/*.svg
     run("gen_stats.py", ROOT, sec["activity"])                    # stats/*.svg (saved numbers, no network)

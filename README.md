@@ -94,21 +94,7 @@ More in [Featured Projects ↓](#-featured-projects)
 
 <div align="center">
 
-**Languages**
-
-<img src="https://skillicons.dev/icons?i=py,java,js,html,css&perline=5" alt="Python, Java, JavaScript, HTML, CSS" />
-
-**Frameworks & Libraries**
-
-<img src="https://skillicons.dev/icons?i=fastapi,react,nodejs,express,django,tailwind,bootstrap&perline=7" alt="FastAPI, React, Node.js, Express, Django, Tailwind CSS, Bootstrap" />
-
-**Databases**
-
-<img src="https://skillicons.dev/icons?i=sqlite,mysql,postgres,mongodb&perline=4" alt="SQLite, MySQL, PostgreSQL, MongoDB" />
-
-**Tools & Platforms**
-
-<img src="https://skillicons.dev/icons?i=git,github,docker,vercel,vscode,idea,pycharm,figma&perline=8" alt="Git, GitHub, Docker, Vercel, VS Code, IntelliJ IDEA, PyCharm, Figma" />
+<img src="tech-stack.svg" width="100%" alt="Tech stack. Languages: Python, Java, JavaScript, HTML, CSS. Databases: SQLite, MySQL, PostgreSQL, MongoDB. Frameworks and libraries: FastAPI, React, Node.js, Express, Django, Tailwind CSS, Bootstrap. Tools and platforms: Git, GitHub, Docker, Vercel, VS Code, IntelliJ IDEA, PyCharm, Figma." />
 
 </div>
 

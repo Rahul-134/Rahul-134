@@ -89,3 +89,10 @@ The cards in the GitHub Activity and LeetCode sections (`stats/*.svg`) are drawn
 fetches fresh numbers every day (GitHub's GraphQL API with the workflow's own token, and LeetCode's
 public API), redraws the cards and commits them. Run it from the Actions tab to update right away.
 Switching themes redraws the cards from the saved numbers, in the `activity` section's colour.
+
+## Tech Stack
+
+`tech-stack.svg` is drawn by `tools/gen_stack.py` in the `about` section's colour. The logos are
+[simple-icons](https://simpleicons.org) paths (CC0) kept in `tools/stack_icons.json`. To add a
+technology, copy its slug, title, hex and path into that file and add it to `GROUPS` in
+`gen_stack.py`, then run `python tools/theme.py about=same` (or any theme command) to redraw.

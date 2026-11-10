@@ -38,6 +38,15 @@ def derive(accent):
     return _hex(shade), _hex(light)
 
 
+def trim_of(accent):
+    """Belly, belly stripes and back spikes of the dino: the accent's hue turned 75 degrees, so they
+    always contrast with the body (blue on the green theme)."""
+    h, l, sat = colorsys.rgb_to_hls(*_rgb(accent))
+    hb = (h + 75 / 360) % 1
+    return (_hex(colorsys.hls_to_rgb(hb, 0.74, 0.80)), _hex(colorsys.hls_to_rgb(hb, 0.58, 0.70)),
+            _hex(colorsys.hls_to_rgb(hb, 0.58, 0.75)))
+
+
 def outline_of(accent):
     h, l, sat = colorsys.rgb_to_hls(*_rgb(accent))
     return _hex(colorsys.hls_to_rgb(h, l * 0.36, min(1.0, sat * 0.95)))
@@ -55,6 +64,7 @@ class Theme:
         self.shade = t.get("shade", d).upper()
         self.light = t.get("light", l).upper()
         self.outline = outline_of(self.accent)
+        self.belly, self.stripe, self.spike = trim_of(self.accent)
         r, g, b = (int(round(v * 255)) for v in _rgb(self.accent))
         self.rgb = f"{r},{g},{b}"
         self.bare = self.accent.lstrip("#")            # as used inside README badge / stat-card URLs

@@ -27,7 +27,7 @@ SPEED = (START_X - END_X) / CYCLE   # px/s: derived from the actual cactus trave
 
 def shapes(rows, u=U, cls=None):
     paths = S.path_by_colour(rows, u)
-    order = ["O", "D", "Y", "L", "B", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
     items = []
     for c in order:
         if c in paths:
@@ -217,7 +217,7 @@ def art_svg(rows, u=3, pal=None):
     rows = S.pad(rows)
     paths = S.path_by_colour(rows, u)
     pal = dict(S.PAL, **(pal or {}))
-    order = ["O", "D", "Y", "L", "B", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
     body = "".join(f'<path fill="{pal[c]}" d="{paths[c]}"/>' for c in order if c in paths)
     return (f'<svg viewBox="0 0 {len(rows[0]) * u} {len(rows) * u}" aria-hidden="true" focusable="false" '
             f'shape-rendering="crispEdges">{body}</svg>')

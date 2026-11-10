@@ -27,7 +27,7 @@ SPEED = (START_X - END_X) / CYCLE   # px/s: derived from the actual cactus trave
 
 def shapes(rows, u=U, cls=None):
     paths = S.path_by_colour(rows, u)
-    order = ["D", "Y", "L", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
     items = []
     for c in order:
         if c in paths:
@@ -35,16 +35,16 @@ def shapes(rows, u=U, cls=None):
     return "".join(items)
 
 
-dino_rows = S.pad(S.ART["dinoBody"], 23)
-dino_w = 24 * U
-body_h = len(S.ART["dinoBody"]) * U
-dino_h = (len(S.ART["dinoBody"]) + len(S.ART["legsA"])) * U
+DU = S.DINO_U                      # the dino is drawn on a finer grid than the cacti
+dino_w = S.DINO_W * DU
+body_h = len(S.ART["dinoBody"]) * DU
+dino_h = (len(S.ART["dinoBody"]) + len(S.ART["legsA"])) * DU
 dino_y = GROUND - dino_h
 dino_x = 100
 
-legsA = shapes(S.pad(S.ART["legsA"], 24))
-legsB = shapes(S.pad(S.ART["legsB"], 24))
-body = shapes(S.pad(S.ART["dinoBody"], 24))
+legsA = shapes(S.pad(S.ART["legsA"], S.DINO_W), DU)
+legsB = shapes(S.pad(S.ART["legsB"], S.DINO_W), DU)
+body = shapes(S.pad(S.ART["dinoBody"], S.DINO_W), DU)
 
 
 def sprite_h(name):
@@ -217,25 +217,26 @@ def art_svg(rows, u=3, pal=None):
     rows = S.pad(rows)
     paths = S.path_by_colour(rows, u)
     pal = dict(S.PAL, **(pal or {}))
-    order = ["D", "Y", "L", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
     body = "".join(f'<path fill="{pal[c]}" d="{paths[c]}"/>' for c in order if c in paths)
     return (f'<svg viewBox="0 0 {len(rows[0]) * u} {len(rows) * u}" aria-hidden="true" focusable="false" '
             f'shape-rendering="crispEdges">{body}</svg>')
 
 
 ART_HTML = {
-    "{{ART_DINO}}": art_svg(S.pad(S.ART["dinoBody"], 24) + S.pad(S.ART["legsA"], 24)),
+    "{{ART_DINO}}": art_svg(S.pad(S.ART["dinoBody"], S.DINO_W) + S.pad(S.ART["legsA"], S.DINO_W), S.DINO_U),
     "{{ART_SAGUARO}}": art_svg(S.ART["saguaro"]),
     "{{ART_SMALL}}": art_svg(S.ART["small"]),
     "{{ART_BIRD}}": art_svg(S.ART["birdUp"], pal={"X": "#5B6B80"}),
-    "{{ART_DINO_B}}": art_svg(S.pad(S.ART["dinoBody"], 24) + S.pad(S.ART["legsB"], 24)),
-    "{{ART_DUCK_A}}": art_svg(S.pad(S.ART["duckBody"], 28) + S.pad(S.ART["duckLegsA"], 28)),
-    "{{ART_DUCK_B}}": art_svg(S.pad(S.ART["duckBody"], 28) + S.pad(S.ART["duckLegsB"], 28)),
+    "{{ART_DINO_B}}": art_svg(S.pad(S.ART["dinoBody"], S.DINO_W) + S.pad(S.ART["legsB"], S.DINO_W), S.DINO_U),
+    "{{ART_DUCK_A}}": art_svg(S.pad(S.ART["duckBody"], S.DUCK_W) + S.pad(S.ART["duckLegsA"], S.DUCK_W), S.DINO_U),
+    "{{ART_DUCK_B}}": art_svg(S.pad(S.ART["duckBody"], S.DUCK_W) + S.pad(S.ART["duckLegsB"], S.DUCK_W), S.DINO_U),
     "{{ART_BIRD_UP}}": art_svg(S.ART["birdUp"], pal={"X": "#5B6B80"}),
     "{{ART_BIRD_DOWN}}": art_svg(S.pad(S.ART["birdDown"], 16), pal={"X": "#5B6B80"}),
 }
 
 html = tpl.replace("/*__SPRITES__*/", js).replace("{{ACCENT}}", T.accent).replace("{{ACCENT_RGB}}", T.rgb)
+html = html.replace("{{DINO_U}}", str(S.DINO_U))
 for key, markup in ART_HTML.items():
     html = html.replace(key, markup)
 hook = (

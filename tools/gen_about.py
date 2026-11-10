@@ -116,17 +116,17 @@ styles.append(
 
 def shapes(rows_, u=3):
     paths = S.path_by_colour(rows_, u)
-    order = ["D", "Y", "L", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
     return "".join(f'<path fill="{S.PAL[c]}" d="{paths[c]}"/>' for c in order if c in paths)
 
 
-dino_h = (len(S.ART["dinoBody"]) + len(S.ART["legsA"])) * 3
+dino_h = (len(S.ART["dinoBody"]) + len(S.ART["legsA"])) * S.DINO_U
 GROUND_Y = H - 40
 dino_x_right = 862                       # flipped: the dino faces left, towards the text and the cactus
-body = shapes(S.pad(S.ART["dinoBody"], 24))
-legsA = shapes(S.pad(S.ART["legsA"], 24))
-legsB = shapes(S.pad(S.ART["legsB"], 24))
-body_h = len(S.ART["dinoBody"]) * 3
+body = shapes(S.pad(S.ART["dinoBody"], S.DINO_W), S.DINO_U)
+legsA = shapes(S.pad(S.ART["legsA"], S.DINO_W), S.DINO_U)
+legsB = shapes(S.pad(S.ART["legsB"], S.DINO_W), S.DINO_U)
+body_h = len(S.ART["dinoBody"]) * S.DINO_U
 cactus_h = len(S.ART["small"]) * 3
 sag_h = len(S.ART["saguaro"]) * 3
 

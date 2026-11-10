@@ -4,7 +4,7 @@ name: Switch theme
 #   * pick one colour in "theme" to recolour the whole profile, and/or
 #   * pick a colour for individual sections (header, about, projects, activity, connect, game)
 #     to mix themes, e.g. a green banner with a blue About card.
-# "keep" leaves a section exactly as it is. It regenerates the banner, About card, project cards,
+# "keep" leaves a section exactly as it is. It regenerates the banner, About card, project cards, the stats cards,
 # Let's Connect, the game page and the README colour codes, then commits the result.
 on:
   workflow_dispatch:

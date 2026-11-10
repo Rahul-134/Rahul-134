@@ -171,7 +171,9 @@ More in [Featured Projects ↓](#-featured-projects)
 <!-- ───────────── 03 · DataPilot ───────────── -->
 <div align="center">
 
-<a href="https://github.com/Rahul-134/datapilot"><img src="projects/datapilot.svg" width="100%" alt="DataPilot: AI-powered data analysis, web scraping and machine learning in one workspace. Built with FastAPI, Streamlit, scikit-learn and Gemini." /></a>
+<a href="https://datapilot-alpha-flame.vercel.app/"><img src="projects/datapilot.svg" width="100%" alt="DataPilot: AI-powered data analysis, web scraping and machine learning in one workspace. Built with FastAPI, Streamlit, scikit-learn and Gemini." /></a>
+
+<sub>🟢 <a href="https://datapilot-alpha-flame.vercel.app/"><b>Live app ↗</b></a> &nbsp;·&nbsp; <a href="https://datapilot-ml-trainer.streamlit.app/">ML Trainer ↗</a> &nbsp;·&nbsp; <a href="https://github.com/Rahul-134/datapilot">Source code ↗</a></sub>
 
 </div>
 
@@ -228,6 +230,8 @@ More in [Featured Projects ↓](#-featured-projects)
 <div align="center">
 
 <a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="projects/portfolio.svg" width="100%" alt="Portfolio: my personal site with projects, skills, live stats and an ask-me-anything chatbot terminal. Built with Python, Django, React, Next.js and OpenRouter for the LLM API." /></a>
+
+<sub>🟢 <a href="https://rahul-lumbhani-portfolio.vercel.app/"><b>Live site ↗</b></a></sub>
 
 </div>
 <details>

@@ -1,4 +1,5 @@
-"""Build the Featured Projects card SVGs (animated, screenshots embedded as data URIs).
+"""Build the Featured Projects card SVGs in the Playful style (cream cards, dark outlines, a cartoon browser
+window with the screenshot, and a LIVE sticker plus a "Try it live" button on deployed projects).
 
 usage: python3 gen_projects.py OUT_DIR
 """
@@ -14,6 +15,7 @@ SHOTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 os.makedirs(out_dir, exist_ok=True)
 
 import theme_colors
+import banner
 
 ACCENT = theme_colors.current().accent
 W, H = 900, 336
@@ -49,6 +51,7 @@ PROJECTS = [
                   "Local Ollama or hosted Gemini via one env var"],
          chips=["FastAPI", "Ollama", "SQLite", "Firebase", "Tailwind"], mirror=True),
     dict(slug="datapilot", num="03", tag="DATA · ML · AUTOMATION", title="DataPilot", shot="datapilot.jpg", live=True,
+         live_url="https://datapilot-alpha-flame.vercel.app/",
          url_label="datapilot — dashboard",
          pitch=["AI-powered data analysis, web scraping and", "machine learning in one workspace."],
          bullets=["Ask your data questions in plain English",
@@ -64,7 +67,8 @@ PROJECTS = [
                   "Save & resume games per account, backed by MySQL",
                   "Custom circular data structure for the board"],
          chips=["Java", "JavaFX", "MySQL", "Maven"], mirror=True),
-    dict(slug="portfolio", num="05", tag="WEB · PORTFOLIO", title="Portfolio", shot="portfolio.jpg",
+    dict(slug="portfolio", num="05", tag="WEB · PORTFOLIO", title="Portfolio", shot="portfolio.jpg", live=True,
+         live_url="https://rahul-lumbhani-portfolio.vercel.app/",
          url_label="rahul-lumbhani-portfolio.vercel.app",
          pitch=["My personal site: projects, skills and an", "ask-me-anything chatbot terminal."],
          bullets=["Ask-me-anything chatbot terminal, LLMs via OpenRouter",
@@ -82,57 +86,87 @@ def data_uri(name):
         return "data:image/jpeg;base64," + base64.b64encode(f.read()).decode()
 
 
-def chip(x, y, name):
-    w = round(len(name) * 6.8 + 31)
-    dot = TECH.get(name, "#C9D1D9")
-    return (f'<rect x="{x}" y="{y}" width="{w}" height="24" rx="12" fill="#1e1e1e" stroke="#303030"/>'
-            f'<circle cx="{x + 13}" cy="{y + 12}" r="4" fill="{dot}"/>'
-            f'<text x="{x + 24}" y="{y + 16}" font-size="12" fill="#D6D6D6" font-family="{SANS}">{e(name)}</text>'), w + 8
+INK, PAPER, BAR, LIVE_GREEN = banner.INK, "#FFFDF7", "#F1E4CB", "#5BD68A"
+ROUND = "'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif"
+FONT_CSS = banner.font_face()
+
+
+def tw_(text, size):            # rough width of Baloo text (it runs a little wide), for laying out pills
+    return len(text) * size * 0.56
+
+
+def chips_row(x, y, names, max_w, size=13.0):
+    """Tech chips: white pills with a coloured dot; shrink the font a little if they would not fit."""
+    def widths(fs):
+        return [tw_(n, fs) + 34 for n in names]
+    fs = size
+    while sum(widths(fs)) + 8 * (len(names) - 1) > max_w and fs > 10:
+        fs -= 0.5
+    out, cx = [], x
+    for n, w in zip(names, widths(fs)):
+        dot = TECH.get(n, "#C9D1D9")
+        out.append(f'<rect x="{cx:.1f}" y="{y}" width="{w:.1f}" height="26" rx="13" fill="#fff" stroke="{INK}" stroke-width="2"/>'
+                   f'<circle cx="{cx + 14:.1f}" cy="{y + 13}" r="5" fill="{dot}" stroke="{INK}" stroke-width="1.5"/>'
+                   f'<text x="{cx + 25:.1f}" y="{y + 17.5}" font-size="{fs}" font-weight="700" fill="{INK}" font-family="{ROUND}">{e(n)}</text>')
+        cx += w + 8
+    return "".join(out)
+
+
+def pill(x, y, text, fill, size=12.5, h=26, spacing=1.2, anchor="start", shadow=False):
+    w = tw_(text, size) + spacing * len(text) + 26
+    if anchor == "end":
+        x = x - w
+    sh = f'<rect x="{x + 3:.1f}" y="{y + 4}" width="{w:.1f}" height="{h}" rx="{h / 2}" fill="{INK}"/>' if shadow else ""
+    return (sh + f'<rect x="{x:.1f}" y="{y}" width="{w:.1f}" height="{h}" rx="{h / 2}" fill="{fill}" stroke="{INK}" stroke-width="2.5"/>'
+            f'<text x="{x + 13:.1f}" y="{y + h / 2 + size * 0.36:.1f}" font-size="{size}" font-weight="800" fill="{INK}" letter-spacing="{spacing}" font-family="{ROUND}">{e(text)}</text>'), w
+
+
+def card_shell(w, h, rx=24):
+    return (f'<rect x="11" y="11" width="{w - 14}" height="{h - 14}" rx="{rx}" fill="{INK}"/>'
+            f'<rect x="3" y="3" width="{w - 14}" height="{h - 14}" rx="{rx}" fill="{PAPER}" stroke="{INK}" stroke-width="4"/>')
 
 
 def card(p):
-    fx = (W - PAD - FRAME_W) if p["mirror"] else PAD
-    tx = PAD if p["mirror"] else (PAD + FRAME_W + GAP)
-    tw = W - 2 * PAD - FRAME_W - GAP
-    fy = (H - FRAME_H) // 2
+    live = bool(p.get("live"))
+    fx = (W - PAD - FRAME_W - 8) if p["mirror"] else PAD
+    tx = PAD + 6 if p["mirror"] else (PAD + FRAME_W + GAP)
+    tw = W - 2 * PAD - FRAME_W - GAP - 14
+    fy = (H - FRAME_H) // 2 - 4
     content_h = FRAME_H - BAR_H
+    r = 14
     s = []
 
-    # --- text column
-    pill_w = round((len(p["num"]) + 3 + len(p["tag"])) * 8.1 + 44)
-    s.append(f'<rect x="{tx}" y="36" width="{pill_w}" height="24" rx="12" fill="{ACCENT}" fill-opacity="0.10" stroke="{ACCENT}" stroke-opacity="0.35"/>')
-    s.append(f'<circle class="pulse" cx="{tx + 14}" cy="48" r="3.5" fill="{ACCENT}"/>')
-    s.append(f'<text x="{tx + 27}" y="52" font-size="11" fill="{ACCENT}" letter-spacing="1.4" font-family="{MONO}">{p["num"]} · {e(p["tag"])}</text>')
-    s.append(f'<text x="{tx + tw}" y="52" text-anchor="end" font-size="11" fill="#8b8b8b" letter-spacing="1.2" font-family="{MONO}">OPEN ↗</text>')
-    if p.get("live"):
-        lx = tx + tw - 112
-        s.append(f'<rect x="{lx}" y="38" width="54" height="20" rx="10" fill="#27c93f" fill-opacity="0.12" stroke="#27c93f" stroke-opacity="0.45"/>')
-        s.append(f'<circle class="pulse" cx="{lx + 13}" cy="48" r="3.2" fill="#27c93f"/>')
-        s.append(f'<text x="{lx + 22}" y="52" font-size="10" fill="#5EE27A" letter-spacing="1.3" font-family="{MONO}">LIVE</text>')
-    s.append(f'<text x="{tx}" y="104" font-size="34" font-weight="800" fill="#FFFFFF" font-family="{SANS}">{e(p["title"])}</text>')
+    # --- text column: tag pill, call to action, title, pitch, bullets, chips
+    tag, _ = pill(tx, 30, f'{p["num"]} · {p["tag"]}', ACCENT, size=12, h=26)
+    s.append(tag)
+    if live and p.get("live_url"):   # the README links this card to the live site
+        cta, _ = pill(tx + tw, 30, "TRY IT LIVE ↗", LIVE_GREEN, size=12.5, h=26, anchor="end", shadow=True)
+    else:
+        cta, _ = pill(tx + tw, 30, "VIEW CODE ↗", "#FFFFFF", size=12, h=26, anchor="end")
+    s.append(cta)
+    s.append(f'<text x="{tx}" y="100" font-size="38" font-weight="800" fill="{INK}" font-family="{ROUND}">{e(p["title"])}</text>')
     for i, line in enumerate(p["pitch"]):
-        s.append(f'<text x="{tx}" y="{132 + i * 20}" font-size="14.5" fill="#9aa0a6" font-family="{SANS}">{e(line)}</text>')
+        s.append(f'<text x="{tx}" y="{128 + i * 21}" font-size="16" font-weight="500" fill="{INK}" fill-opacity=".72" font-family="{ROUND}">{e(line)}</text>')
     by = 186
     for i, b in enumerate(p["bullets"]):
-        yy = by + i * 25
-        s.append(f'<rect x="{tx}" y="{yy - 9}" width="7" height="7" rx="2" fill="{ACCENT}" fill-opacity="{1 - i * 0.18:.2f}"/>')
-        s.append(f'<text x="{tx + 18}" y="{yy}" font-size="14" fill="#D6D6D6" font-family="{SANS}">{e(b)}</text>')
-    cx, cy = tx, 292
-    for name in p["chips"]:
-        c, adv = chip(cx, cy, name)
-        s.append(c)
-        cx += adv
+        yy = by + i * 24
+        s.append(f'<circle cx="{tx + 5}" cy="{yy - 5}" r="4.6" fill="{ACCENT}" stroke="{INK}" stroke-width="1.8"/>')
+        s.append(f'<text x="{tx + 18}" y="{yy}" font-size="15" font-weight="500" fill="{INK}" font-family="{ROUND}">{e(b)}</text>')
+    s.append(chips_row(tx, 280, p["chips"], tw))
     text_col = "".join(s)
 
-    # --- browser frame
-    fr = []
-    r = 12
-    fr.append(f'<rect x="{fx}" y="{fy}" width="{FRAME_W}" height="{FRAME_H}" rx="{r}" fill="#0d0d0d" stroke="#333" />')
-    fr.append(f'<path d="M{fx} {fy + r}a{r} {r} 0 0 1 {r} -{r}h{FRAME_W - 2 * r}a{r} {r} 0 0 1 {r} {r}v{BAR_H - r}h-{FRAME_W}z" fill="#1d1d1d"/>')
-    for i, col in enumerate(("#ff5f56", "#ffbd2e", "#27c93f")):
-        fr.append(f'<circle cx="{fx + 16 + i * 16}" cy="{fy + BAR_H / 2}" r="4.5" fill="{col}"/>')
-    fr.append(f'<rect x="{fx + 74}" y="{fy + 6}" width="{FRAME_W - 74 - 14}" height="16" rx="8" fill="#141414"/>')
-    fr.append(f'<text x="{fx + 74 + (FRAME_W - 88) / 2}" y="{fy + 18}" text-anchor="middle" font-size="9.5" fill="#7d8590" letter-spacing="0.6" font-family="{MONO}">{e(p["url_label"])}</text>')
+    # --- cartoon browser window with the screenshot
+    fr = [f'<rect x="{fx + 6}" y="{fy + 7}" width="{FRAME_W}" height="{FRAME_H}" rx="{r}" fill="{INK}"/>',
+          f'<rect x="{fx}" y="{fy}" width="{FRAME_W}" height="{FRAME_H}" rx="{r}" fill="#fff"/>',
+          f'<path d="M{fx} {fy + r}a{r} {r} 0 0 1 {r} -{r}h{FRAME_W - 2 * r}a{r} {r} 0 0 1 {r} {r}v{BAR_H - r}h-{FRAME_W}z" fill="{BAR}"/>',
+          f'<line x1="{fx}" y1="{fy + BAR_H}" x2="{fx + FRAME_W}" y2="{fy + BAR_H}" stroke="{INK}" stroke-width="2.5"/>']
+    for i, col in enumerate(("#FF6B4A", "#FFC83D", "#BFF0CF")):
+        fr.append(f'<circle cx="{fx + 18 + i * 17}" cy="{fy + BAR_H / 2 + 1}" r="5" fill="{col}" stroke="{INK}" stroke-width="1.8"/>')
+    ux, uw = fx + 78, FRAME_W - 78 - 14
+    fr.append(f'<rect x="{ux}" y="{fy + 6}" width="{uw}" height="18" rx="9" fill="#fff" stroke="{INK}" stroke-width="1.8"/>')
+    if live:
+        fr.append(f'<circle class="pulse" cx="{ux + 12}" cy="{fy + 15}" r="3.6" fill="{LIVE_GREEN}" stroke="{INK}" stroke-width="1.2"/>')
+    fr.append(f'<text x="{ux + uw / 2 + (5 if live else 0)}" y="{fy + 19.5}" text-anchor="middle" font-size="11" font-weight="600" fill="{INK}" fill-opacity=".7" font-family="{ROUND}">{e(p["url_label"])}</text>')
     if p["shot"]:
         if p.get("zoom"):
             from PIL import Image
@@ -144,58 +178,33 @@ def card(p):
         else:
             fr.append(f'<image href="{data_uri(p["shot"])}" x="{fx}" y="{fy + BAR_H}" width="{FRAME_W}" height="{content_h}" '
                       f'preserveAspectRatio="xMidYMin slice" clip-path="url(#shotclip{p["slug"]})"/>')
-        fr.append(f'<rect x="{fx}" y="{fy + BAR_H}" width="{FRAME_W}" height="{content_h}" fill="url(#fade)" clip-path="url(#shotclip{p["slug"]})"/>')
+    fr.append(f'<rect x="{fx}" y="{fy}" width="{FRAME_W}" height="{FRAME_H}" rx="{r}" fill="none" stroke="{INK}" stroke-width="3"/>')
+    if live:   # a LIVE sticker slapped on the window's corner
+        lx = fx + FRAME_W - 92 if not p["mirror"] else fx + 10
+        fr.append(f'<g transform="rotate(-7 {lx + 44} {fy + BAR_H + 28})">'
+                  f'<rect x="{lx + 3}" y="{fy + BAR_H + 15}" width="88" height="30" rx="15" fill="{INK}"/>'
+                  f'<rect x="{lx}" y="{fy + BAR_H + 11}" width="88" height="30" rx="15" fill="{LIVE_GREEN}" stroke="{INK}" stroke-width="2.5"/>'
+                  f'<circle class="pulse" cx="{lx + 18}" cy="{fy + BAR_H + 26}" r="5" fill="#fff" stroke="{INK}" stroke-width="1.6"/>'
+                  f'<text x="{lx + 30}" y="{fy + BAR_H + 31.5}" font-size="15" font-weight="800" fill="{INK}" letter-spacing="1.5" font-family="{ROUND}">LIVE</text></g>')
     frame = "".join(fr)
     clip = (f'<clipPath id="shotclip{p["slug"]}"><path d="M{fx} {fy + BAR_H}h{FRAME_W}v{content_h - r}a{r} {r} 0 0 1 -{r} {r}h-{FRAME_W - 2 * r}a{r} {r} 0 0 1 -{r} -{r}z"/></clipPath>')
 
-    glow_cx = (fx + FRAME_W / 2) / W
+    state = "Live and deployed. " if live else ""
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-labelledby="t d">
-  <title id="t">{e(p["title"])}</title>
-  <desc id="d">{e(p["title"])}: {e(" ".join(p["pitch"]))} {e(". ".join(p["bullets"]))}. Built with {e(", ".join(p["chips"]))}.</desc>
+  <title id="t">{e(p["title"])}{" (live)" if live else ""}</title>
+  <desc id="d">{state}{e(p["title"])}: {e(" ".join(p["pitch"]))} {e(". ".join(p["bullets"]))}. Built with {e(", ".join(p["chips"]))}.</desc>
   <style>
+    {FONT_CSS}
     .float{{animation:float 6s ease-in-out infinite alternate}}
     @keyframes float{{from{{transform:translateY(0)}}to{{transform:translateY(-5px)}}}}
-    .shine{{animation:shine 7s ease-in-out infinite}}
-    @keyframes shine{{0%,62%{{transform:translateX(0)}}100%{{transform:translateX({W + 420}px)}}}}
-    .pulse{{animation:pulse 2s ease-in-out infinite}}
-    @keyframes pulse{{0%,100%{{opacity:1}}50%{{opacity:.35}}}}
-    .caret{{animation:caret 1.1s steps(1,end) infinite}}
-    @keyframes caret{{0%,49%{{opacity:1}}50%,100%{{opacity:0}}}}
-    .bar{{transform-box:fill-box;transform-origin:bottom;animation:grow 3.6s ease-in-out infinite alternate}}
-    @keyframes grow{{from{{transform:scaleY(.82)}}to{{transform:scaleY(1)}}}}
-    @media (prefers-reduced-motion:reduce){{.float,.shine,.pulse,.caret,.bar{{animation:none}}}}
+    .pulse{{animation:pulse 1.6s ease-in-out infinite}}
+    @keyframes pulse{{0%,100%{{opacity:1}}50%{{opacity:.3}}}}
+    @media (prefers-reduced-motion:reduce){{.float,.pulse{{animation:none}}}}
   </style>
-  <defs>
-    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="{ACCENT}" stop-opacity="0.55"/>
-      <stop offset="0.45" stop-color="#2a2a2a"/>
-      <stop offset="1" stop-color="{ACCENT}" stop-opacity="0.30"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="{glow_cx:.3f}" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="{ACCENT}" stop-opacity="0.13"/>
-      <stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#fff" stop-opacity="0.07"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0.75" stop-color="#000" stop-opacity="0"/>
-      <stop offset="1" stop-color="#000" stop-opacity="0.35"/>
-    </linearGradient>
-    <clipPath id="card"><rect width="{W}" height="{H}" rx="20"/></clipPath>
-    {clip}
-  </defs>
-
-  <rect width="{W}" height="{H}" rx="20" fill="#151515"/>
-  <rect width="{W}" height="{H}" rx="20" fill="url(#glow)"/>
-  <rect x="0.75" y="0.75" width="{W - 1.5}" height="{H - 1.5}" rx="19.25" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
-
+  <defs>{clip}</defs>
+  {card_shell(W, H)}
   <g class="float">{frame}</g>
   {text_col}
-
-  <g clip-path="url(#card)"><g class="shine"><rect x="-260" y="-40" width="130" height="{H + 80}" fill="url(#beam)" transform="skewX(-18)"/></g></g>
 </svg>
 '''
     with open(os.path.join(out_dir, f'{p["slug"]}.svg'), "w") as f:
@@ -222,10 +231,10 @@ MINI = [
 def mini(p):
     u = 8
     aw, ah = len(p["art"][0]) * u, len(p["art"]) * u
-    bx, by, bw, bh = 24, 28, 112, MH - 56
-    s = []
-    s.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="14" fill="#101010" stroke="#2c2c2c"/>')
-    ax, ay = bx + (bw - aw) / 2, by + (bh - ah) / 2
+    bx, by, bw, bh = 24, 26, 112, MH - 60
+    s = [f'<rect x="{bx + 4}" y="{by + 5}" width="{bw}" height="{bh}" rx="16" fill="{INK}"/>',
+         f'<rect x="{bx}" y="{by}" width="{bw}" height="{bh}" rx="16" fill="{banner.SKY}" stroke="{INK}" stroke-width="3"/>']
+    ax, ay = round(bx + (bw - aw) / 2), round(by + (bh - ah) / 2)
     rects = []
     for y, row in enumerate(p["art"]):
         x = 0
@@ -237,47 +246,30 @@ def mini(p):
                 rects.append(f'<rect x="{st * u}" y="{y * u}" width="{(x - st) * u}" height="{u}"/>')
             else:
                 x += 1
-    s.append(f'<g class="bob" transform="translate({ax},{ay})" fill="{p["col"]}">{"".join(rects)}</g>')
-    tx = bx + bw + 26
-    pill_w = round((len(p["num"]) + 3 + len(p["tag"])) * 7.7 + 42)
-    s.append(f'<rect x="{tx}" y="26" width="{pill_w}" height="22" rx="11" fill="{ACCENT}" fill-opacity="0.10" stroke="{ACCENT}" stroke-opacity="0.35"/>')
-    s.append(f'<circle class="pulse" cx="{tx + 13}" cy="37" r="3.2" fill="{ACCENT}"/>')
-    s.append(f'<text x="{tx + 25}" y="41" font-size="10.5" fill="{ACCENT}" letter-spacing="1.3" font-family="{MONO}">{p["num"]} · {e(p["tag"])}</text>')
-    s.append(f'<text x="{tx}" y="82" font-size="22" font-weight="800" fill="#FFFFFF" font-family="{SANS}">{e(p["title"])}</text>')
+    s.append(f'<g class="bob" transform="translate({ax},{ay})" shape-rendering="crispEdges">'
+             f'<g fill="{INK}" stroke="{INK}" stroke-width="5" stroke-linejoin="round">{"".join(rects)}</g>'
+             f'<g fill="{p["col"]}">{"".join(rects)}</g></g>')
+    tx = bx + bw + 24
+    tag, _ = pill(tx, 24, f'{p["num"]} · {p["tag"]}', ACCENT, size=11, h=24)
+    s.append(tag)
+    s.append(f'<text x="{tx}" y="78" font-size="24" font-weight="800" fill="{INK}" font-family="{ROUND}">{e(p["title"])}</text>')
     for i, line in enumerate(p["desc"]):
-        s.append(f'<text x="{tx}" y="{108 + i * 18}" font-size="12.5" fill="#9aa0a6" font-family="{SANS}">{e(line)}</text>')
-    cx, cy = tx, MH - 26 - 24
-    for name in p["chips"]:
-        c, adv = chip(cx, cy, name)
-        s.append(c)
-        cx += adv
-    s.append(f'<text x="{MW - 24}" y="{MH - 33}" text-anchor="end" font-size="10.5" fill="#8b8b8b" letter-spacing="1.2" font-family="{MONO}">OPEN ↗</text>')
+        s.append(f'<text x="{tx}" y="{102 + i * 18}" font-size="13.5" font-weight="500" fill="{INK}" fill-opacity=".72" font-family="{ROUND}">{e(line)}</text>')
+    s.append(chips_row(tx, MH - 56, p["chips"], MW - tx - 110, size=12))
+    cta, _ = pill(MW - 30, MH - 56, "CODE ↗", "#FFFFFF", size=11.5, h=26, anchor="end")
+    s.append(cta)
     body = "".join(s)
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {MW} {MH}" width="{MW}" height="{MH}" role="img" aria-labelledby="t d">
   <title id="t">{e(p["title"])}</title>
   <desc id="d">{e(p["title"])}: {e(" ".join(p["desc"]))} Built with {e(", ".join(p["chips"]))}.</desc>
   <style>
+    {FONT_CSS}
     .bob{{animation:bobm 2.6s ease-in-out infinite alternate}}
     @keyframes bobm{{from{{transform:translate({ax}px,{ay}px)}}to{{transform:translate({ax}px,{ay - 5}px)}}}}
-    .shine{{animation:shine 8s ease-in-out infinite}}
-    @keyframes shine{{0%,65%{{transform:translateX(0)}}100%{{transform:translateX({MW + 360}px)}}}}
-    .pulse{{animation:pulse 2s ease-in-out infinite}}
-    @keyframes pulse{{0%,100%{{opacity:1}}50%{{opacity:.35}}}}
-    @media (prefers-reduced-motion:reduce){{.bob,.shine,.pulse{{animation:none}}}}
+    @media (prefers-reduced-motion:reduce){{.bob{{animation:none}}}}
   </style>
-  <defs>
-    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="{ACCENT}" stop-opacity="0.5"/><stop offset="0.5" stop-color="#2a2a2a"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0.25"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="0.18" cy="0.5" r="0.5"><stop offset="0" stop-color="{p["col"]}" stop-opacity="0.12"/><stop offset="1" stop-color="{p["col"]}" stop-opacity="0"/></radialGradient>
-    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.07"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-    <clipPath id="card"><rect width="{MW}" height="{MH}" rx="18"/></clipPath>
-  </defs>
-  <rect width="{MW}" height="{MH}" rx="18" fill="#151515"/>
-  <rect width="{MW}" height="{MH}" rx="18" fill="url(#glow)"/>
-  <rect x="0.75" y="0.75" width="{MW - 1.5}" height="{MH - 1.5}" rx="17.25" fill="none" stroke="url(#edge)" stroke-width="1.5"/>
+  {card_shell(MW, MH, 22)}
   {body}
-  <g clip-path="url(#card)"><g class="shine"><rect x="-220" y="-30" width="110" height="{MH + 60}" fill="url(#beam)" transform="skewX(-18)"/></g></g>
 </svg>
 '''
     with open(os.path.join(out_dir, f'{p["slug"]}.svg'), "w") as f:

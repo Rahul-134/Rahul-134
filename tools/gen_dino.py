@@ -205,7 +205,27 @@ js += "  };"
 here = os.path.dirname(os.path.abspath(__file__))
 tpl = open(os.path.join(here, "index.template.html")).read()
 assert "/*__SPRITES__*/" in tpl
+def art_svg(rows, u=3, pal=None):
+    """A standalone inline <svg> of pixel art, used for the stickers and the logo on the game page."""
+    rows = S.pad(rows)
+    paths = S.path_by_colour(rows, u)
+    pal = dict(S.PAL, **(pal or {}))
+    order = ["D", "Y", "L", "K", "W", "g", "G", "h", "S", "P", "X"]
+    body = "".join(f'<path fill="{pal[c]}" d="{paths[c]}"/>' for c in order if c in paths)
+    return (f'<svg viewBox="0 0 {len(rows[0]) * u} {len(rows) * u}" aria-hidden="true" focusable="false" '
+            f'shape-rendering="crispEdges">{body}</svg>')
+
+
+ART_HTML = {
+    "{{ART_DINO}}": art_svg(S.pad(S.ART["dinoBody"], 24) + S.pad(S.ART["legsA"], 24)),
+    "{{ART_SAGUARO}}": art_svg(S.ART["saguaro"]),
+    "{{ART_SMALL}}": art_svg(S.ART["small"]),
+    "{{ART_BIRD}}": art_svg(S.ART["birdUp"], pal={"X": "#5B6B80"}),
+}
+
 html = tpl.replace("/*__SPRITES__*/", js).replace("{{ACCENT}}", T.accent).replace("{{ACCENT_RGB}}", T.rgb)
+for key, markup in ART_HTML.items():
+    html = html.replace(key, markup)
 hook = (
     "  window.__dino = { get: function () { return { state: state, score: score, speed: speed, obstacles: obstacles.length,"
     " dinoY: dino.y, dinoX: dino.x, onGround: dino.onGround, ducking: ducking, raw: obstacles.map(function (o) { return { t: o.type, x: o.x, w: o.w, y: o.y, h: o.h }; }), parts: obstacles.map(function (o) { return o.parts ? o.parts.map(function (p) { return p.name; }).join('+') : o.type; }) }; },"

@@ -12,12 +12,12 @@
     @media (prefers-reduced-motion:reduce){.pulse,.nudge{animation:none}}
   </style>
   <rect x="11" y="11" width="426" height="102" rx="22" fill="#2B1A12"/><rect x="3" y="3" width="426" height="102" rx="22" fill="#4ADE80" stroke="#2B1A12" stroke-width="4"/>
-  <circle cx="66" cy="61" r="33" fill="#2B1A12"/>
-  <circle cx="62" cy="57" r="33" fill="#FFFFFF" stroke="#2B1A12" stroke-width="3"/>
-  <text x="62" y="66" text-anchor="middle" font-size="27" font-weight="800" fill="#2B1A12">in</text>
-  <text x="114" y="55" font-size="28" font-weight="800" fill="#2B1A12">Say hello</text>
-  <text x="114" y="80" font-size="15" font-weight="600" fill="#2B1A12" fill-opacity=".68">LinkedIn · let&#x27;s talk</text>
+  <circle cx="66" cy="58.0" r="33" fill="#2B1A12"/>
+  <circle cx="62" cy="54.0" r="33" fill="#FFFFFF" stroke="#2B1A12" stroke-width="3"/>
+  <text x="62" y="63.0" text-anchor="middle" font-size="27" font-weight="800" fill="#2B1A12">in</text>
+  <text x="114" y="52.0" font-size="28" font-weight="800" fill="#2B1A12">Say hello</text>
+  <text x="114" y="77.0" font-size="15" font-weight="600" fill="#2B1A12" fill-opacity=".68">LinkedIn · let&#x27;s talk</text>
   
-  <g class="nudge"><circle cx="396" cy="80" r="17" fill="#fff" stroke="#2B1A12" stroke-width="2.6"/>
-  <text x="396" y="87" text-anchor="middle" font-size="19" font-weight="800" fill="#2B1A12">↗</text></g>
+  <g class="nudge"><circle cx="398" cy="54.0" r="17" fill="#fff" stroke="#2B1A12" stroke-width="2.6"/>
+  <text x="398" y="61.0" text-anchor="middle" font-size="19" font-weight="800" fill="#2B1A12">↗</text></g>
 </svg>

@@ -12,12 +12,12 @@
     @media (prefers-reduced-motion:reduce){.pulse,.nudge{animation:none}}
   </style>
   <rect x="11" y="11" width="426" height="102" rx="22" fill="#2B1A12"/><rect x="3" y="3" width="426" height="102" rx="22" fill="#FFFDF7" stroke="#2B1A12" stroke-width="4"/>
-  <circle cx="66" cy="61" r="33" fill="#2B1A12"/>
-  <circle cx="62" cy="57" r="33" fill="#4ADE80" stroke="#2B1A12" stroke-width="3"/>
-  <g transform="translate(45,40) scale(1.42)" fill="none" stroke="#2B1A12" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9.6"/><ellipse cx="12" cy="12" rx="4.2" ry="9.6"/><path d="M2.4 12h19.2M4 7h16M4 17h16"/></g>
-  <text x="114" y="55" font-size="28" font-weight="800" fill="#2B1A12">See my work</text>
-  <text x="114" y="80" font-size="13" font-weight="600" fill="#2B1A12" fill-opacity=".68">rahul-lumbhani-portfolio.vercel.app</text>
+  <circle cx="66" cy="58.0" r="33" fill="#2B1A12"/>
+  <circle cx="62" cy="54.0" r="33" fill="#4ADE80" stroke="#2B1A12" stroke-width="3"/>
+  <g transform="translate(45,37.0) scale(1.42)" fill="none" stroke="#2B1A12" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9.6"/><ellipse cx="12" cy="12" rx="4.2" ry="9.6"/><path d="M2.4 12h19.2M4 7h16M4 17h16"/></g>
+  <text x="114" y="52.0" font-size="28" font-weight="800" fill="#2B1A12">See my work</text>
+  <text x="114" y="77.0" font-size="13" font-weight="600" fill="#2B1A12" fill-opacity=".68">rahul-lumbhani-portfolio.vercel.app</text>
   <g transform="rotate(-8 340 26)"><rect x="300" y="15" width="74" height="26" rx="13" fill="#2B1A12"/><rect x="297" y="11" width="74" height="26" rx="13" fill="#5BD68A" stroke="#2B1A12" stroke-width="2.4"/><circle class="pulse" cx="313" cy="24" r="4.4" fill="#fff" stroke="#2B1A12" stroke-width="1.5"/><text x="323" y="29" font-size="13.5" font-weight="800" fill="#2B1A12" letter-spacing="1.3">LIVE</text></g>
-  <g class="nudge"><circle cx="396" cy="80" r="17" fill="#fff" stroke="#2B1A12" stroke-width="2.6"/>
-  <text x="396" y="87" text-anchor="middle" font-size="19" font-weight="800" fill="#2B1A12">↗</text></g>
+  <g class="nudge"><circle cx="398" cy="54.0" r="17" fill="#fff" stroke="#2B1A12" stroke-width="2.6"/>
+  <text x="398" y="61.0" text-anchor="middle" font-size="19" font-weight="800" fill="#2B1A12">↗</text></g>
 </svg>

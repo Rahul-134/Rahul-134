@@ -116,6 +116,9 @@ for t, h in events:
     kf.append(f"{pct(t)}{{transform:translateY(-{h}px)}}")
 kf.append("100%{transform:translateY(0)}")
 jump_kf = "".join(kf)
+# the legs stop alternating while the dino is airborne: a still pair of legs is shown for each jump window
+air_kf = "0%{opacity:0}" + "".join(f"{pct(st)}{{opacity:1}}{pct(st + DUR)}{{opacity:0}}" for st in starts)
+stride_kf = "0%{opacity:1}" + "".join(f"{pct(st)}{{opacity:0}}{pct(st + DUR)}{{opacity:1}}" for st in starts)
 
 svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 290" width="1000" height="290" role="img" aria-labelledby="t d">
   <title id="t">Hey I am Rahul Lumbhani — AI/ML Engineer · GenAI Enthusiast</title>
@@ -125,12 +128,16 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 290" width="
     .jump{{animation:jump {CYCLE:g}s linear infinite}}
     .cactus{{animation:run {CYCLE:g}s linear infinite}}
     .cactusB{{animation:run {CYCLE:g}s linear infinite;animation-delay:-3s}}
+    .air{{opacity:0;animation:air {CYCLE:g}s steps(1,end) infinite}}
+    .stride{{animation:stride {CYCLE:g}s steps(1,end) infinite}}
     .legA{{animation:legA .24s steps(1,end) infinite}}
     .legB{{animation:legB .24s steps(1,end) infinite}}
     .ground{{animation:scroll {200/SPEED:.3f}s linear infinite}}
     .cloud1{{animation:cloud 34s linear infinite}}
     .cloud2{{animation:cloud 34s linear infinite;animation-delay:-17s}}
     @keyframes jump{{{jump_kf}}}
+    @keyframes air{{{air_kf}}}
+    @keyframes stride{{{stride_kf}}}
     @keyframes run{{from{{transform:translateX({START_X}px)}}to{{transform:translateX({END_X}px)}}}}
     @keyframes legA{{0%{{opacity:1}}50%{{opacity:0}}100%{{opacity:1}}}}
     @keyframes legB{{0%{{opacity:0}}50%{{opacity:1}}100%{{opacity:0}}}}
@@ -184,8 +191,8 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 290" width="
     <g class="jump">
       <g>{body}</g>
       <g transform="translate(0,{body_h})">
-        <g class="legA">{legsA}</g>
-        <g class="legB">{legsB}</g>
+        <g class="stride"><g class="legA">{legsA}</g><g class="legB">{legsB}</g></g>
+        <g class="air">{legsA}</g>
       </g>
     </g>
   </g>

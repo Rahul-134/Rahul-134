@@ -27,7 +27,7 @@
   /* nav */
   .nav { width:min(100%,1040px); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
   .logo { display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-family:var(--display); font-weight:800; font-size:30px; line-height:1; color:var(--ink); }
-  .logo .mascot { width:44px; height:48px; display:grid; place-items:center; background:var(--accent); border:3px solid var(--ink); border-radius:14px; box-shadow:3px 4px 0 var(--ink); transform:rotate(-6deg); }
+  .logo .mascot { width:44px; height:48px; display:grid; place-items:center; background:var(--ink); border:3px solid var(--ink); border-radius:14px; box-shadow:3px 4px 0 var(--ink); transform:rotate(-6deg); }
   .logo .mascot svg { width:30px; height:auto; }
   .links { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
   .links a { padding:8px 14px; border-radius:99px; text-decoration:none; font-family:var(--display); font-weight:700; font-size:18px; transition:background .2s; }
@@ -61,6 +61,7 @@
   .scene .cac { position:absolute; bottom:50px; left:72%; width:34px; }
   .scene .bird { position:absolute; bottom:100px; left:46%; width:44px; }
   .scene .dino svg, .scene .cac svg, .scene .bird svg, .stk svg { display:block; width:100%; height:auto; }
+  .scene .dino, .scene .cac, .scene .bird { filter:drop-shadow(2px 0 0 var(--ink)) drop-shadow(-2px 0 0 var(--ink)) drop-shadow(0 2px 0 var(--ink)) drop-shadow(0 -2px 0 var(--ink)); }
   .scene .f2 { position:absolute; left:0; bottom:0; width:100%; opacity:0; }
   .scene .run .f1, .scene .duck .f1 { animation:fa .26s linear infinite; }
   .scene .run .f2, .scene .duck .f2 { animation:fb .26s linear infinite; }
@@ -75,7 +76,10 @@
   .lights { display:inline-flex; gap:7px; }
   .lights i { width:15px; height:15px; border-radius:50%; border:2.5px solid var(--ink); background:var(--coral); }
   .lights i:nth-child(2) { background:var(--sun); } .lights i:nth-child(3) { background:var(--mint); }
-  .console-top .p1 { font-size:15px; padding:2px 12px; background:var(--paper); border:2.5px solid var(--ink); border-radius:99px; letter-spacing:.08em; }
+  .skins { display:inline-flex; gap:2px; padding:3px; background:var(--paper); border:2.5px solid var(--ink); border-radius:99px; }
+  .skin-btn { padding:2px 14px; border:0; border-radius:99px; background:transparent; font-family:var(--display); font-weight:800; font-size:15px; letter-spacing:.04em; line-height:1.5; transition:background .15s, color .15s; }
+  .skin-btn:hover { background:rgba(43,26,18,.1); }
+  .skin-btn[aria-pressed=true] { background:var(--ink); color:#fff; }
   .bezel { padding:12px; background:var(--ink); border-radius:24px; }
   .stage { position:relative; }
   canvas {
@@ -131,6 +135,7 @@
     .logo { font-size:25px; } .logo .mascot { width:38px; height:42px; }
     .console { padding:10px 10px 16px; border-radius:28px; box-shadow:6px 8px 0 var(--ink); }
     .bezel { padding:8px; border-radius:18px; } .console-top { font-size:16px; padding-bottom:8px; }
+    .lights { display:none; } .skin-btn { padding:2px 11px; font-size:14px; }
     .deck { padding:16px 4px 0; gap:10px; } .arc { width:74px; height:74px; font-size:30px; }
     .mid p { display:none; } .grille i { height:28px; }
     .hint { justify-content:center; text-align:center; }
@@ -169,7 +174,7 @@
   </header>
 
   <section class="console" id="play" aria-label="Dino Run game">
-    <div class="console-top"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><b>DINO RUN</b><span class="p1">1 PLAYER</span></div>
+    <div class="console-top"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><b>DINO RUN</b><span class="skins" role="group" aria-label="Game look"><button type="button" class="skin-btn" data-skin="classic" aria-pressed="true">Classic</button><button type="button" class="skin-btn" data-skin="playful" aria-pressed="false">Playful</button></span></div>
     <div class="bezel"><div class="stage">
       <canvas id="game" tabindex="0" aria-label="Dino runner game. Press space or tap to jump, down arrow to duck."></canvas>
     </div></div>
@@ -212,7 +217,14 @@
   var ctx = cv.getContext('2d');
   ctx.scale(DPR, DPR);
 
-  var COL = { bg:'#161616', ground:'#3a3a3a', dash:'#2f2f2f', cloud:'#262626', text:'#6b6b6b', hot:'{{ACCENT}}' };
+  // Two looks for the same game: Classic (the dark original) and Playful (sky, sand and outlined sprites).
+  var MONO = '"JetBrains Mono",ui-monospace,Consolas,Menlo,monospace';
+  var SKINS = {
+    classic: { bg:'#161616', ground:'#3a3a3a', dash:'#2f2f2f', cloud:'#262626', text:'#6b6b6b', hot:'{{ACCENT}}', sub:'{{ACCENT}}', title:'#FFFFFF', flash:'#FFFFFF', font:MONO },
+    playful: { bg:'#BFE7F7', ground:'#2B1A12', dash:'rgba(43,26,18,.30)', cloud:'#FFFFFF', text:'rgba(43,26,18,.5)', hot:'#2B1A12', sub:'#E8452C', title:'#2B1A12', flash:'#FF6B4A', font:'"Baloo 2","Nunito",system-ui,sans-serif' }
+  };
+  var COL = {}, playful = false, skinName = 'classic';
+  Object.keys(SKINS.classic).forEach(function (k) { COL[k] = SKINS.classic[k]; });
 
   // ---------- Pixel art (shared with the profile banner) ----------
   /*__SPRITES__*/
@@ -222,7 +234,7 @@
     return rows.map(function (r) { while (r.length < w) r += '.'; return r; });
   }
 
-  function sprite(rows, u) {
+  function sprite(rows, u, pal) {
     rows = pad(rows);
     var c = document.createElement('canvas');
     c.width = rows[0].length * u * DPR; c.height = rows.length * u * DPR;
@@ -231,7 +243,7 @@
       for (var x = 0; x < rows[y].length; x++) {
         var ch = rows[y][x];
         if (ch === '.') continue;
-        g.fillStyle = PAL[ch]; g.fillRect(x * s, y * s, s, s);
+        g.fillStyle = (pal && pal[ch]) || PAL[ch]; g.fillRect(x * s, y * s, s, s);
       }
     return { c: c, w: rows[0].length * u, h: rows.length * u };
   }
@@ -244,6 +256,36 @@
   var CACT = { saguaro: sprite(ART.saguaro, U), small: sprite(ART.small, U), barrel: sprite(ART.barrel, U) };
   var birdUp = sprite(ART.birdUp, U);
   var birdDown = sprite(ART.birdDown, U);
+
+  // The Playful skin draws the same sprites with a dark outline (and a darker bird), built the first time it is used.
+  var CSET = { dinoA: dinoA, dinoB: dinoB, duckA: duckA, duckB: duckB, CACT: CACT, birdUp: birdUp, birdDown: birdDown }, PSET = null;
+  var INK = '#2B1A12', OUT = 3;
+  function outlined(rows, u, pal) {
+    var s0 = sprite(rows, u, pal), c = document.createElement('canvas');
+    c.width = (s0.w + 2 * OUT) * DPR; c.height = (s0.h + 2 * OUT) * DPR;
+    var g = c.getContext('2d'), sil = document.createElement('canvas'); sil.width = s0.c.width; sil.height = s0.c.height;
+    var sg = sil.getContext('2d'); sg.drawImage(s0.c, 0, 0); sg.globalCompositeOperation = 'source-in'; sg.fillStyle = INK; sg.fillRect(0, 0, sil.width, sil.height);
+    [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (o) { g.drawImage(sil, (OUT + o[0] * OUT) * DPR, (OUT + o[1] * OUT) * DPR); });
+    g.drawImage(s0.c, OUT * DPR, OUT * DPR);
+    return { c: c, w: s0.w, h: s0.h, o: OUT };
+  }
+  function buildPlayful() {
+    var slate = { X: '#5B6B80' };
+    PSET = {
+      dinoA: outlined(ART.dinoBody.concat(ART.legsA), U), dinoB: outlined(ART.dinoBody.concat(ART.legsB), U),
+      duckA: outlined(ART.duckBody.concat(ART.duckLegsA), U), duckB: outlined(ART.duckBody.concat(ART.duckLegsB), U),
+      CACT: { saguaro: outlined(ART.saguaro, U), small: outlined(ART.small, U), barrel: outlined(ART.barrel, U) },
+      birdUp: outlined(ART.birdUp, U, slate), birdDown: outlined(ART.birdDown, U, slate)
+    };
+  }
+  function setSkin(name) {
+    if (!SKINS[name]) name = 'classic';
+    if (name === 'playful' && !PSET) buildPlayful();
+    skinName = name; playful = name === 'playful';
+    Object.keys(SKINS[name]).forEach(function (k) { COL[k] = SKINS[name][k]; });
+    if (playful && document.fonts && document.fonts.load) document.fonts.load('800 22px "Baloo 2"');
+  }
+  function blit(s, x, y) { if (s.o) ctx.drawImage(s.c, x - s.o, y - s.o, s.w + 2 * s.o, s.h + 2 * s.o); else ctx.drawImage(s.c, x, y, s.w, s.h); }
 
   // cactus clusters; the harder ones only appear once the run is under way
   var EASY_COMBOS = [['small'], ['barrel'], ['saguaro'], ['small', 'small'], ['barrel', 'small']];
@@ -367,13 +409,18 @@
   function padScore(n) { return ('00000' + n).slice(-5); }
 
   function drawCloud(x, y) {
+    if (playful) {                                  // white puffs with a dark outline
+      ctx.strokeStyle = INK; ctx.lineWidth = 6;
+      [[x + 12, y, 52, 8], [x, y + 8, 84, 8], [x + 24, y - 8, 28, 8]].forEach(function (r) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(r[0], r[1], r[2], r[3], 4); else ctx.rect(r[0], r[1], r[2], r[3]); ctx.stroke(); });
+    }
     ctx.fillStyle = COL.cloud;
     rr(x + 12, y, 52, 8); rr(x, y + 8, 84, 8); rr(x + 24, y - 8, 28, 8);
   }
   function rr(x, y, w, h) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, 4); else ctx.rect(x, y, w, h); ctx.fill(); }
 
   function drawGround() {
-    ctx.fillStyle = COL.ground; ctx.fillRect(0, GROUND + 1, W, 2);
+    if (playful) { ctx.fillStyle = '#F2D9A6'; ctx.fillRect(0, GROUND + 1, W, H - GROUND - 1); ctx.fillStyle = COL.ground; ctx.fillRect(0, GROUND, W, 3); }
+    else { ctx.fillStyle = COL.ground; ctx.fillRect(0, GROUND + 1, W, 2); }
     ctx.strokeStyle = COL.dash; ctx.lineWidth = 2;
     var patterns = [[20, 40, 8, 62, 4, 66], [6, 54, 14, 40, 4, 82]];
     for (var p = 0; p < 2; p++) {
@@ -385,51 +432,53 @@
   }
 
   function drawDino() {
+    var K = playful ? PSET : CSET;
     var step = state === 'running' && Math.floor(frame / 6) % 2;
     if (ducking && dino.onGround) {
-      var d = step ? duckA : duckB;
-      ctx.drawImage(d.c, dino.x, GROUND - d.h, d.w, d.h);
+      var d = step ? K.duckA : K.duckB;
+      blit(d, dino.x, GROUND - d.h);
     } else {
-      var s = (!dino.onGround || state !== 'running') ? dinoA : (step ? dinoA : dinoB);
-      ctx.drawImage(s.c, dino.x, dino.y, s.w, s.h);
+      var s = (!dino.onGround || state !== 'running') ? K.dinoA : (step ? K.dinoA : K.dinoB);
+      blit(s, dino.x, dino.y);
     }
   }
 
   function drawObstacles() {
     obstacles.forEach(function (o) {
       if (o.type === 'cactus') {
-        o.parts.forEach(function (p) { ctx.drawImage(p.s.c, o.x + p.dx, GROUND - p.s.h, p.s.w, p.s.h); });
+        o.parts.forEach(function (p) { var q = (playful ? PSET : CSET).CACT[p.name]; blit(q, o.x + p.dx, GROUND - q.h); });
       } else {
-        var s = Math.floor(o.f / 8) % 2 ? birdUp : birdDown;
-        ctx.drawImage(s.c, o.x, o.y, s.w, s.h);
+        var K = playful ? PSET : CSET, s = Math.floor(o.f / 8) % 2 ? K.birdUp : K.birdDown;
+        blit(s, o.x, o.y);
       }
     });
   }
 
   function centerText(t, y, size, color) {
-    ctx.font = '700 ' + size + 'px "JetBrains Mono",ui-monospace,Consolas,Menlo,monospace';
+    ctx.font = '700 ' + size + 'px ' + COL.font;
     ctx.textAlign = 'center'; ctx.fillStyle = color; ctx.fillText(t, W / 2, y);
   }
 
   function render() {
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H);
+    if (playful) { ctx.fillStyle = '#FFC83D'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(110, 62, 26, 0, 6.2832); ctx.fill(); ctx.stroke(); }
     clouds.forEach(function (c) { drawCloud(c.x, c.y); });
     drawGround(); drawObstacles(); drawDino();
 
     // score
-    ctx.font = '700 18px "JetBrains Mono",ui-monospace,Consolas,Menlo,monospace';
+    ctx.font = '700 18px ' + COL.font;
     ctx.textAlign = 'right';
     var flash = state === 'running' && score > 0 && score % 100 < 6 && Math.floor(frame / 5) % 2;
     ctx.fillStyle = COL.text; ctx.fillText('HI ' + padScore(hi), W - 120, 32);
-    ctx.fillStyle = flash ? '#fff' : COL.hot; ctx.fillText(padScore(score), W - 24, 32);
+    ctx.fillStyle = flash ? COL.flash : COL.hot; ctx.fillText(padScore(score), W - 24, 32);
 
     if (state === 'ready') {
-      centerText('PRESS SPACE OR TAP TO START', 100, 22, '#FFFFFF');
+      centerText('PRESS SPACE OR TAP TO START', 100, 22, COL.title);
       centerText('↑ jump   ·   ↓ duck', 132, 14, COL.text);
     } else if (state === 'over') {
-      centerText('G A M E   O V E R', 96, 28, '#FFFFFF');
-      centerText('SPACE / TAP TO RESTART', 128, 14, COL.hot);
+      centerText('G A M E   O V E R', 96, 28, COL.title);
+      centerText('SPACE / TAP TO RESTART', 128, 14, COL.sub);
     }
   }
 
@@ -444,6 +493,21 @@
   }
   document.addEventListener('visibilitychange', function () { last = performance.now(); });
   requestAnimationFrame(loop);
+  // ---------- Look: Classic / Playful ----------
+  var skinBtns = Array.prototype.slice.call(document.querySelectorAll('.skin-btn'));
+  function showSkin(name) {
+    setSkin(name);
+    skinBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.skin === skinName ? 'true' : 'false'); });
+  }
+  skinBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      showSkin(b.dataset.skin);
+      try { localStorage.setItem('dinoSkin', skinName); } catch (e) {}
+      cv.focus({ preventScroll: true });          // so Space plays the game instead of pressing this button again
+    });
+  });
+  var savedSkin = 'classic'; try { savedSkin = localStorage.getItem('dinoSkin') || 'classic'; } catch (e) {}
+  showSkin(savedSkin);
   /*__TESTHOOK__*/
 })();
 </script>

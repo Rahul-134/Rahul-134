@@ -137,8 +137,10 @@
   .mode:hover { transform:translate(-1px,-1px); box-shadow:4px 5px 0 var(--ink); }
   .mode .knob { width:28px; height:28px; display:grid; place-items:center; border:2.5px solid var(--ink); border-radius:50%; background:#2E3A68; }
   .mode .knob svg { width:18px; height:18px; display:block; }
-  .mode .to-day, html[data-mode=dark] .mode .to-night { display:none; }
-  html[data-mode=dark] .mode .to-day { display:inline; }
+  /* only one icon and label at a time (the svg selectors must outrank ".mode .knob svg" above) */
+  .mode .to-day, .mode .knob svg.to-day, html[data-mode=dark] .mode .to-night, html[data-mode=dark] .mode .knob svg.to-night { display:none; }
+  html[data-mode=dark] .mode span.to-day { display:inline; }
+  html[data-mode=dark] .mode .knob svg.to-day { display:block; }
   html[data-mode=dark] .mode .knob { background:var(--sun); }
   .scene .moon, .scene .stars { display:none; }
 

@@ -166,7 +166,7 @@
   .scene .stars i { position:absolute; width:var(--s,8px); height:var(--s,8px); background:#FFF3C4; clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%); animation:twinkle 2.6s ease-in-out infinite; }
   @keyframes twinkle { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.35; transform:scale(.7); } }
   html[data-mode=dark] .scene .cloud { filter:brightness(.78) saturate(.8); }
-  html[data-mode=dark] .scene .ground { filter:brightness(.72) saturate(.85); }
+  html[data-mode=dark] .scene .ground { filter:brightness(.72) saturate(.85); border-radius:0 0 25px 25px; overflow:hidden; }   /* a filtered layer ignores the scene's rounded clip, so round it too */
   @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .stk, .scene *, .btn, .arc { animation:none !important; transition:none !important; } }
   @media (max-width:820px) {
     .hero { grid-template-columns:1fr; } .scene { height:190px; }

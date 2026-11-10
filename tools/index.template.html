@@ -521,7 +521,7 @@
   if (scene && scene.animate && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
     var q = function (sel) { return scene.querySelector(sel); };
     var dinoEl = q('.dino'), cacEl = q('.cac'), birdEl = q('.bird'), runEl = q('.pose.run'), jumpEl = q('.pose.jump'), duckEl = q('.pose.duck'), anims = [];
-    var SPEED = 170, AIR = 0.72, DUCK = 0.8, FEET = 75, BODY = 77, CAC_HALF = 17, BIRD_HALF = 22, LIFT = 66, GAP = 260;   // px/s, s, px
+    var SPEED = 170, AIR = 0.72, DUCK = 0.8, FEET = 78, BODY = 80, CAC_HALF = 17, BIRD_HALF = 22, LIFT = 66, GAP = 260;   // px/s, s, px
     var windows = function (wins, on, off) {       // an opacity track that is `on` inside each [a, b] and `off` elsewhere
       var kf = [{ opacity: off, offset: 0, easing: 'steps(1,end)' }];
       wins.forEach(function (w) { kf.push({ opacity: on, offset: w[0], easing: 'steps(1,end)' }, { opacity: off, offset: w[1], easing: 'steps(1,end)' }); });

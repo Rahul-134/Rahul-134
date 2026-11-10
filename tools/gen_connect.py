@@ -31,7 +31,7 @@ def write(name, text):
 
 def shapes(rows_, u=3):
     paths = S.path_by_colour(rows_, u)
-    order = ["O", "D", "Y", "L", "B", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "E", "V", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
     return "".join(f'<path fill="{S.PAL[c]}" d="{paths[c]}"/>' for c in order if c in paths)
 
 

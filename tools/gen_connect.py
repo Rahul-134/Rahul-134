@@ -18,7 +18,7 @@ import banner
 
 T = theme_colors.current()
 ACCENT = T.accent
-INK, SKY, PAPER, LIVE_GREEN = banner.INK, banner.SKY, "#FFFDF7", "#5BD68A"
+INK, TEXT, SKY, PAPER, LIVE_GREEN = banner.INK, banner.TEXT, banner.SKY, banner.PAPER, "#5BD68A"
 ROUND = "'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif"
 MONO = "'JetBrains Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace"
 
@@ -97,6 +97,7 @@ def hero():
   </defs>
   {shell(W, H, SKY)}
   <g clip-path="url(#card)">
+    {banner.stars(470, 14, 410, GROUND - 70, 12, seed=5, avoid=[(770, 10, 100, 100), (676, 90 + BUB, 116, 70)])}
     {banner.sun(818, 60, 0.95)}
     <g class="cl">{banner.cloud(0, 18, 0.8)}</g>
     <g class="cl" style="animation-duration:62s;animation-delay:-30s">{banner.cloud(0, 100, 0.62)}</g>
@@ -118,14 +119,14 @@ def hero():
   <text x="72" y="54" font-size="12.5" font-weight="800" fill="{INK}" letter-spacing="1.5">{pill_txt}</text>
 
   <!-- headline: the second line sits on a marker pill in the theme colour -->
-  <text x="40" y="118" font-size="42" font-weight="800" fill="{INK}">Let's build something</text>
+  <text x="40" y="118" font-size="42" font-weight="800" fill="{TEXT}">Let's build something</text>
   <g transform="rotate(-2 {40 + mark_w / 2:.0f} 150)">
     <rect x="40" y="{126 + 5}" width="{mark_w:.0f}" height="50" rx="16" fill="{INK}" transform="translate(4,4)"/>
     <rect x="40" y="{126 + 5}" width="{mark_w:.0f}" height="50" rx="16" fill="{ACCENT}" stroke="{INK}" stroke-width="3"/>
     <text x="54" y="168" font-size="40" font-weight="800" fill="{INK}">useful, together.</text>
   </g>
-  <text x="40" y="214" font-size="16" font-weight="600" fill="{INK}" fill-opacity=".75">Interesting projects and conversations about AI,</text>
-  <text x="40" y="236" font-size="16" font-weight="600" fill="{INK}" fill-opacity=".75">backend engineering and building useful products.</text>
+  <text x="40" y="214" font-size="16" font-weight="600" fill="{TEXT}" fill-opacity=".75">Interesting projects and conversations about AI,</text>
+  <text x="40" y="236" font-size="16" font-weight="600" fill="{TEXT}" fill-opacity=".75">backend engineering and building useful products.</text>
 
   <!-- prompt chip -->
   <rect x="40" y="254" width="168" height="30" rx="12" fill="{INK}"/>
@@ -199,8 +200,8 @@ def link(i, p):
   <circle cx="66" cy="{CY + 4}" r="33" fill="{INK}"/>
   <circle cx="62" cy="{CY}" r="33" fill="{icon_fill}" stroke="{INK}" stroke-width="3"/>
   {glyph(p["glyph"], primary)}
-  <text x="114" y="{LABEL_Y}" font-size="28" font-weight="800" fill="{INK}">{e(p["label"])}</text>
-  <text x="114" y="{SUB_Y}" font-size="{sub_size}" font-weight="600" fill="{INK}" fill-opacity=".68">{e(p["sub"])}</text>
+  <text x="114" y="{LABEL_Y}" font-size="28" font-weight="800" fill="{INK if primary else TEXT}">{e(p["label"])}</text>
+  <text x="114" y="{SUB_Y}" font-size="{sub_size}" font-weight="600" fill="{INK if primary else TEXT}" fill-opacity=".68">{e(p["sub"])}</text>
   {live}
   <g class="nudge"><circle cx="{BW - 42}" cy="{CY}" r="17" fill="#fff" stroke="{INK}" stroke-width="2.6"/>
   <text x="{BW - 42}" y="{CY + 7}" text-anchor="middle" font-size="19" font-weight="800" fill="{INK}">↗</text></g>
@@ -234,7 +235,7 @@ def wave():
     @media (prefers-reduced-motion:reduce){{.walk,.legA,.legB{{animation:none}}.walk{{transform:translateX(420px)}}.legB{{opacity:0}}}}
   </style>
   <defs>{banner.ground_tile(30)}</defs>
-  <path d="{dune(72, 34, 420, 1.2)}" fill="#F9E8C4" stroke="{INK}" stroke-width="3" stroke-linejoin="round"/>
+  <path d="{dune(72, 34, 420, 1.2)}" fill="{banner.SAND_TOP}" stroke="{INK}" stroke-width="3" stroke-linejoin="round"/>
   <g transform="translate(150,{max(top(x) for x in range(150, 191)) + 2 - sag_h:.1f})">{sag}</g>
   <g transform="translate(640,{max(top(x) for x in range(640, 663)) + 2 - small_h:.1f})">{small}</g>
   <g transform="translate(0,{ground - 10})"><rect width="{WW}" height="40" fill="url(#sand)"/></g>

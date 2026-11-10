@@ -21,7 +21,7 @@ import banner  # noqa: E402
 
 T = theme_colors.current()
 ACCENT = T.accent
-INK, PAPER = banner.INK, "#FFFDF7"
+INK, TEXT, PAPER, PANEL = banner.INK, banner.TEXT, banner.PAPER, banner.PANEL
 ROUND = "'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif"
 e = html.escape
 W = 900
@@ -65,7 +65,7 @@ def pill(x, y, text, fill=ACCENT, size=12, h=28):
 
 def panel(x, y, w, h):
     return (f'<rect x="{x + 4}" y="{y + 4}" width="{w}" height="{h}" rx="18" fill="{INK}"/>'
-            f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="18" fill="#FFFFFF" stroke="{INK}" stroke-width="3"/>')
+            f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="18" fill="{PANEL}" stroke="{INK}" stroke-width="3"/>')
 
 
 def sticker(i, x, y, slug, label, colour):
@@ -83,7 +83,7 @@ def sticker(i, x, y, slug, label, colour):
             f'<rect x="{x}" y="{y}" width="{TILE}" height="{TILE}" rx="18" fill="{fill}" stroke="{INK}" stroke-width="3"/>'
             f'<rect x="{x + 9}" y="{y + 7}" width="{TILE - 30}" height="5" rx="2.5" fill="#FFFFFF" opacity=".35"/>'
             f'{logo}</g>'
-            f'<text x="{x + TILE / 2 + 2}" y="{y + TILE + 22}" text-anchor="middle" font-size="12.5" font-weight="700" fill="{INK}" fill-opacity=".8">{e(label)}</text>')
+            f'<text x="{x + TILE / 2 + 2}" y="{y + TILE + 22}" text-anchor="middle" font-size="12.5" font-weight="700" fill="{TEXT}" fill-opacity=".8">{e(label)}</text>')
 
 
 DINO_H = (len(S.ART["dinoBody"]) + len(S.ART["legsA"])) * S.DINO_U
@@ -152,7 +152,7 @@ def build():
   <rect x="11" y="11" width="{W - 14}" height="{H - 14}" rx="24" fill="{INK}"/>
   <rect x="3" y="3" width="{W - 14}" height="{H - 14}" rx="24" fill="{PAPER}" stroke="{INK}" stroke-width="4"/>
   {pill(36, 26, "TECH STACK", size=12.5, h=30)}
-  <text x="36" y="92" font-size="32" font-weight="800" fill="{INK}">Tools I build with</text>
+  <text x="36" y="92" font-size="32" font-weight="800" fill="{TEXT}">Tools I build with</text>
   {"".join(body)}
 </svg>
 """

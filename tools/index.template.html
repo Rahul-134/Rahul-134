@@ -6,10 +6,27 @@
 <title>Dino Run · Rahul Lumbhani</title>
 <meta name="description" content="A playable dino runner game from Rahul Lumbhani's GitHub profile.">
 <script>
-  // Day / Night: the visitor's saved choice, otherwise their system setting. Set before the page paints.
-  (function () { var m; try { m = localStorage.getItem('dinoMode'); } catch (e) {}
-    if (m !== 'dark' && m !== 'light') m = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-mode', m); })();
+  // Day / Night follows the visitor's own clock: Night from 7 pm to 7 am. Tapping the toggle overrides it until
+  // the next 7 o'clock, then the clock takes over again. Set before the page paints, so there is no flash.
+  window.DinoMode = (function () {
+    var DAY = 7, NIGHT = 19, KEY = 'dinoModeOverride';
+    function byClock(d) { var h = (d || new Date()).getHours(); return h >= NIGHT || h < DAY ? 'dark' : 'light'; }
+    function nextSwitch(d) {                       // the next 7:00 or 19:00 after d
+      d = d || new Date(); var t = new Date(d.getTime()); t.setMinutes(0, 0, 0);
+      var h = d.getHours(); t.setHours(h < DAY ? DAY : h < NIGHT ? NIGHT : DAY + 24);
+      return t.getTime();
+    }
+    function override() {
+      try { var o = JSON.parse(localStorage.getItem(KEY) || 'null');
+        if (o && (o.m === 'dark' || o.m === 'light') && o.until > Date.now()) return o.m; } catch (e) {}
+      return null;
+    }
+    function resolve() { return override() || byClock(); }
+    function choose(m) { try { localStorage.setItem(KEY, JSON.stringify({ m: m, until: nextSwitch() })); } catch (e) {} }
+    try { localStorage.removeItem('dinoMode'); } catch (e) {}       // the older "remember forever" setting
+    document.documentElement.setAttribute('data-mode', resolve());
+    return { resolve: resolve, choose: choose, nextSwitch: nextSwitch };
+  })();
 </script>
 <style>
   @font-face { font-family:Nunito; font-style:normal; font-weight:200 1000; font-display:swap; src:url(fonts/nunito-latin-wght-normal.woff2) format("woff2"); }
@@ -742,15 +759,25 @@
     modeBtn.setAttribute('aria-pressed', dark ? 'true' : 'false');
     modeBtn.setAttribute('aria-label', dark ? 'Switch to day mode' : 'Switch to night mode');
   };
+  var setMode = function (m) {
+    if (root.getAttribute('data-mode') === m) return;
+    root.setAttribute('data-mode', m); syncMode();
+    document.dispatchEvent(new Event('dinomode'));
+  };
   if (modeBtn) {
     syncMode();
     modeBtn.addEventListener('click', function () {
       var m = root.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-mode', m);
-      try { localStorage.setItem('dinoMode', m); } catch (e) {}
-      syncMode();
-      document.dispatchEvent(new Event('dinomode'));
+      DinoMode.choose(m);                          // holds until the next 7 am / 7 pm
+      setMode(m);
     });
+    // switch on time if the page is open at 7 am / 7 pm, and catch up when a sleeping tab comes back
+    var timer, plan = function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () { setMode(DinoMode.resolve()); plan(); }, Math.max(1000, DinoMode.nextSwitch() - Date.now() + 500));
+    };
+    plan();
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) { setMode(DinoMode.resolve()); plan(); } });
   }
 
   // "Play now": scroll to the console and start a run exactly like pressing Space

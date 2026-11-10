@@ -86,7 +86,8 @@ def data_uri(name):
         return "data:image/jpeg;base64," + base64.b64encode(f.read()).decode()
 
 
-INK, PAPER, BAR, LIVE_GREEN = banner.INK, "#FFFDF7", "#F1E4CB", "#5BD68A"
+INK, TEXT, PAPER, PANEL, LIVE_GREEN = banner.INK, banner.TEXT, banner.PAPER, banner.PANEL, "#5BD68A"
+BAR = "#45416A" if banner.NIGHT else "#F1E4CB"     # the browser window's top bar
 ROUND = "'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif"
 FONT_CSS = banner.font_face()
 
@@ -105,9 +106,9 @@ def chips_row(x, y, names, max_w, size=13.0):
     out, cx = [], x
     for n, w in zip(names, widths(fs)):
         dot = TECH.get(n, "#C9D1D9")
-        out.append(f'<rect x="{cx:.1f}" y="{y}" width="{w:.1f}" height="26" rx="13" fill="#fff" stroke="{INK}" stroke-width="2"/>'
+        out.append(f'<rect x="{cx:.1f}" y="{y}" width="{w:.1f}" height="26" rx="13" fill="{PANEL}" stroke="{INK}" stroke-width="2"/>'
                    f'<circle cx="{cx + 14:.1f}" cy="{y + 13}" r="5" fill="{dot}" stroke="{INK}" stroke-width="1.5"/>'
-                   f'<text x="{cx + 25:.1f}" y="{y + 17.5}" font-size="{fs}" font-weight="700" fill="{INK}" font-family="{ROUND}">{e(n)}</text>')
+                   f'<text x="{cx + 25:.1f}" y="{y + 17.5}" font-size="{fs}" font-weight="700" fill="{TEXT}" font-family="{ROUND}">{e(n)}</text>')
         cx += w + 8
     return "".join(out)
 
@@ -118,7 +119,7 @@ def pill(x, y, text, fill, size=12.5, h=26, spacing=1.2, anchor="start", shadow=
         x = x - w
     sh = f'<rect x="{x + 3:.1f}" y="{y + 4}" width="{w:.1f}" height="{h}" rx="{h / 2}" fill="{INK}"/>' if shadow else ""
     return (sh + f'<rect x="{x:.1f}" y="{y}" width="{w:.1f}" height="{h}" rx="{h / 2}" fill="{fill}" stroke="{INK}" stroke-width="2.5"/>'
-            f'<text x="{x + 13:.1f}" y="{y + h / 2 + size * 0.36:.1f}" font-size="{size}" font-weight="800" fill="{INK}" letter-spacing="{spacing}" font-family="{ROUND}">{e(text)}</text>'), w
+            f'<text x="{x + 13:.1f}" y="{y + h / 2 + size * 0.36:.1f}" font-size="{size}" font-weight="800" fill="{TEXT if fill == PANEL else INK}" letter-spacing="{spacing}" font-family="{ROUND}">{e(text)}</text>'), w
 
 
 def card_shell(w, h, rx=24):
@@ -142,16 +143,16 @@ def card(p):
     if live and p.get("live_url"):   # the README links this card to the live site
         cta, _ = pill(tx + tw, 30, "TRY IT LIVE ↗", LIVE_GREEN, size=12.5, h=26, anchor="end", shadow=True)
     else:
-        cta, _ = pill(tx + tw, 30, "VIEW CODE ↗", "#FFFFFF", size=12, h=26, anchor="end")
+        cta, _ = pill(tx + tw, 30, "VIEW CODE ↗", PANEL, size=12, h=26, anchor="end")
     s.append(cta)
-    s.append(f'<text x="{tx}" y="100" font-size="38" font-weight="800" fill="{INK}" font-family="{ROUND}">{e(p["title"])}</text>')
+    s.append(f'<text x="{tx}" y="100" font-size="38" font-weight="800" fill="{TEXT}" font-family="{ROUND}">{e(p["title"])}</text>')
     for i, line in enumerate(p["pitch"]):
-        s.append(f'<text x="{tx}" y="{128 + i * 21}" font-size="16" font-weight="500" fill="{INK}" fill-opacity=".72" font-family="{ROUND}">{e(line)}</text>')
+        s.append(f'<text x="{tx}" y="{128 + i * 21}" font-size="16" font-weight="500" fill="{TEXT}" fill-opacity=".72" font-family="{ROUND}">{e(line)}</text>')
     by = 186
     for i, b in enumerate(p["bullets"]):
         yy = by + i * 24
         s.append(f'<circle cx="{tx + 5}" cy="{yy - 5}" r="4.6" fill="{ACCENT}" stroke="{INK}" stroke-width="1.8"/>')
-        s.append(f'<text x="{tx + 18}" y="{yy}" font-size="15" font-weight="500" fill="{INK}" font-family="{ROUND}">{e(b)}</text>')
+        s.append(f'<text x="{tx + 18}" y="{yy}" font-size="15" font-weight="500" fill="{TEXT}" font-family="{ROUND}">{e(b)}</text>')
     s.append(chips_row(tx, 280, p["chips"], tw))
     text_col = "".join(s)
 
@@ -163,10 +164,10 @@ def card(p):
     for i, col in enumerate(("#FF6B4A", "#FFC83D", "#BFF0CF")):
         fr.append(f'<circle cx="{fx + 18 + i * 17}" cy="{fy + BAR_H / 2 + 1}" r="5" fill="{col}" stroke="{INK}" stroke-width="1.8"/>')
     ux, uw = fx + 78, FRAME_W - 78 - 14
-    fr.append(f'<rect x="{ux}" y="{fy + 6}" width="{uw}" height="18" rx="9" fill="#fff" stroke="{INK}" stroke-width="1.8"/>')
+    fr.append(f'<rect x="{ux}" y="{fy + 6}" width="{uw}" height="18" rx="9" fill="{PANEL}" stroke="{INK}" stroke-width="1.8"/>')
     if live:
         fr.append(f'<circle class="pulse" cx="{ux + 12}" cy="{fy + 15}" r="3.6" fill="{LIVE_GREEN}" stroke="{INK}" stroke-width="1.2"/>')
-    fr.append(f'<text x="{ux + uw / 2 + (5 if live else 0)}" y="{fy + 19.5}" text-anchor="middle" font-size="11" font-weight="600" fill="{INK}" fill-opacity=".7" font-family="{ROUND}">{e(p["url_label"])}</text>')
+    fr.append(f'<text x="{ux + uw / 2 + (5 if live else 0)}" y="{fy + 19.5}" text-anchor="middle" font-size="11" font-weight="600" fill="{TEXT}" fill-opacity=".7" font-family="{ROUND}">{e(p["url_label"])}</text>')
     if p["shot"]:
         if p.get("zoom"):
             from PIL import Image
@@ -252,11 +253,11 @@ def mini(p):
     tx = bx + bw + 24
     tag, _ = pill(tx, 24, f'{p["num"]} · {p["tag"]}', ACCENT, size=11, h=24)
     s.append(tag)
-    s.append(f'<text x="{tx}" y="78" font-size="24" font-weight="800" fill="{INK}" font-family="{ROUND}">{e(p["title"])}</text>')
+    s.append(f'<text x="{tx}" y="78" font-size="24" font-weight="800" fill="{TEXT}" font-family="{ROUND}">{e(p["title"])}</text>')
     for i, line in enumerate(p["desc"]):
-        s.append(f'<text x="{tx}" y="{102 + i * 18}" font-size="13.5" font-weight="500" fill="{INK}" fill-opacity=".72" font-family="{ROUND}">{e(line)}</text>')
+        s.append(f'<text x="{tx}" y="{102 + i * 18}" font-size="13.5" font-weight="500" fill="{TEXT}" fill-opacity=".72" font-family="{ROUND}">{e(line)}</text>')
     s.append(chips_row(tx, MH - 56, p["chips"], MW - tx - 110, size=12))
-    cta, _ = pill(MW - 30, MH - 56, "CODE ↗", "#FFFFFF", size=11.5, h=26, anchor="end")
+    cta, _ = pill(MW - 30, MH - 56, "CODE ↗", PANEL, size=11.5, h=26, anchor="end")
     s.append(cta)
     body = "".join(s)
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {MW} {MH}" width="{MW}" height="{MH}" role="img" aria-labelledby="t d">

@@ -54,13 +54,12 @@
   .scene .cloud.c2 { top:92px; left:-90px; animation-duration:19s; animation-delay:-8s; transform:scale(.8); }
   .scene .ground { position:absolute; left:0; right:0; bottom:0; height:62px; background:#F2D9A6; border-top:3px solid var(--ink); }
   .scene .ground::after { content:""; position:absolute; left:0; right:0; top:14px; height:6px; background:repeating-linear-gradient(90deg, rgba(43,26,18,.35) 0 14px, transparent 14px 40px); }
-  .scene .dino { position:absolute; left:46px; bottom:50px; width:62px; animation:hop 2.6s infinite; }
-  .scene .cac { position:absolute; bottom:50px; right:-40px; width:34px; animation:slide 2.6s linear infinite; }
+  .scene .dino { position:absolute; left:46px; bottom:50px; width:62px; }
+  .scene .cac { position:absolute; bottom:50px; left:72%; width:34px; }
+  .scene.live .cac { left:100%; }
   .scene .dino svg, .scene .cac svg, .stk svg { display:block; width:100%; height:auto; }
   .scene .coin { position:absolute; left:44%; top:70px; animation:bob 1.6s ease-in-out infinite; }
   @keyframes drift { to { transform:translateX(520px); } }
-  @keyframes slide { from { transform:translateX(0); } to { transform:translateX(-440px); } }
-  @keyframes hop { 0%,44%,78%,100% { transform:translateY(0); } 61% { transform:translateY(-84px); } }
   @keyframes bob { 50% { transform:translateY(-8px); } }
 
   /* the game console */
@@ -452,6 +451,31 @@
 <script src="leaderboard.js"></script>
 <script>
 (function () {
+  // Hero scene: the cactus slides past at a constant speed and the dino hops exactly when it arrives.
+  // Timing is computed from the scene's real width, so it stays in sync on any screen size.
+  var scene = document.querySelector('.scene');
+  if (scene && scene.animate && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    var dinoEl = scene.querySelector('.dino'), cacEl = scene.querySelector('.cac'), anims = [];
+    var SPEED = 170, AIR = 0.72, FEET = 81, CAC_HALF = 17, LIFT = 66;    // px/s, hop length (s), dino feet centre (px), px
+    var build = function () {
+      anims.forEach(function (a) { a.cancel(); }); anims = [];
+      var W = scene.clientWidth, travel = W + 50, cycle = travel / SPEED * 1000;
+      var meet = (W - (FEET - CAC_HALF)) / SPEED * 1000;                 // when the cactus is under the dino
+      var o1 = (meet - AIR * 500) / cycle, o2 = meet / cycle, o3 = (meet + AIR * 500) / cycle;
+      scene.classList.add('live');
+      anims.push(cacEl.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(' + (-travel) + 'px)' }],
+        { duration: cycle, iterations: Infinity, easing: 'linear' }));
+      anims.push(dinoEl.animate([
+        { transform: 'translateY(0)', offset: 0 },
+        { transform: 'translateY(0)', offset: o1, easing: 'cubic-bezier(.2,.75,.4,1)' },
+        { transform: 'translateY(-' + LIFT + 'px)', offset: o2, easing: 'cubic-bezier(.6,0,.8,.25)' },
+        { transform: 'translateY(0)', offset: o3 },
+        { transform: 'translateY(0)', offset: 1 }], { duration: cycle, iterations: Infinity }));
+    };
+    build();
+    if (window.ResizeObserver) { var last = scene.clientWidth; new ResizeObserver(function () { if (Math.abs(scene.clientWidth - last) > 2) { last = scene.clientWidth; build(); } }).observe(scene); }
+  }
+
   // "Play now": scroll to the console and start a run exactly like pressing Space
   var btn = document.getElementById('playNow'), cv = document.getElementById('game');
   if (!btn || !cv) return;

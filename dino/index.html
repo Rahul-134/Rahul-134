@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dino Run · Rahul Lumbhani</title>
 <meta name="description" content="A playable dino runner game from Rahul Lumbhani's GitHub profile.">
+<script>
+  // Day / Night: the visitor's saved choice, otherwise their system setting. Set before the page paints.
+  (function () { var m; try { m = localStorage.getItem('dinoMode'); } catch (e) {}
+    if (m !== 'dark' && m !== 'light') m = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-mode', m); })();
+</script>
 <style>
   @font-face { font-family:Nunito; font-style:normal; font-weight:200 1000; font-display:swap; src:url(fonts/nunito-latin-wght-normal.woff2) format("woff2"); }
   @font-face { font-family:"Baloo 2"; font-style:normal; font-weight:400 800; font-display:swap; src:url(fonts/baloo-2-latin-wght-normal.woff2) format("woff2"); }
@@ -126,6 +132,41 @@
   @keyframes wob { from { transform:rotate(var(--r)) translateY(0); } to { transform:rotate(calc(var(--r) + 3deg)) translateY(-8px); } }
   .wrap, .nav, .hero, .console, .how, .hint, .lb { position:relative; z-index:1; }
   @media (max-width:1240px) { .stk { display:none; } }
+  /* Day / Night toggle */
+  .mode { display:inline-flex; align-items:center; gap:8px; padding:5px 14px 5px 6px; background:var(--paper); color:var(--ink); border:3px solid var(--ink); border-radius:99px; box-shadow:3px 4px 0 var(--ink); font-family:var(--display); font-weight:800; font-size:17px; line-height:1.2; transition:transform .15s, box-shadow .15s; }
+  .mode:hover { transform:translate(-1px,-1px); box-shadow:4px 5px 0 var(--ink); }
+  .mode .knob { width:28px; height:28px; display:grid; place-items:center; border:2.5px solid var(--ink); border-radius:50%; background:#2E3A68; }
+  .mode .knob svg { width:18px; height:18px; display:block; }
+  .mode .to-day, html[data-mode=dark] .mode .to-night { display:none; }
+  html[data-mode=dark] .mode .to-day { display:inline; }
+  html[data-mode=dark] .mode .knob { background:var(--sun); }
+  .scene .moon, .scene .stars { display:none; }
+
+  /* ---------- Night: the same Playful look after dark ----------
+     Outlines and shadows turn near-black, cards turn dusk purple and text turns cream. Anything that sits on
+     a bright colour (the accent, sun yellow, coral) keeps dark text. */
+  html[data-mode=dark] { color-scheme:dark; --cream:#1E1C30; --paper:#2C2A45; --sand:#383556; --ink:#0C0B16; --sky:#2E3A68; --mint:#2F7A57; --tx:#F4ECDD; --tx-rgb:244,236,221; }
+  html[data-mode=dark], html[data-mode=dark] body { color:var(--tx); }
+  html[data-mode=dark] body { background:radial-gradient(rgba(var(--tx-rgb),.07) 1.6px, transparent 1.8px) 0 0/24px 24px, var(--cream); }
+  html[data-mode=dark] .logo, html[data-mode=dark] h1, html[data-mode=dark] .how h2, html[data-mode=dark] .tip h3,
+  html[data-mode=dark] .links a, html[data-mode=dark] .btn.alt, html[data-mode=dark] .mode, html[data-mode=dark] kbd,
+  html[data-mode=dark] .hint a, html[data-mode=dark] .skin-btn { color:var(--tx); }
+  html[data-mode=dark] p.sub, html[data-mode=dark] .tip p { color:rgba(var(--tx-rgb),.8); }
+  html[data-mode=dark] .links a:hover, html[data-mode=dark] .skin-btn:hover { background:rgba(var(--tx-rgb),.1); }
+  html[data-mode=dark] .skin-btn[aria-pressed=true] { background:var(--ink); color:#fff; }
+  html[data-mode=dark] h1 .hl, html[data-mode=dark] .console, html[data-mode=dark] .btn:not(.alt) { color:#1A1626; }
+  html[data-mode=dark] .console kbd { color:var(--tx); }
+  html[data-mode=dark] button:focus-visible, html[data-mode=dark] a:focus-visible { outline-color:var(--tx); }
+  html[data-mode=dark] .stk { filter:drop-shadow(2px 0 0 #F4ECDD) drop-shadow(-2px 0 0 #F4ECDD) drop-shadow(0 2px 0 #F4ECDD) drop-shadow(0 -2px 0 #F4ECDD) drop-shadow(3px 5px 0 rgba(0,0,0,.45)); }
+  html[data-mode=dark] .scene { background:linear-gradient(180deg,#1F2A52 0%,#34437A 100%); }
+  html[data-mode=dark] .scene .sun { display:none; }
+  html[data-mode=dark] .scene .moon { display:block; position:absolute; top:12px; right:18px; width:72px; height:72px; }
+  html[data-mode=dark] .scene .moon svg { display:block; width:100%; height:auto; overflow:visible; }
+  html[data-mode=dark] .scene .stars { display:block; position:absolute; inset:0 0 62px 0; }
+  .scene .stars i { position:absolute; width:var(--s,8px); height:var(--s,8px); background:#FFF3C4; clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%); animation:twinkle 2.6s ease-in-out infinite; }
+  @keyframes twinkle { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.35; transform:scale(.7); } }
+  html[data-mode=dark] .scene .cloud { filter:brightness(.78) saturate(.8); }
+  html[data-mode=dark] .scene .ground { filter:brightness(.72) saturate(.85); }
   @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .stk, .scene *, .btn, .arc { animation:none !important; transition:none !important; } }
   @media (max-width:820px) {
     .hero { grid-template-columns:1fr; } .scene { height:190px; }
@@ -149,6 +190,7 @@
     <a class="logo" href="#top"><span class="mascot"><svg viewBox="0 0 72 78" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#12582C" d="M46 2h4v2h-4zM44 4h2v2h-2zM50 4h6v2h-6zM42 6h4v2h-4zM56 6h4v2h-4zM40 8h2v2h-2zM48 8h10v2h-10zM60 8h2v2h-2zM38 10h2v2h-2zM62 10h4v2h-4zM38 12h2v2h-2zM66 12h4v2h-4zM36 14h2v2h-2zM70 14h2v2h-2zM34 16h2v2h-2zM66 16h2v2h-2zM34 18h2v2h-2zM32 20h2v2h-2zM36 20h2v2h-2zM30 22h2v2h-2zM70 22h2v2h-2zM28 24h4v2h-4zM68 24h2v2h-2zM26 26h2v2h-2zM32 26h4v2h-4zM70 26h2v2h-2zM26 28h2v2h-2zM32 28h2v2h-2zM68 28h2v2h-2zM22 30h6v2h-6zM54 30h14v2h-14zM20 32h2v2h-2zM56 32h2v2h-2zM16 34h6v2h-6zM54 34h2v2h-2zM14 36h2v2h-2zM20 36h2v2h-2zM52 36h2v2h-2zM10 38h6v2h-6zM52 38h2v2h-2zM0 40h10v2h-10zM52 40h2v2h-2zM54 42h2v2h-2zM0 44h2v2h-2zM48 44h2v2h-2zM56 44h2v2h-2zM2 46h2v2h-2zM48 46h4v2h-4zM54 46h2v2h-2zM4 48h6v2h-6zM46 48h2v2h-2zM52 48h2v2h-2zM10 50h12v2h-12zM48 50h2v2h-2zM20 52h2v2h-2zM48 52h2v2h-2zM22 54h2v2h-2zM48 54h2v2h-2zM22 56h2v2h-2zM46 56h2v2h-2zM24 58h4v2h-4zM36 58h4v2h-4zM46 58h2v2h-2zM26 60h2v2h-2zM36 60h2v2h-2zM40 60h2v2h-2zM48 60h2v2h-2zM26 62h2v2h-2zM36 62h2v2h-2zM40 62h2v2h-2zM50 62h4v2h-4zM28 64h2v2h-2zM36 64h2v2h-2zM40 64h2v2h-2zM54 64h2v2h-2zM28 66h2v2h-2zM36 66h2v2h-2zM42 66h2v2h-2zM52 66h2v2h-2zM28 68h2v2h-2zM38 68h4v2h-4zM44 68h8v2h-8zM28 70h2v2h-2zM42 70h2v2h-2zM28 72h2v2h-2zM44 72h2v2h-2zM30 74h4v2h-4zM42 74h2v2h-2zM34 76h8v2h-8z"/><path fill="#24AC55" d="M34 28h2v2h-2zM28 32h2v2h-2zM26 34h2v2h-2zM32 40h2v2h-2zM20 42h4v2h-4zM42 50h6v2h-6zM40 52h8v2h-8zM38 54h10v2h-10zM38 56h8v2h-8zM40 58h6v2h-6zM42 60h6v2h-6zM42 62h8v2h-8zM42 64h12v2h-12zM44 66h8v2h-8z"/><path fill="#4ADE80" d="M48 6h8v2h-8zM44 8h4v2h-4zM58 8h2v2h-2zM42 10h8v2h-8zM56 10h6v2h-6zM40 12h8v2h-8zM56 12h10v2h-10zM40 14h10v2h-10zM56 14h14v2h-14zM40 16h12v2h-12zM54 16h12v2h-12zM68 16h4v2h-4zM38 18h34v2h-34zM38 20h34v2h-34zM38 22h10v2h-10zM36 24h14v2h-14zM60 24h8v2h-8zM36 26h14v2h-14zM54 26h16v2h-16zM36 28h12v2h-12zM56 28h12v2h-12zM28 30h20v2h-20zM26 32h2v2h-2zM30 32h6v2h-6zM44 32h2v2h-2zM54 32h2v2h-2zM24 34h2v2h-2zM28 34h8v2h-8zM22 36h14v2h-14zM18 38h18v2h-18zM48 38h4v2h-4zM12 40h20v2h-20zM34 40h2v2h-2zM46 40h6v2h-6zM0 42h20v2h-20zM24 42h12v2h-12zM48 42h6v2h-6zM4 44h34v2h-34zM50 44h4v2h-4zM24 46h14v2h-14zM24 48h16v2h-16zM22 50h20v2h-20zM22 52h18v2h-18zM24 54h14v2h-14zM24 56h14v2h-14zM28 58h8v2h-8zM28 60h8v2h-8zM28 62h8v2h-8zM30 64h6v2h-6zM30 66h6v2h-6zM30 68h8v2h-8zM30 70h12v2h-12zM30 72h10v2h-10zM34 74h8v2h-8z"/><path fill="#88B1F2" d="M50 26h4v2h-4zM48 30h6v2h-6zM36 32h8v2h-8zM46 32h8v2h-8zM36 36h16v2h-16zM36 38h12v2h-12zM36 42h12v2h-12zM2 44h2v2h-2zM38 44h10v2h-10zM4 46h20v2h-20zM10 48h14v2h-14zM40 48h6v2h-6z"/><path fill="#4983DF" d="M48 28h8v2h-8zM36 34h18v2h-18zM36 40h10v2h-10zM38 46h10v2h-10z"/><path fill="#4481E4" d="M46 4h4v2h-4zM46 6h2v2h-2zM42 8h2v2h-2zM40 10h2v2h-2zM38 14h2v2h-2zM36 16h4v2h-4zM36 18h2v2h-2zM34 20h2v2h-2zM32 22h6v2h-6zM32 24h4v2h-4zM28 26h4v2h-4zM28 28h4v2h-4zM22 32h4v2h-4zM22 34h2v2h-2zM16 36h4v2h-4zM16 38h2v2h-2zM10 40h2v2h-2z"/><path fill="#8E2B3A" d="M48 22h6v2h-6zM56 22h4v2h-4zM62 22h4v2h-4zM68 22h2v2h-2zM50 24h10v2h-10z"/><path fill="#161616" d="M52 12h4v2h-4zM52 14h4v2h-4z"/><path fill="#FFFFFF" d="M50 10h6v2h-6zM48 12h4v2h-4zM50 14h2v2h-2zM52 16h2v2h-2zM54 22h2v2h-2zM60 22h2v2h-2zM66 22h2v2h-2zM54 44h2v2h-2zM52 46h2v2h-2zM40 72h4v2h-4z"/></svg></span>Dino Run</a>
     <div class="links">
       <a href="#play">Play</a><a href="#how">How to play</a><a href="#board">Leaderboard</a>
+      <button class="mode" id="modeBtn" type="button" aria-pressed="false" aria-label="Night mode"><span class="knob" aria-hidden="true"><svg class="to-night" viewBox="0 0 20 20"><path d="M13.5 3.2a7 7 0 1 0 3.3 11.3 6 6 0 0 1-3.3-11.3z" fill="#FFF3C4" stroke="#0C0B16" stroke-width="1.6" stroke-linejoin="round"/></svg><svg class="to-day" viewBox="0 0 20 20"><g stroke="#2B1A12" stroke-width="1.8" stroke-linecap="round"><path d="M10 1.6v2.2M10 16.2v2.2M1.6 10h2.2M16.2 10h2.2M4 4l1.6 1.6M14.4 14.4 16 16M4 16l1.6-1.6M14.4 5.6 16 4"/></g><circle cx="10" cy="10" r="4.2" fill="#FFC83D" stroke="#2B1A12" stroke-width="1.6"/></svg></span><span class="to-night">Night</span><span class="to-day">Day</span></button>
       <a class="pill" href="https://github.com/Rahul-134">← My profile</a>
     </div>
   </nav>
@@ -163,6 +205,8 @@
       </div>
     </div>
     <div class="scene" aria-hidden="true">
+      <div class="stars"><i style="left:8%;top:14%;--s:9px"></i><i style="left:22%;top:38%;--s:6px;animation-delay:-.8s"></i><i style="left:37%;top:12%;--s:7px;animation-delay:-1.6s"></i><i style="left:52%;top:30%;--s:10px;animation-delay:-.4s"></i><i style="left:64%;top:9%;--s:6px;animation-delay:-2s"></i><i style="left:47%;top:52%;--s:5px;animation-delay:-1.2s"></i><i style="left:14%;top:60%;--s:6px;animation-delay:-2.3s"></i><i style="left:72%;top:46%;--s:7px;animation-delay:-.6s"></i></div>
+      <div class="moon"><svg viewBox="-38 -38 76 76" aria-hidden="true"><circle r="31" fill="#FFF3C4" opacity=".14"/><circle r="25" fill="#FFF3C4" opacity=".16"/><circle r="20" fill="#FBEFC9" stroke="#0C0B16" stroke-width="3"/><circle cx="-6" cy="-5" r="4.2" fill="#E9DAAA"/><circle cx="7" cy="5" r="3" fill="#E9DAAA"/><circle cx="-3" cy="9" r="2.2" fill="#E9DAAA"/><path d="M-13 -8 A14.5 14.5 0 0 1 -4 -14.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
       <div class="sun"><svg viewBox="-38 -38 76 76" aria-hidden="true"><circle r="28" fill="#FFC83D" opacity=".22"/><g class="rays" stroke="#FFB547" stroke-width="4.6" stroke-linecap="round"><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(0)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(30)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(60)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(90)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(120)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(150)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(180)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(210)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(240)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(270)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(300)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(330)"/></g><circle r="21.5" fill="#FFC83D" stroke="#2B1A12" stroke-width="3"/><path d="M-14 -9 A15.5 15.5 0 0 1 -3 -16.5" stroke="#FFE7A0" stroke-width="3.6" fill="none" stroke-linecap="round"/></svg></div><div class="cloud c1"><svg viewBox="8 2 88 46" aria-hidden="true"><defs><clipPath id="cc1"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></clipPath></defs><g fill="#2B1A12" stroke="#2B1A12" stroke-width="6" stroke-linejoin="round"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g fill="#fff"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g clip-path="url(#cc1)"><rect x="8" y="36" width="88" height="10" fill="#DCEBF5"/><ellipse cx="40" cy="14" rx="7" ry="3.2" fill="#fff" opacity=".9"/></g></svg></div><div class="cloud c2"><svg viewBox="8 2 88 46" aria-hidden="true"><defs><clipPath id="cc2"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></clipPath></defs><g fill="#2B1A12" stroke="#2B1A12" stroke-width="6" stroke-linejoin="round"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g fill="#fff"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g clip-path="url(#cc2)"><rect x="8" y="36" width="88" height="10" fill="#DCEBF5"/><ellipse cx="40" cy="14" rx="7" ry="3.2" fill="#fff" opacity=".9"/></g></svg></div>
       <div class="ground"><svg width="2400" height="72" aria-hidden="true"><defs><pattern id="sand" width="200" height="72" patternUnits="userSpaceOnUse"><rect y="10" width="200" height="62" fill="#F2D9A6"/><rect y="13" width="200" height="7" fill="#F9E8C4"/><path transform="translate(0,10)" d="M0 62 L0 40.0 L4 40.9 L8 41.7 L12 42.4 L16 43.0 L20 43.3 L24 43.5 L28 43.4 L32 43.2 L36 42.7 L40 42.1 L44 41.3 L48 40.4 L52 39.6 L56 38.7 L60 37.9 L64 37.3 L68 36.8 L72 36.6 L76 36.5 L80 36.7 L84 37.0 L88 37.6 L92 38.3 L96 39.1 L100 40.0 L104 40.9 L108 41.7 L112 42.4 L116 43.0 L120 43.3 L124 43.5 L128 43.4 L132 43.2 L136 42.7 L140 42.1 L144 41.3 L148 40.4 L152 39.6 L156 38.7 L160 37.9 L164 37.3 L168 36.8 L172 36.6 L176 36.5 L180 36.7 L184 37.0 L188 37.6 L192 38.3 L196 39.1 L200 40.0 L200 62 Z" fill="#E5C48C"/><g transform="translate(0,10)"><ellipse cx="34" cy="22" rx="5" ry="3.1" fill="#CFA86E" stroke="rgba(43,26,18,.55)" stroke-width="1.3"/><ellipse cx="32.5" cy="20.9" rx="1.8" ry="0.9" fill="#fff" opacity=".55"/><ellipse cx="118" cy="30" rx="3.8" ry="2.4" fill="#CFA86E" stroke="rgba(43,26,18,.55)" stroke-width="1.3"/><ellipse cx="116.9" cy="29.2" rx="1.3" ry="0.7" fill="#fff" opacity=".55"/><ellipse cx="166" cy="17" rx="3.1" ry="2.0" fill="#CFA86E" stroke="rgba(43,26,18,.55)" stroke-width="1.3"/><ellipse cx="165.1" cy="16.3" rx="1.1" ry="0.6" fill="#fff" opacity=".55"/><ellipse cx="86" cy="50" rx="3.6" ry="2.1" fill="#CFA86E" stroke="rgba(43,26,18,.55)" stroke-width="1.3"/><ellipse cx="84.9" cy="49.3" rx="1.3" ry="0.6" fill="#fff" opacity=".55"/></g><rect y="10" width="200" height="3" fill="#2B1A12"/><path d="M67 11 L66 5 L69.5 10 L72 2 L74.5 10 L78 4 L77 11 Z" fill="#7BC86C" stroke="#2B1A12" stroke-width="1.4" stroke-linejoin="round"/><path d="M145 11 L144 5 L147.5 10 L150 2 L152.5 10 L156 4 L155 11 Z" fill="#7BC86C" stroke="#2B1A12" stroke-width="1.4" stroke-linejoin="round"/><circle cx="150" cy="1.6" r="2.2" fill="#F472B6" stroke="#2B1A12" stroke-width="1.1"/></pattern></defs><rect width="2400" height="72" fill="url(#sand)"/></svg></div>
       <div class="dino">
@@ -243,9 +287,11 @@
   var MONO = '"JetBrains Mono",ui-monospace,Consolas,Menlo,monospace';
   var SKINS = {
     classic: { bg:'#161616', ground:'#3a3a3a', dash:'#2f2f2f', cloud:'#262626', text:'#6b6b6b', hot:'#4ADE80', sub:'#4ADE80', title:'#FFFFFF', flash:'#FFFFFF', font:MONO },
+    night:   { bg:'#26325E', ground:'#0C0B16', dash:'rgba(244,236,221,.2)', cloud:'#C7CFE6', text:'rgba(244,236,221,.62)', hot:'#F4ECDD', sub:'#FF9A80', title:'#F4ECDD', flash:'#FFB86B', font:'"Baloo 2","Nunito",system-ui,sans-serif' },
     playful: { bg:'#BFE7F7', ground:'#2B1A12', dash:'rgba(43,26,18,.30)', cloud:'#FFFFFF', text:'rgba(43,26,18,.5)', hot:'#2B1A12', sub:'#E8452C', title:'#2B1A12', flash:'#FF6B4A', font:'"Baloo 2","Nunito",system-ui,sans-serif' }
   };
   var COL = {}, playful = false, skinName = 'classic';
+  var night = document.documentElement.getAttribute('data-mode') === 'dark';   // Playful turns into its night version
   Object.keys(SKINS.classic).forEach(function (k) { COL[k] = SKINS.classic[k]; });
 
   // ---------- Pixel art (shared with the profile banner) ----------
@@ -316,7 +362,8 @@
     if (!SKINS[name]) name = 'classic';
     if (name === 'playful' && !PSET) buildPlayful();
     skinName = name; playful = name === 'playful'; dirty = true;
-    Object.keys(SKINS[name]).forEach(function (k) { COL[k] = SKINS[name][k]; });
+    var pal = SKINS[playful && night ? 'night' : name];
+    Object.keys(pal).forEach(function (k) { COL[k] = pal[k]; });
     if (playful && document.fonts && document.fonts.load) document.fonts.load('800 22px "Baloo 2"').then(function () { dirty = true; }, function () {});
   }
   var AROUND = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]];
@@ -473,6 +520,7 @@
   // Playful sun and clouds: drawn once into bitmaps at the canvas's device scale (like the sprites), then copied.
   var ART_CACHE = {};
   function cachedArt(key, w, h, paint) {
+    if (night) key += ':night';
     var c = ART_CACHE[key];
     if (c && c.scale === SCALE) return c;
     c = document.createElement('canvas'); c.scale = SCALE;
@@ -489,8 +537,8 @@
   }
   function paintCloud(g) {
     cloudPath(g); g.lineJoin = 'round'; g.lineWidth = 5; g.strokeStyle = INK; g.stroke();       // outer outline
-    cloudPath(g); g.fillStyle = '#FFFFFF'; g.fill();
-    g.save(); cloudPath(g); g.clip(); g.fillStyle = '#DCEBF5'; g.fillRect(0, 26, 72, 10); g.restore();   // shaded underside
+    cloudPath(g); g.fillStyle = night ? '#C7CFE6' : '#FFFFFF'; g.fill();
+    g.save(); cloudPath(g); g.clip(); g.fillStyle = night ? '#A3AED0' : '#DCEBF5'; g.fillRect(0, 26, 72, 10); g.restore();   // shaded underside
     g.fillStyle = 'rgba(255,255,255,.95)'; g.beginPath(); g.ellipse(29, 10, 5, 2.4, 0, 0, 6.2832); g.fill();
   }
   function paintSun(g) {                            // calm: no face, soft rounded rays and a faint glow
@@ -500,6 +548,25 @@
     for (var i = 0; i < 12; i++) { var a = i * 0.5236, c = Math.cos(a), s = Math.sin(a); g.beginPath(); g.moveTo(c * 21, s * 21); g.lineTo(c * 25.5, s * 25.5); g.stroke(); }
     g.beginPath(); g.arc(0, 0, 17, 0, 6.2832); g.fillStyle = '#FFC83D'; g.fill(); g.strokeStyle = INK; g.lineWidth = 2.6; g.stroke();
     g.beginPath(); g.arc(0, 0, 12.2, 3.75, 4.55); g.strokeStyle = '#FFE7A0'; g.lineWidth = 2.8; g.stroke();
+  }
+  function paintMoon(g) {                           // night: a calm full moon with a soft glow and a few craters
+    g.translate(30, 30);
+    g.fillStyle = 'rgba(255,243,196,.13)'; g.beginPath(); g.arc(0, 0, 26, 0, 6.2832); g.fill();
+    g.fillStyle = 'rgba(255,243,196,.16)'; g.beginPath(); g.arc(0, 0, 21, 0, 6.2832); g.fill();
+    g.beginPath(); g.arc(0, 0, 16.5, 0, 6.2832); g.fillStyle = '#FBEFC9'; g.fill(); g.strokeStyle = INK; g.lineWidth = 2.6; g.stroke();
+    g.fillStyle = '#E9DAAA'; [[-5, -4, 3.4], [6, 4, 2.5], [-2, 7.5, 1.8]].forEach(function (c) { g.beginPath(); g.arc(c[0], c[1], c[2], 0, 6.2832); g.fill(); });
+    g.beginPath(); g.arc(0, 0, 12, 3.75, 4.55); g.strokeStyle = '#FFFFFF'; g.lineWidth = 2.6; g.lineCap = 'round'; g.stroke();
+  }
+  function paintStars(g) {                          // fixed sparkles across the night sky (seeded, so they never jump)
+    var seed = 7, rand = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+    for (var i = 0; i < 26; i++) {
+      var x = rand() * W, y = 10 + rand() * (GROUND - 70), r = 1.2 + rand() * 2.2;
+      if (Math.abs(x - 104) < 40 && y < 84) continue;                                      // keep the moon clear
+      if ((Math.abs(x - W / 2) < 230 && y > 70 && y < 145) || (x > W - 270 && y < 44)) continue;   // and the text and score
+      g.fillStyle = rand() > .7 ? '#FFF3C4' : 'rgba(244,236,221,.75)';
+      g.beginPath(); g.moveTo(x, y - r * 1.8); g.lineTo(x + r * .5, y - r * .5); g.lineTo(x + r * 1.8, y); g.lineTo(x + r * .5, y + r * .5);
+      g.lineTo(x, y + r * 1.8); g.lineTo(x - r * .5, y + r * .5); g.lineTo(x - r * 1.8, y); g.lineTo(x - r * .5, y - r * .5); g.closePath(); g.fill();
+    }
   }
   function drawCloud(x, y) {
     if (playful) { blitArt(cachedArt('cloud', 72, 36, paintCloud), x + 6, y - 14); return; }
@@ -514,13 +581,13 @@
   function paintGroundTile(g) {
     var h = H - GROUND;
     g.translate(0, TUFT);
-    g.fillStyle = '#F2D9A6'; g.fillRect(0, 0, TILE, h);                                  // sand
-    g.fillStyle = '#F9E8C4'; g.fillRect(0, 3, TILE, 6);                                  // sunlit top band
-    g.fillStyle = '#E5C48C'; g.beginPath(); g.moveTo(0, h);                              // darker wavy layer below
+    g.fillStyle = night ? '#B3925F' : '#F2D9A6'; g.fillRect(0, 0, TILE, h);                                  // sand
+    g.fillStyle = night ? '#C5A673' : '#F9E8C4'; g.fillRect(0, 3, TILE, 6);                                  // sunlit top band
+    g.fillStyle = night ? '#987A4D' : '#E5C48C'; g.beginPath(); g.moveTo(0, h);                              // darker wavy layer below
     for (var x = 0; x <= TILE; x += 2) g.lineTo(x, 31 + 3 * Math.sin(x / TILE * 4 * Math.PI));
     g.lineTo(TILE, h); g.closePath(); g.fill();
     [[34, 18, 4.2, 2.6], [118, 23, 3.2, 2.0], [166, 15, 2.6, 1.7], [86, 38, 3.0, 1.8]].forEach(function (s) {   // pebbles
-      g.beginPath(); g.ellipse(s[0], s[1], s[2], s[3], 0, 0, 6.2832); g.fillStyle = '#CFA86E'; g.fill();
+      g.beginPath(); g.ellipse(s[0], s[1], s[2], s[3], 0, 0, 6.2832); g.fillStyle = night ? '#7E6240' : '#CFA86E'; g.fill();
       g.lineWidth = 1.2; g.strokeStyle = 'rgba(43,26,18,.55)'; g.stroke();
       g.beginPath(); g.ellipse(s[0] - s[2] * .3, s[1] - s[3] * .35, s[2] * .35, s[3] * .3, 0, 0, 6.2832); g.fillStyle = 'rgba(255,255,255,.55)'; g.fill();
     });
@@ -528,7 +595,7 @@
     [[72, false], [150, true]].forEach(function (tf) {                                   // grass tufts (one with a flower)
       var x = tf[0];
       g.beginPath(); g.moveTo(x - 4, 1); g.lineTo(x - 5, -4); g.lineTo(x - 2, 0); g.lineTo(x, -7); g.lineTo(x + 2, 0); g.lineTo(x + 5, -5); g.lineTo(x + 4, 1); g.closePath();
-      g.fillStyle = '#7BC86C'; g.fill(); g.lineJoin = 'round'; g.lineWidth = 1.3; g.strokeStyle = INK; g.stroke();
+      g.fillStyle = night ? '#5E9A57' : '#7BC86C'; g.fill(); g.lineJoin = 'round'; g.lineWidth = 1.3; g.strokeStyle = INK; g.stroke();
       if (tf[1]) { g.beginPath(); g.arc(x, -7.5, 1.9, 0, 6.2832); g.fillStyle = '#F472B6'; g.fill(); g.lineWidth = 1; g.stroke(); }
     });
   }
@@ -580,7 +647,8 @@
   function render() {
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H);
-    if (playful) blitArt(cachedArt('sun', 60, 60, paintSun), 104 - 30, 44 - 30);
+    if (playful && night) { blitArt(cachedArt('stars' + W, W, GROUND, paintStars), 0, 0); blitArt(cachedArt('moon', 60, 60, paintMoon), 104 - 30, 44 - 30); }
+    else if (playful) blitArt(cachedArt('sun', 60, 60, paintSun), 104 - 30, 44 - 30);
     clouds.forEach(function (c) { drawCloud(c.x, c.y); });
     drawGround(); drawObstacles(); drawDino();
 
@@ -625,6 +693,10 @@
       try { localStorage.setItem('dinoSkin', skinName); } catch (e) {}
       cv.focus({ preventScroll: true });          // so Space plays the game instead of pressing this button again
     });
+  });
+  document.addEventListener('dinomode', function () {
+    night = document.documentElement.getAttribute('data-mode') === 'dark';
+    setSkin(skinName);
   });
   var savedSkin = 'classic'; try { savedSkin = localStorage.getItem('dinoSkin') || 'classic'; } catch (e) {}
   showSkin(savedSkin);
@@ -672,6 +744,24 @@
     };
     build();
     if (window.ResizeObserver) { var last = scene.clientWidth; new ResizeObserver(function () { if (Math.abs(scene.clientWidth - last) > 2) { last = scene.clientWidth; build(); } }).observe(scene); }
+  }
+
+  // Day / Night toggle: remembered per visitor; the game listens for "dinomode" to repaint its Playful skin
+  var modeBtn = document.getElementById('modeBtn'), root = document.documentElement;
+  var syncMode = function () {
+    var dark = root.getAttribute('data-mode') === 'dark';
+    modeBtn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    modeBtn.setAttribute('aria-label', dark ? 'Switch to day mode' : 'Switch to night mode');
+  };
+  if (modeBtn) {
+    syncMode();
+    modeBtn.addEventListener('click', function () {
+      var m = root.getAttribute('data-mode') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-mode', m);
+      try { localStorage.setItem('dinoMode', m); } catch (e) {}
+      syncMode();
+      document.dispatchEvent(new Event('dinomode'));
+    });
   }
 
   // "Play now": scroll to the console and start a run exactly like pressing Space

@@ -137,6 +137,8 @@ def hero():
 
 # ------------------------------------------------------------------ link buttons
 BW, BH = 440, 116
+CY = (3 + BH - 11) / 2                              # vertical middle of the card face (shell sits at y 3..BH-11)
+LABEL_Y, SUB_Y = CY - 2, CY + 23                     # baselines; the two lines together are centred on CY
 
 GITHUB = ("M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04"
           "-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 "
@@ -159,7 +161,7 @@ LINKS = [
 
 
 def glyph(kind, primary):
-    cx, cy = 62, 57
+    cx, cy = 62, CY
     if kind == "in":
         return f'<text x="{cx}" y="{cy + 9}" text-anchor="middle" font-size="27" font-weight="800" fill="{INK}">in</text>'
     if kind == "github":
@@ -194,14 +196,14 @@ def link(i, p):
     @media (prefers-reduced-motion:reduce){{.pulse,.nudge{{animation:none}}}}
   </style>
   {shell(BW, BH, card_fill, 22)}
-  <circle cx="66" cy="61" r="33" fill="{INK}"/>
-  <circle cx="62" cy="57" r="33" fill="{icon_fill}" stroke="{INK}" stroke-width="3"/>
+  <circle cx="66" cy="{CY + 4}" r="33" fill="{INK}"/>
+  <circle cx="62" cy="{CY}" r="33" fill="{icon_fill}" stroke="{INK}" stroke-width="3"/>
   {glyph(p["glyph"], primary)}
-  <text x="114" y="55" font-size="28" font-weight="800" fill="{INK}">{e(p["label"])}</text>
-  <text x="114" y="80" font-size="{sub_size}" font-weight="600" fill="{INK}" fill-opacity=".68">{e(p["sub"])}</text>
+  <text x="114" y="{LABEL_Y}" font-size="28" font-weight="800" fill="{INK}">{e(p["label"])}</text>
+  <text x="114" y="{SUB_Y}" font-size="{sub_size}" font-weight="600" fill="{INK}" fill-opacity=".68">{e(p["sub"])}</text>
   {live}
-  <g class="nudge"><circle cx="{BW - 44}" cy="80" r="17" fill="#fff" stroke="{INK}" stroke-width="2.6"/>
-  <text x="{BW - 44}" y="87" text-anchor="middle" font-size="19" font-weight="800" fill="{INK}">↗</text></g>
+  <g class="nudge"><circle cx="{BW - 42}" cy="{CY}" r="17" fill="#fff" stroke="{INK}" stroke-width="2.6"/>
+  <text x="{BW - 42}" y="{CY + 7}" text-anchor="middle" font-size="19" font-weight="800" fill="{INK}">↗</text></g>
 </svg>
 """
     write(f'{p["slug"]}.svg', svg)

@@ -24,6 +24,9 @@ import urllib.request
 sys.dont_write_bytecode = True
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+if "RAHUL_THEME" not in os.environ:                     # run on its own (the workflow): use the saved theme;
+    import theme as _theme                              # set before sprites is imported, which colours the dino
+    os.environ["RAHUL_THEME"] = _theme.effective(_theme.load())[0]["activity"]
 import sprites as S  # noqa: E402
 import theme_colors  # noqa: E402
 import banner  # noqa: E402
@@ -31,10 +34,6 @@ import banner  # noqa: E402
 GH_USER = "Rahul-134"
 LC_USER = "Rahul_134"
 DATA = os.path.join(HERE, "stats.json")
-
-if "RAHUL_THEME" not in os.environ:                     # run on its own (the workflow): use the saved theme
-    import theme as _theme
-    os.environ["RAHUL_THEME"] = _theme.effective(_theme.load())[0]["activity"]
 T = theme_colors.current()
 ACCENT = T.accent
 INK, SKY, PAPER = banner.INK, banner.SKY, "#FFFDF7"

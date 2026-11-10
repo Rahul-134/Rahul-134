@@ -221,6 +221,11 @@ ART_HTML = {
     "{{ART_SAGUARO}}": art_svg(S.ART["saguaro"]),
     "{{ART_SMALL}}": art_svg(S.ART["small"]),
     "{{ART_BIRD}}": art_svg(S.ART["birdUp"], pal={"X": "#5B6B80"}),
+    "{{ART_DINO_B}}": art_svg(S.pad(S.ART["dinoBody"], 24) + S.pad(S.ART["legsB"], 24)),
+    "{{ART_DUCK_A}}": art_svg(S.pad(S.ART["duckBody"], 28) + S.pad(S.ART["duckLegsA"], 28)),
+    "{{ART_DUCK_B}}": art_svg(S.pad(S.ART["duckBody"], 28) + S.pad(S.ART["duckLegsB"], 28)),
+    "{{ART_BIRD_UP}}": art_svg(S.ART["birdUp"], pal={"X": "#5B6B80"}),
+    "{{ART_BIRD_DOWN}}": art_svg(S.pad(S.ART["birdDown"], 16), pal={"X": "#5B6B80"}),
 }
 
 html = tpl.replace("/*__SPRITES__*/", js).replace("{{ACCENT}}", T.accent).replace("{{ACCENT_RGB}}", T.rgb)

@@ -102,7 +102,7 @@ assert starts[1] - starts[0] > DUR + 0.2, starts
 
 
 def pct(t):
-    return f"{t / CYCLE * 100:.2f}%"
+    return f"{t / CYCLE * 100:.4f}%"
 
 
 events = []

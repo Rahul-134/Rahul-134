@@ -38,6 +38,11 @@ def derive(accent):
     return _hex(shade), _hex(light)
 
 
+def outline_of(accent):
+    h, l, sat = colorsys.rgb_to_hls(*_rgb(accent))
+    return _hex(colorsys.hls_to_rgb(h, l * 0.36, min(1.0, sat * 0.95)))
+
+
 class Theme:
     def __init__(self, name):
         if name not in THEMES:
@@ -49,6 +54,7 @@ class Theme:
         d, l = derive(self.accent)
         self.shade = t.get("shade", d).upper()
         self.light = t.get("light", l).upper()
+        self.outline = outline_of(self.accent)
         r, g, b = (int(round(v * 255)) for v in _rgb(self.accent))
         self.rgb = f"{r},{g},{b}"
         self.bare = self.accent.lstrip("#")            # as used inside README badge / stat-card URLs

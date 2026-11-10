@@ -31,7 +31,7 @@ def write(name, text):
 
 def shapes(rows_, u=3):
     paths = S.path_by_colour(rows_, u)
-    order = ["D", "Y", "L", "K", "W", "g", "G", "h", "S", "P", "X"]
+    order = ["O", "D", "Y", "L", "B", "M", "T", "K", "W", "g", "G", "h", "S", "P", "X"]
     return "".join(f'<path fill="{S.PAL[c]}" d="{paths[c]}"/>' for c in order if c in paths)
 
 
@@ -73,13 +73,13 @@ COMMON_CSS = """
 # ------------------------------------------------------------------ hero card
 W, H = 900, 300
 GROUND = 246
-DINO_H = (len(S.ART["dinoBody"]) + len(S.ART["legsA"])) * 3
+DINO_H = (len(S.ART["dinoBody"]) + len(S.ART["legsA"])) * S.DINO_U
 
 
 def hero():
-    body = shapes(S.pad(S.ART["dinoBody"], 24))
-    legs = shapes(S.pad(S.ART["legsA"], 24))
-    body_h = len(S.ART["dinoBody"]) * 3
+    body = shapes(S.pad(S.ART["dinoBody"], S.DINO_W), S.DINO_U)
+    legs = shapes(S.pad(S.ART["legsA"], S.DINO_W), S.DINO_U)
+    body_h = len(S.ART["dinoBody"]) * S.DINO_U
     cactus = shapes(S.ART["small"])
     cactus_h = len(S.ART["small"]) * 3
     sag = shapes(S.ART["saguaro"])

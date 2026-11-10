@@ -56,7 +56,7 @@
   .scene .ground::after { content:""; position:absolute; left:0; right:0; top:14px; height:6px; background:repeating-linear-gradient(90deg, rgba(43,26,18,.35) 0 14px, transparent 14px 40px); }
   .scene .dino { position:absolute; left:46px; bottom:50px; width:62px; height:68px; }
   .scene .pose { position:absolute; left:0; bottom:0; width:62px; }
-  .scene .pose.duck { width:72px; }
+  .scene .pose.duck { width:69px; }
   .scene .pose.jump, .scene .pose.duck { opacity:0; }
   .scene .cac { position:absolute; bottom:50px; left:72%; width:34px; }
   .scene .bird { position:absolute; bottom:100px; left:46%; width:44px; }
@@ -248,11 +248,11 @@
     return { c: c, w: rows[0].length * u, h: rows.length * u };
   }
 
-  var U = 3;
-  var dinoA = sprite(ART.dinoBody.concat(ART.legsA), U);
-  var dinoB = sprite(ART.dinoBody.concat(ART.legsB), U);
-  var duckA = sprite(ART.duckBody.concat(ART.duckLegsA), U);
-  var duckB = sprite(ART.duckBody.concat(ART.duckLegsB), U);
+  var U = 3, DU = {{DINO_U}};            // the dino is drawn on a finer grid than the cacti and birds
+  var dinoA = sprite(ART.dinoBody.concat(ART.legsA), DU);
+  var dinoB = sprite(ART.dinoBody.concat(ART.legsB), DU);
+  var duckA = sprite(ART.duckBody.concat(ART.duckLegsA), DU);
+  var duckB = sprite(ART.duckBody.concat(ART.duckLegsB), DU);
   var CACT = { saguaro: sprite(ART.saguaro, U), small: sprite(ART.small, U), barrel: sprite(ART.barrel, U) };
   var birdUp = sprite(ART.birdUp, U);
   var birdDown = sprite(ART.birdDown, U);
@@ -272,8 +272,8 @@
   function buildPlayful() {
     var slate = { X: '#5B6B80' };
     PSET = {
-      dinoA: outlined(ART.dinoBody.concat(ART.legsA), U), dinoB: outlined(ART.dinoBody.concat(ART.legsB), U),
-      duckA: outlined(ART.duckBody.concat(ART.duckLegsA), U), duckB: outlined(ART.duckBody.concat(ART.duckLegsB), U),
+      dinoA: outlined(ART.dinoBody.concat(ART.legsA), DU), dinoB: outlined(ART.dinoBody.concat(ART.legsB), DU),
+      duckA: outlined(ART.duckBody.concat(ART.duckLegsA), DU), duckB: outlined(ART.duckBody.concat(ART.duckLegsB), DU),
       CACT: { saguaro: outlined(ART.saguaro, U), small: outlined(ART.small, U), barrel: outlined(ART.barrel, U) },
       birdUp: outlined(ART.birdUp, U, slate), birdDown: outlined(ART.birdDown, U, slate)
     };
@@ -356,7 +356,7 @@
 
   function dinoBox() {
     if (ducking && dino.onGround) return { x: dino.x + 6, y: GROUND - duckA.h + 4, w: duckA.w - 20, h: duckA.h - 6 };
-    return { x: dino.x + 15, y: dino.y + 4, w: dinoA.w - 25, h: dinoA.h - 8 };
+    return { x: dino.x + 18, y: dino.y + 4, w: dinoA.w - 24, h: dinoA.h - 8 };
   }
 
   function hit(a, b) { return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y; }
@@ -521,7 +521,7 @@
   if (scene && scene.animate && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
     var q = function (sel) { return scene.querySelector(sel); };
     var dinoEl = q('.dino'), cacEl = q('.cac'), birdEl = q('.bird'), runEl = q('.pose.run'), jumpEl = q('.pose.jump'), duckEl = q('.pose.duck'), anims = [];
-    var SPEED = 170, AIR = 0.72, DUCK = 0.8, FEET = 81, BODY = 80, CAC_HALF = 17, BIRD_HALF = 22, LIFT = 66, GAP = 260;   // px/s, s, px
+    var SPEED = 170, AIR = 0.72, DUCK = 0.8, FEET = 75, BODY = 77, CAC_HALF = 17, BIRD_HALF = 22, LIFT = 66, GAP = 260;   // px/s, s, px
     var windows = function (wins, on, off) {       // an opacity track that is `on` inside each [a, b] and `off` elsewhere
       var kf = [{ opacity: off, offset: 0, easing: 'steps(1,end)' }];
       wins.forEach(function (w) { kf.push({ opacity: on, offset: w[0], easing: 'steps(1,end)' }, { opacity: off, offset: w[1], easing: 'steps(1,end)' }); });

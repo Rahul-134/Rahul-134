@@ -2,7 +2,10 @@
 <div align="center">
 
 <a href="https://rahul-134.github.io/Rahul-134/dino/">
-  <img src="dino-banner.svg" alt="Hey I am Rahul Lumbhani — AI/ML Engineer and GenAI Enthusiast. Click to play the dino game." width="100%" />
+  <picture>
+    <source media="(max-width: 600px)" srcset="dino-banner-mobile.svg" />
+    <img src="dino-banner.svg" alt="Hey I am Rahul Lumbhani — AI/ML Engineer and GenAI Enthusiast. Click to play the dino game." width="100%" />
+  </picture>
 </a>
 
 <br/>

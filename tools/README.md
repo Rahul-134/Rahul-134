@@ -68,7 +68,8 @@ To recolour the cacti as well, add `"cactus": {"G": ..., "g": ..., "h": ..., "S"
 | `theme.py` | the command above; regenerates everything and recolours each README region |
 | `theme_colors.py` | the theme list and colour maths |
 | `sprites.py` | the shared pixel art (dino, cacti, birds) |
-| `gen_dino.py` | `dino-banner.svg` and the `dino/` game page |
+| `gen_dino.py` | the `dino/` game page, and the README banner via `banner.py` |
+| `banner.py` | `dino-banner.svg` (wide) and `dino-banner-mobile.svg` (phones); the README picks one with a `<picture>` media query |
 | `gen_about.py` | `about-card.svg` |
 | `gen_projects.py` | the `projects/*.svg` cards |
 | `gen_connect.py` | the `connect/*.svg` art for Let's Connect |

@@ -15,7 +15,7 @@ Sections: header (banner, typing line, badge row), about (About card + Tech Stac
 projects (the project cards), activity (GitHub stats + LeetCode), connect (Let's Connect) and
 game (the playable game page).
 
-What it regenerates: dino-banner.svg, about-card.svg, projects/*.svg, connect/*.svg, dino/index.html
+What it regenerates: dino-banner.svg (+ dino-banner-mobile.svg), about-card.svg, projects/*.svg, connect/*.svg, dino/index.html
 and the colour codes inside README.md (each region of the README follows its own section's theme).
 It needs Python 3 and Pillow (`pip install pillow`). Nothing else.
 """
@@ -165,7 +165,7 @@ def recolour_readme(sec):
 
 def apply(state):
     sec, cards = effective(state)
-    run("gen_dino.py", ROOT, sec["header"])                       # dino-banner.svg (+ a game page in the same colour)
+    run("gen_dino.py", ROOT, sec["header"])                       # dino-banner(-mobile).svg (+ a game page in the same colour)
     if sec["game"] != sec["header"]:                              # the game page has its own theme
         with tempfile.TemporaryDirectory() as tmp:
             run("gen_dino.py", tmp, sec["game"])

@@ -166,7 +166,7 @@
   .scene .stars i { position:absolute; width:var(--s,8px); height:var(--s,8px); background:#FFF3C4; clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%); animation:twinkle 2.6s ease-in-out infinite; }
   @keyframes twinkle { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.35; transform:scale(.7); } }
   html[data-mode=dark] .scene .cloud { filter:brightness(.78) saturate(.8); }
-  html[data-mode=dark] .scene .ground { filter:brightness(.72) saturate(.85); }
+  html[data-mode=dark] .scene .ground { filter:brightness(.72) saturate(.85); border-radius:0 0 25px 25px; overflow:hidden; }   /* a filtered layer ignores the scene's rounded clip, so round it too */
   @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .stk, .scene *, .btn, .arc { animation:none !important; transition:none !important; } }
   @media (max-width:820px) {
     .hero { grid-template-columns:1fr; } .scene { height:190px; }
@@ -250,7 +250,7 @@
   <div class="stk s6" aria-hidden="true"><svg viewBox="0 0 22 24" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#43602F" d="M8 6h2v2h-2zM8 8h2v2h-2zM8 10h2v2h-2zM8 12h2v2h-2zM8 14h2v2h-2zM8 16h2v2h-2zM8 18h2v2h-2zM8 20h2v2h-2zM8 22h2v2h-2z"/><path fill="#6B8F52" d="M8 2h2v2h-2zM14 2h2v2h-2zM8 4h2v2h-2zM14 4h2v2h-2zM2 6h4v2h-4zM10 6h4v2h-4zM2 8h4v2h-4zM10 8h4v2h-4zM2 10h4v2h-4zM10 10h4v2h-4zM2 12h6v2h-6zM10 12h4v2h-4zM2 14h6v2h-6zM10 14h4v2h-4zM2 16h6v2h-6zM10 16h4v2h-4zM12 18h2v2h-2zM10 20h4v2h-4zM10 22h4v2h-4z"/><path fill="#9CBF80" d="M14 6h2v2h-2zM14 8h2v2h-2zM14 10h2v2h-2zM14 12h2v2h-2zM14 14h2v2h-2zM14 16h2v2h-2zM14 18h2v2h-2zM14 20h2v2h-2zM14 22h2v2h-2z"/><path fill="#E6EBD2" d="M16 10h2v2h-2zM10 18h2v2h-2zM16 18h2v2h-2z"/><path fill="#F472B6" d="M10 0h4v2h-4zM10 2h4v2h-4zM10 4h4v2h-4z"/><path fill="#2D3C22" d="M8 0h2v2h-2zM14 0h2v2h-2zM6 2h2v2h-2zM16 2h2v2h-2zM2 4h6v2h-6zM16 4h2v2h-2zM0 6h2v2h-2zM6 6h2v2h-2zM16 6h2v2h-2zM0 8h2v2h-2zM6 8h2v2h-2zM16 8h2v2h-2zM0 10h2v2h-2zM6 10h2v2h-2zM18 10h2v2h-2zM0 12h2v2h-2zM16 12h2v2h-2zM0 14h2v2h-2zM16 14h2v2h-2zM0 16h2v2h-2zM16 16h2v2h-2zM2 18h6v2h-6zM18 18h2v2h-2zM6 20h2v2h-2zM16 20h2v2h-2zM6 22h2v2h-2zM16 22h2v2h-2z"/></svg></div>
   <div class="stk s7" aria-hidden="true"><svg viewBox="0 0 30 30"><path d="M15 3 L18.6 11 L27 12 L20.8 17.8 L22.6 26.4 L15 22 L7.4 26.4 L9.2 17.8 L3 12 L11.4 11 Z" fill="#1FB5A8" stroke="#2B1A12" stroke-width="2.4" stroke-linejoin="round"/></svg></div>
 
-<script src="leaderboard-config.js"></script>
+<script src="leaderboard-config.js?v=640274cd6c"></script>
 <script>
 (function () {
   'use strict';
@@ -703,7 +703,7 @@
   
 })();
 </script>
-<script src="leaderboard.js"></script>
+<script src="leaderboard.js?v=be3774eba6"></script>
 <script>
 (function () {
   // Hero scene: a cactus and then a bird slide past at a constant speed. The dino runs (legs alternate),

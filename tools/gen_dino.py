@@ -65,6 +65,13 @@ hook = (
     if test_hook else ""
 )
 html = html.replace("/*__TESTHOOK__*/", hook)
+# Version the leaderboard scripts by their content, so a browser never pairs a new page with a cached old
+# script (the night colours live in leaderboard.js).
+import hashlib  # noqa: E402
+for name in ("leaderboard.js", "leaderboard-config.js"):
+    with open(os.path.join(here, "..", "dino", name), "rb") as f:
+        ver = hashlib.sha1(f.read()).hexdigest()[:10]
+    html = html.replace(f'<script src="{name}"></script>', f'<script src="{name}?v={ver}"></script>')
 with open(os.path.join(out_dir, "dino", "index.html"), "w") as f:
     f.write(html)
 

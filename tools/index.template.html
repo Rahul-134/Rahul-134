@@ -54,8 +54,9 @@
   @keyframes spin { to { transform:rotate(360deg); } }
   .scene .cloud.c1 { top:24px; left:-110px; }
   .scene .cloud.c2 { top:84px; left:-110px; width:76px; animation-duration:19s; animation-delay:-8s; }
-  .scene .ground { position:absolute; left:0; right:0; bottom:0; height:62px; background:#F2D9A6; border-top:3px solid var(--ink); }
-  .scene .ground::after { content:""; position:absolute; left:0; right:0; top:14px; height:6px; background:repeating-linear-gradient(90deg, rgba(43,26,18,.35) 0 14px, transparent 14px 40px); }
+  .scene .ground { position:absolute; left:0; right:0; bottom:0; height:62px; background:#F2D9A6; }
+  .scene .ground svg { position:absolute; left:0; top:-10px; display:block; will-change:transform; animation:groundscroll 1.1765s linear infinite; }
+  @keyframes groundscroll { to { transform:translateX(-200px); } }
   .scene .dino { position:absolute; left:46px; bottom:50px; width:62px; height:68px; }
   .scene .pose { position:absolute; left:0; bottom:0; width:62px; }
   .scene .pose.duck { width:69px; }
@@ -163,7 +164,7 @@
     </div>
     <div class="scene" aria-hidden="true">
       <div class="sun"><svg viewBox="-38 -38 76 76" aria-hidden="true"><circle r="28" fill="#FFC83D" opacity=".22"/><g class="rays" stroke="#FFB547" stroke-width="4.6" stroke-linecap="round"><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(0)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(30)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(60)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(90)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(120)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(150)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(180)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(210)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(240)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(270)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(300)"/><line x1="0" y1="-26.5" x2="0" y2="-32.5" transform="rotate(330)"/></g><circle r="21.5" fill="#FFC83D" stroke="#2B1A12" stroke-width="3"/><path d="M-14 -9 A15.5 15.5 0 0 1 -3 -16.5" stroke="#FFE7A0" stroke-width="3.6" fill="none" stroke-linecap="round"/></svg></div><div class="cloud c1"><svg viewBox="8 2 88 46" aria-hidden="true"><defs><clipPath id="cc1"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></clipPath></defs><g fill="#2B1A12" stroke="#2B1A12" stroke-width="6" stroke-linejoin="round"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g fill="#fff"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g clip-path="url(#cc1)"><rect x="8" y="36" width="88" height="10" fill="#DCEBF5"/><ellipse cx="40" cy="14" rx="7" ry="3.2" fill="#fff" opacity=".9"/></g></svg></div><div class="cloud c2"><svg viewBox="8 2 88 46" aria-hidden="true"><defs><clipPath id="cc2"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></clipPath></defs><g fill="#2B1A12" stroke="#2B1A12" stroke-width="6" stroke-linejoin="round"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g fill="#fff"><circle cx="26" cy="29" r="12"/><circle cx="44" cy="21" r="16"/><circle cx="64" cy="25" r="13"/><circle cx="80" cy="32" r="9"/><rect x="14" y="29" width="76" height="14" rx="7"/></g><g clip-path="url(#cc2)"><rect x="8" y="36" width="88" height="10" fill="#DCEBF5"/><ellipse cx="40" cy="14" rx="7" ry="3.2" fill="#fff" opacity=".9"/></g></svg></div>
-      <div class="ground"></div>
+      <div class="ground"><svg width="2400" height="72" aria-hidden="true"><defs><pattern id="sand" width="200" height="72" patternUnits="userSpaceOnUse"><rect y="10" width="200" height="62" fill="#F2D9A6"/><rect y="13" width="200" height="7" fill="#F9E8C4"/><path transform="translate(0,10)" d="M0 62 L0 40.0 L4 40.9 L8 41.7 L12 42.4 L16 43.0 L20 43.3 L24 43.5 L28 43.4 L32 43.2 L36 42.7 L40 42.1 L44 41.3 L48 40.4 L52 39.6 L56 38.7 L60 37.9 L64 37.3 L68 36.8 L72 36.6 L76 36.5 L80 36.7 L84 37.0 L88 37.6 L92 38.3 L96 39.1 L100 40.0 L104 40.9 L108 41.7 L112 42.4 L116 43.0 L120 43.3 L124 43.5 L128 43.4 L132 43.2 L136 42.7 L140 42.1 L144 41.3 L148 40.4 L152 39.6 L156 38.7 L160 37.9 L164 37.3 L168 36.8 L172 36.6 L176 36.5 L180 36.7 L184 37.0 L188 37.6 L192 38.3 L196 39.1 L200 40.0 L200 62 Z" fill="#E5C48C"/><g transform="translate(0,10)"><ellipse cx="34" cy="22" rx="5" ry="3.1" fill="#CFA86E" stroke="rgba(43,26,18,.55)" stroke-width="1.3"/><ellipse cx="32.5" cy="20.9" rx="1.8" ry="0.9" fill="#fff" opacity=".55"/><ellipse cx="118" cy="30" rx="3.8" ry="2.4" fill="#CFA86E" stroke="rgba(43,26,18,.55)" stroke-width="1.3"/><ellipse cx="116.9" cy="29.2" rx="1.3" ry="0.7" fill="#fff" opacity=".55"/><ellipse cx="166" cy="17" rx="3.1" ry="2.0" fill="#CFA86E" stroke="rgba(43,26,18,.55)" stroke-width="1.3"/><ellipse cx="165.1" cy="16.3" rx="1.1" ry="0.6" fill="#fff" opacity=".55"/><ellipse cx="86" cy="50" rx="3.6" ry="2.1" fill="#CFA86E" stroke="rgba(43,26,18,.55)" stroke-width="1.3"/><ellipse cx="84.9" cy="49.3" rx="1.3" ry="0.6" fill="#fff" opacity=".55"/></g><rect y="10" width="200" height="3" fill="#2B1A12"/><path d="M67 11 L66 5 L69.5 10 L72 2 L74.5 10 L78 4 L77 11 Z" fill="#7BC86C" stroke="#2B1A12" stroke-width="1.4" stroke-linejoin="round"/><path d="M145 11 L144 5 L147.5 10 L150 2 L152.5 10 L156 4 L155 11 Z" fill="#7BC86C" stroke="#2B1A12" stroke-width="1.4" stroke-linejoin="round"/><circle cx="150" cy="1.6" r="2.2" fill="#F472B6" stroke="#2B1A12" stroke-width="1.1"/></pattern></defs><rect width="2400" height="72" fill="url(#sand)"/></svg></div>
       <div class="dino">
         <div class="pose run"><span class="f1">{{ART_DINO}}</span><span class="f2">{{ART_DINO_B}}</span></div>
         <div class="pose jump">{{ART_DINO}}</div>
@@ -494,9 +495,37 @@
   }
   function rr(x, y, w, h) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, 4); else ctx.rect(x, y, w, h); ctx.fill(); }
 
+  // Playful ground: one 200-wide tile (sand layers, pebbles, grass tufts) cached as a bitmap and repeated,
+  // scrolled by the same offset as the run. Tufts poke 8 units above the ground line.
+  var TILE = 200, TUFT = 8;
+  function paintGroundTile(g) {
+    var h = H - GROUND;
+    g.translate(0, TUFT);
+    g.fillStyle = '#F2D9A6'; g.fillRect(0, 0, TILE, h);                                  // sand
+    g.fillStyle = '#F9E8C4'; g.fillRect(0, 3, TILE, 6);                                  // sunlit top band
+    g.fillStyle = '#E5C48C'; g.beginPath(); g.moveTo(0, h);                              // darker wavy layer below
+    for (var x = 0; x <= TILE; x += 2) g.lineTo(x, 31 + 3 * Math.sin(x / TILE * 4 * Math.PI));
+    g.lineTo(TILE, h); g.closePath(); g.fill();
+    [[34, 18, 4.2, 2.6], [118, 23, 3.2, 2.0], [166, 15, 2.6, 1.7], [86, 38, 3.0, 1.8]].forEach(function (s) {   // pebbles
+      g.beginPath(); g.ellipse(s[0], s[1], s[2], s[3], 0, 0, 6.2832); g.fillStyle = '#CFA86E'; g.fill();
+      g.lineWidth = 1.2; g.strokeStyle = 'rgba(43,26,18,.55)'; g.stroke();
+      g.beginPath(); g.ellipse(s[0] - s[2] * .3, s[1] - s[3] * .35, s[2] * .35, s[3] * .3, 0, 0, 6.2832); g.fillStyle = 'rgba(255,255,255,.55)'; g.fill();
+    });
+    g.fillStyle = INK; g.fillRect(0, 0, TILE, 3);                                        // the ground line
+    [[72, false], [150, true]].forEach(function (tf) {                                   // grass tufts (one with a flower)
+      var x = tf[0];
+      g.beginPath(); g.moveTo(x - 4, 1); g.lineTo(x - 5, -4); g.lineTo(x - 2, 0); g.lineTo(x, -7); g.lineTo(x + 2, 0); g.lineTo(x + 5, -5); g.lineTo(x + 4, 1); g.closePath();
+      g.fillStyle = '#7BC86C'; g.fill(); g.lineJoin = 'round'; g.lineWidth = 1.3; g.strokeStyle = INK; g.stroke();
+      if (tf[1]) { g.beginPath(); g.arc(x, -7.5, 1.9, 0, 6.2832); g.fillStyle = '#F472B6'; g.fill(); g.lineWidth = 1; g.stroke(); }
+    });
+  }
   function drawGround() {
-    if (playful) { ctx.fillStyle = '#F2D9A6'; ctx.fillRect(0, GROUND + 1, W, H - GROUND - 1); ctx.fillStyle = COL.ground; ctx.fillRect(0, GROUND, W, 3); }
-    else { ctx.fillStyle = COL.ground; ctx.fillRect(0, GROUND + 1, W, 2); }
+    if (playful) {
+      var tile = cachedArt('ground', TILE, H - GROUND + TUFT, paintGroundTile), off = groundOff % TILE;
+      for (var x = -off; x < W; x += TILE) blitArt(tile, x, GROUND - TUFT);
+      return;
+    }
+    ctx.fillStyle = COL.ground; ctx.fillRect(0, GROUND + 1, W, 2);
     ctx.strokeStyle = COL.dash; ctx.lineWidth = 2;
     var patterns = [[20, 40, 8, 62, 4, 66], [6, 54, 14, 40, 4, 82]];
     for (var p = 0; p < 2; p++) {

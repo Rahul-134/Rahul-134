@@ -272,22 +272,13 @@ More in [Featured Projects ↓](#-featured-projects)
 <div align="center">
 
 <a href="https://github.com/Rahul-134">
-  <img height="190" src="https://github-stats-extended.vercel.app/api?username=Rahul-134&rank_icon=github&custom_title=GitHub%20Stats&show_icons=true&include_all_commits=true&hide_border=true&bg_color=161616&title_color=4ADE80&icon_color=4ADE80&text_color=D6D6D6" alt="GitHub stats" />
-</a>
-<a href="https://github.com/Rahul-134">
-  <img height="190" src="https://readmecodegen.com/api/github-stats/svg?username=Rahul-134&cardType=langs" alt="Top languages" />
+  <img src="stats/github.svg" width="100%" alt="GitHub stats: stars, commits, pull requests, issues, repositories and top languages." />
 </a>
 
-<br/>
+<br/><br/>
 
 <a href="https://github.com/Rahul-134">
-  <img src="https://streak-stats.demolab.com/?user=Rahul-134&theme=dark&hide_border=true&background=161616&ring=4ADE80&fire=4ADE80&currStreakLabel=4ADE80&currStreakNum=FFFFFF&sideNums=FFFFFF&sideLabels=D6D6D6&dates=8B8B8B" alt="GitHub streak" />
-</a>
-
-<br/>
-
-<a href="https://github.com/Rahul-134">
-  <img src="https://ghchart.rshah.org/4ADE80/Rahul-134" alt="Contribution graph" width="100%" />
+  <img src="stats/activity.svg" width="100%" alt="GitHub contributions: total, current streak, longest streak and the contribution calendar for the last year." />
 </a>
 
 </div>
@@ -298,8 +289,8 @@ More in [Featured Projects ↓](#-featured-projects)
 
 <div align="center">
 
-<a href="https://www.leetcode.com/Rahul_134">
-  <img src="https://www.readmecodegen.com/api/leetcode-stats?username=Rahul_134&theme=github_dark&reputation=false" alt="LeetCode stats" />
+<a href="https://leetcode.com/u/Rahul_134/">
+  <img src="stats/leetcode.svg" width="100%" alt="LeetCode stats: problems solved by difficulty and global ranking." />
 </a>
 
 </div>

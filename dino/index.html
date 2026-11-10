@@ -213,9 +213,22 @@
   var W = 900, H = 260, GROUND = 214;
   var DPR = Math.min(window.devicePixelRatio || 1, 3);
   var cv = document.getElementById('game');
-  cv.width = W * DPR; cv.height = H * DPR;
   var ctx = cv.getContext('2d');
-  ctx.scale(DPR, DPR);
+  // The world is 900 wide on big screens. On narrow screens it shows less of the road (down to 500), so
+  // everything is drawn larger instead of being shrunk to a thin strip.
+  function fitWidth() { var w = cv.clientWidth || 900; return Math.round(Math.min(900, Math.max(500, w * 1.55))); }
+  function resize() {
+    var nw = fitWidth();
+    if (nw === W && cv.width === W * DPR) return;
+    W = nw; cv.width = W * DPR; cv.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  resize();
+  var resizeQueued = false;
+  window.addEventListener('resize', function () {
+    if (resizeQueued) return; resizeQueued = true;
+    requestAnimationFrame(function () { resizeQueued = false; resize(); });
+  });
 
   // Two looks for the same game: Classic (the dark original) and Playful (sky, sand and outlined sprites).
   var MONO = '"JetBrains Mono",ui-monospace,Consolas,Menlo,monospace';
@@ -475,7 +488,7 @@
   function render() {
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H);
-    if (playful) { ctx.fillStyle = '#FFC83D'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(110, 62, 26, 0, 6.2832); ctx.fill(); ctx.stroke(); }
+    if (playful) { ctx.fillStyle = '#FFC83D'; ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(104, 44, 23, 0, 6.2832); ctx.fill(); ctx.stroke(); }
     clouds.forEach(function (c) { drawCloud(c.x, c.y); });
     drawGround(); drawObstacles(); drawDino();
 

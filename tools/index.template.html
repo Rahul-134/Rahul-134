@@ -54,13 +54,20 @@
   .scene .cloud.c2 { top:92px; left:-90px; animation-duration:19s; animation-delay:-8s; transform:scale(.8); }
   .scene .ground { position:absolute; left:0; right:0; bottom:0; height:62px; background:#F2D9A6; border-top:3px solid var(--ink); }
   .scene .ground::after { content:""; position:absolute; left:0; right:0; top:14px; height:6px; background:repeating-linear-gradient(90deg, rgba(43,26,18,.35) 0 14px, transparent 14px 40px); }
-  .scene .dino { position:absolute; left:46px; bottom:50px; width:62px; }
+  .scene .dino { position:absolute; left:46px; bottom:50px; width:62px; height:68px; }
+  .scene .pose { position:absolute; left:0; bottom:0; width:62px; }
+  .scene .pose.duck { width:72px; }
+  .scene .pose.jump, .scene .pose.duck { opacity:0; }
   .scene .cac { position:absolute; bottom:50px; left:72%; width:34px; }
-  .scene.live .cac { left:100%; }
-  .scene .dino svg, .scene .cac svg, .stk svg { display:block; width:100%; height:auto; }
-  .scene .coin { position:absolute; left:44%; top:70px; animation:bob 1.6s ease-in-out infinite; }
+  .scene .bird { position:absolute; bottom:100px; left:46%; width:44px; }
+  .scene .dino svg, .scene .cac svg, .scene .bird svg, .stk svg { display:block; width:100%; height:auto; }
+  .scene .f2 { position:absolute; left:0; bottom:0; width:100%; opacity:0; }
+  .scene .run .f1, .scene .duck .f1 { animation:fa .26s linear infinite; }
+  .scene .run .f2, .scene .duck .f2 { animation:fb .26s linear infinite; }
+  .scene .bird .f1 { animation:fa .4s linear infinite; } .scene .bird .f2 { animation:fb .4s linear infinite; }
+  @keyframes fa { 0%,49.9% { opacity:1; } 50%,100% { opacity:0; } }
+  @keyframes fb { 0%,49.9% { opacity:0; } 50%,100% { opacity:1; } }
   @keyframes drift { to { transform:translateX(520px); } }
-  @keyframes bob { 50% { transform:translateY(-8px); } }
 
   /* the game console */
   .console { width:min(100%,940px); padding:14px 16px 20px; background:var(--accent); border:3px solid var(--ink); border-radius:36px; box-shadow:8px 10px 0 var(--ink); }
@@ -150,9 +157,14 @@
     </div>
     <div class="scene" aria-hidden="true">
       <div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div>
-      <svg class="coin" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="12" fill="#FFC83D" stroke="#2B1A12" stroke-width="3"/><circle cx="15" cy="15" r="6" fill="none" stroke="#2B1A12" stroke-width="2.5"/></svg>
       <div class="ground"></div>
-      <div class="dino">{{ART_DINO}}</div><div class="cac">{{ART_SAGUARO}}</div>
+      <div class="dino">
+        <div class="pose run"><span class="f1">{{ART_DINO}}</span><span class="f2">{{ART_DINO_B}}</span></div>
+        <div class="pose jump">{{ART_DINO}}</div>
+        <div class="pose duck"><span class="f1">{{ART_DUCK_A}}</span><span class="f2">{{ART_DUCK_B}}</span></div>
+      </div>
+      <div class="cac">{{ART_SAGUARO}}</div>
+      <div class="bird"><span class="f1">{{ART_BIRD_UP}}</span><span class="f2">{{ART_BIRD_DOWN}}</span></div>
     </div>
   </header>
 
@@ -438,26 +450,41 @@
 <script src="leaderboard.js"></script>
 <script>
 (function () {
-  // Hero scene: the cactus slides past at a constant speed and the dino hops exactly when it arrives.
-  // Timing is computed from the scene's real width, so it stays in sync on any screen size.
+  // Hero scene: a cactus and then a bird slide past at a constant speed. The dino runs (legs alternate),
+  // hops over the cactus and ducks under the bird, each timed from the scene's real width so it stays
+  // in sync on any screen size.
   var scene = document.querySelector('.scene');
   if (scene && scene.animate && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-    var dinoEl = scene.querySelector('.dino'), cacEl = scene.querySelector('.cac'), anims = [];
-    var SPEED = 170, AIR = 0.72, FEET = 81, CAC_HALF = 17, LIFT = 66;    // px/s, hop length (s), dino feet centre (px), px
+    var q = function (sel) { return scene.querySelector(sel); };
+    var dinoEl = q('.dino'), cacEl = q('.cac'), birdEl = q('.bird'), runEl = q('.pose.run'), jumpEl = q('.pose.jump'), duckEl = q('.pose.duck'), anims = [];
+    var SPEED = 170, AIR = 0.72, DUCK = 0.8, FEET = 81, BODY = 80, CAC_HALF = 17, BIRD_HALF = 22, LIFT = 66, GAP = 260;   // px/s, s, px
+    var windows = function (wins, on, off) {       // an opacity track that is `on` inside each [a, b] and `off` elsewhere
+      var kf = [{ opacity: off, offset: 0, easing: 'steps(1,end)' }];
+      wins.forEach(function (w) { kf.push({ opacity: on, offset: w[0], easing: 'steps(1,end)' }, { opacity: off, offset: w[1], easing: 'steps(1,end)' }); });
+      kf.push({ opacity: off, offset: 1 });
+      return kf;
+    };
     var build = function () {
       anims.forEach(function (a) { a.cancel(); }); anims = [];
-      var W = scene.clientWidth, travel = W + 50, cycle = travel / SPEED * 1000;
-      var meet = (W - (FEET - CAC_HALF)) / SPEED * 1000;                 // when the cactus is under the dino
-      var o1 = (meet - AIR * 500) / cycle, o2 = meet / cycle, o3 = (meet + AIR * 500) / cycle;
+      var W = scene.clientWidth, travel = W + 50 + GAP, cycle = travel / SPEED * 1000;
+      var meetC = (W - (FEET - CAC_HALF)) / SPEED * 1000;                // cactus is under the dino
+      var meetB = (W + GAP - (BODY - BIRD_HALF)) / SPEED * 1000;         // bird is over the dino
+      var hop = [(meetC - AIR * 500) / cycle, meetC / cycle, (meetC + AIR * 500) / cycle];
+      var duck = [(meetB - DUCK * 500) / cycle, (meetB + DUCK * 500) / cycle];
+      cacEl.style.left = W + 'px'; birdEl.style.left = (W + GAP) + 'px';
       scene.classList.add('live');
-      anims.push(cacEl.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(' + (-travel) + 'px)' }],
-        { duration: cycle, iterations: Infinity, easing: 'linear' }));
+      var move = function (el) { return el.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(' + (-travel) + 'px)' }], { duration: cycle, iterations: Infinity, easing: 'linear' }); };
+      anims.push(move(cacEl), move(birdEl));
       anims.push(dinoEl.animate([
         { transform: 'translateY(0)', offset: 0 },
-        { transform: 'translateY(0)', offset: o1, easing: 'cubic-bezier(.2,.75,.4,1)' },
-        { transform: 'translateY(-' + LIFT + 'px)', offset: o2, easing: 'cubic-bezier(.6,0,.8,.25)' },
-        { transform: 'translateY(0)', offset: o3 },
+        { transform: 'translateY(0)', offset: hop[0], easing: 'cubic-bezier(.2,.75,.4,1)' },
+        { transform: 'translateY(-' + LIFT + 'px)', offset: hop[1], easing: 'cubic-bezier(.6,0,.8,.25)' },
+        { transform: 'translateY(0)', offset: hop[2] },
         { transform: 'translateY(0)', offset: 1 }], { duration: cycle, iterations: Infinity }));
+      var wins = [[hop[0], hop[2]], [duck[0], duck[1]]], opts = { duration: cycle, iterations: Infinity };
+      anims.push(runEl.animate(windows(wins, 0, 1), opts));              // running pose, except in the air or ducking
+      anims.push(jumpEl.animate(windows([wins[0]], 1, 0), opts));        // jumping pose
+      anims.push(duckEl.animate(windows([wins[1]], 1, 0), opts));        // ducking pose
     };
     build();
     if (window.ResizeObserver) { var last = scene.clientWidth; new ResizeObserver(function () { if (Math.abs(scene.clientWidth - last) > 2) { last = scene.clientWidth; build(); } }).observe(scene); }

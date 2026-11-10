@@ -54,13 +54,20 @@
   .scene .cloud.c2 { top:92px; left:-90px; animation-duration:19s; animation-delay:-8s; transform:scale(.8); }
   .scene .ground { position:absolute; left:0; right:0; bottom:0; height:62px; background:#F2D9A6; border-top:3px solid var(--ink); }
   .scene .ground::after { content:""; position:absolute; left:0; right:0; top:14px; height:6px; background:repeating-linear-gradient(90deg, rgba(43,26,18,.35) 0 14px, transparent 14px 40px); }
-  .scene .dino { position:absolute; left:46px; bottom:50px; width:62px; }
+  .scene .dino { position:absolute; left:46px; bottom:50px; width:62px; height:68px; }
+  .scene .pose { position:absolute; left:0; bottom:0; width:62px; }
+  .scene .pose.duck { width:72px; }
+  .scene .pose.jump, .scene .pose.duck { opacity:0; }
   .scene .cac { position:absolute; bottom:50px; left:72%; width:34px; }
-  .scene.live .cac { left:100%; }
-  .scene .dino svg, .scene .cac svg, .stk svg { display:block; width:100%; height:auto; }
-  .scene .coin { position:absolute; left:44%; top:70px; animation:bob 1.6s ease-in-out infinite; }
+  .scene .bird { position:absolute; bottom:100px; left:46%; width:44px; }
+  .scene .dino svg, .scene .cac svg, .scene .bird svg, .stk svg { display:block; width:100%; height:auto; }
+  .scene .f2 { position:absolute; left:0; bottom:0; width:100%; opacity:0; }
+  .scene .run .f1, .scene .duck .f1 { animation:fa .26s linear infinite; }
+  .scene .run .f2, .scene .duck .f2 { animation:fb .26s linear infinite; }
+  .scene .bird .f1 { animation:fa .4s linear infinite; } .scene .bird .f2 { animation:fb .4s linear infinite; }
+  @keyframes fa { 0%,49.9% { opacity:1; } 50%,100% { opacity:0; } }
+  @keyframes fb { 0%,49.9% { opacity:0; } 50%,100% { opacity:1; } }
   @keyframes drift { to { transform:translateX(520px); } }
-  @keyframes bob { 50% { transform:translateY(-8px); } }
 
   /* the game console */
   .console { width:min(100%,940px); padding:14px 16px 20px; background:var(--accent); border:3px solid var(--ink); border-radius:36px; box-shadow:8px 10px 0 var(--ink); }
@@ -150,9 +157,14 @@
     </div>
     <div class="scene" aria-hidden="true">
       <div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div>
-      <svg class="coin" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="12" fill="#FFC83D" stroke="#2B1A12" stroke-width="3"/><circle cx="15" cy="15" r="6" fill="none" stroke="#2B1A12" stroke-width="2.5"/></svg>
       <div class="ground"></div>
-      <div class="dino"><svg viewBox="0 0 72 78" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#24AC55" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6zM42 66h15v3h-15zM42 69h9v3h-9zM42 72h6v3h-6z"/><path fill="#4ADE80" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24zM21 66h15v3h-15zM21 69h9v3h-9zM21 72h9v3h-9zM21 75h12v3h-12z"/><path fill="#98E7B5" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></svg></div><div class="cac"><svg viewBox="0 0 39 42" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#43602F" d="M24 0h3v3h-3zM24 3h3v3h-3zM24 6h3v3h-3zM36 6h3v3h-3zM24 9h3v3h-3zM36 9h3v3h-3zM24 12h3v3h-3zM36 12h3v3h-3zM36 15h3v3h-3zM12 18h3v3h-3zM24 18h3v3h-3zM12 21h3v3h-3zM24 21h3v3h-3zM12 24h3v3h-3zM24 24h3v3h-3zM24 27h3v3h-3zM24 30h3v3h-3zM24 33h3v3h-3zM24 36h3v3h-3zM24 39h3v3h-3z"/><path fill="#6B8F52" d="M21 0h3v3h-3zM21 3h3v3h-3zM21 6h3v3h-3zM33 6h3v3h-3zM21 9h3v3h-3zM33 9h3v3h-3zM21 12h3v3h-3zM33 12h3v3h-3zM21 15h15v3h-15zM9 18h3v3h-3zM21 18h3v3h-3zM9 21h3v3h-3zM21 21h3v3h-3zM9 24h3v3h-3zM21 24h3v3h-3zM9 27h15v3h-15zM21 30h3v3h-3zM21 33h3v3h-3zM21 39h3v3h-3z"/><path fill="#9CBF80" d="M18 0h3v3h-3zM18 3h3v3h-3zM18 6h3v3h-3zM30 6h3v3h-3zM18 9h3v3h-3zM30 9h3v3h-3zM18 12h3v3h-3zM30 12h3v3h-3zM18 15h3v3h-3zM6 18h3v3h-3zM18 18h3v3h-3zM6 21h3v3h-3zM18 21h3v3h-3zM6 24h3v3h-3zM18 24h3v3h-3zM6 27h3v3h-3zM18 30h3v3h-3zM18 33h3v3h-3zM18 36h3v3h-3zM18 39h3v3h-3z"/><path fill="#E6EBD2" d="M21 36h3v3h-3z"/></svg></div>
+      <div class="dino">
+        <div class="pose run"><span class="f1"><svg viewBox="0 0 72 78" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#24AC55" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6zM42 66h15v3h-15zM42 69h9v3h-9zM42 72h6v3h-6z"/><path fill="#4ADE80" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24zM21 66h15v3h-15zM21 69h9v3h-9zM21 72h9v3h-9zM21 75h12v3h-12z"/><path fill="#98E7B5" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></svg></span><span class="f2"><svg viewBox="0 0 72 78" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#24AC55" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6zM42 66h15v3h-15zM42 69h12v3h-12zM42 72h9v3h-9zM42 75h12v3h-12z"/><path fill="#4ADE80" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24zM21 66h15v3h-15zM21 69h6v3h-6zM21 72h3v3h-3z"/><path fill="#98E7B5" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></svg></span></div>
+        <div class="pose jump"><svg viewBox="0 0 72 78" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#24AC55" d="M33 27h3v3h-3zM30 30h6v3h-6zM27 33h6v3h-6zM0 36h3v3h-3zM24 36h6v3h-6zM0 39h6v3h-6zM21 39h6v3h-6zM0 42h9v3h-9zM18 42h6v3h-6zM3 45h18v3h-18zM6 48h15v3h-15zM9 51h12v3h-12zM12 54h9v3h-9zM15 57h6v3h-6zM18 60h6v3h-6zM18 63h6v3h-6zM42 66h15v3h-15zM42 69h9v3h-9zM42 72h6v3h-6z"/><path fill="#4ADE80" d="M39 3h27v3h-27zM36 6h33v3h-33zM36 9h6v3h-6zM48 9h21v3h-21zM36 12h33v3h-33zM36 15h33v3h-33zM36 18h30v3h-30zM36 21h15v3h-15zM36 24h24v3h-24zM36 27h21v3h-21zM36 30h21v3h-21zM33 33h27v3h-27zM30 36h30v3h-30zM63 36h6v3h-6zM27 39h36v3h-36zM66 39h3v3h-3zM24 42h36v3h-36zM21 45h39v3h-39zM21 48h39v3h-39zM21 51h36v3h-36zM21 54h36v3h-36zM24 57h30v3h-30zM24 60h27v3h-27zM24 63h24v3h-24zM21 66h15v3h-15zM21 69h9v3h-9zM21 72h9v3h-9zM21 75h12v3h-12z"/><path fill="#98E7B5" d="M39 0h24v3h-24zM36 3h3v3h-3zM21 57h3v3h-3z"/><path fill="#161616" d="M45 9h3v3h-3zM51 21h15v3h-15z"/><path fill="#FFFFFF" d="M42 9h3v3h-3z"/></svg></div>
+        <div class="pose duck"><span class="f1"><svg viewBox="0 0 84 51" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#24AC55" d="M6 21h36v3h-36zM3 24h6v3h-6zM0 27h6v3h-6zM0 30h9v3h-9zM3 33h12v3h-12zM6 36h15v3h-15zM12 39h12v3h-12zM39 42h12v3h-12zM39 45h6v3h-6z"/><path fill="#4ADE80" d="M48 3h27v3h-27zM45 6h33v3h-33zM45 9h6v3h-6zM57 9h21v3h-21zM45 12h33v3h-33zM45 15h30v3h-30zM45 18h15v3h-15zM42 21h24v3h-24zM9 24h57v3h-57zM6 27h57v3h-57zM9 30h51v3h-51zM15 33h45v3h-45zM21 36h36v3h-36zM24 39h30v3h-30zM18 42h12v3h-12zM18 45h9v3h-9zM18 48h12v3h-12z"/><path fill="#98E7B5" d="M48 0h24v3h-24zM45 3h3v3h-3z"/><path fill="#161616" d="M54 9h3v3h-3zM60 18h15v3h-15z"/><path fill="#FFFFFF" d="M51 9h3v3h-3z"/></svg></span><span class="f2"><svg viewBox="0 0 84 51" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#24AC55" d="M6 21h36v3h-36zM3 24h6v3h-6zM0 27h6v3h-6zM0 30h9v3h-9zM3 33h12v3h-12zM6 36h15v3h-15zM12 39h12v3h-12zM39 42h12v3h-12zM39 45h9v3h-9zM39 48h12v3h-12z"/><path fill="#4ADE80" d="M48 3h27v3h-27zM45 6h33v3h-33zM45 9h6v3h-6zM57 9h21v3h-21zM45 12h33v3h-33zM45 15h30v3h-30zM45 18h15v3h-15zM42 21h24v3h-24zM9 24h57v3h-57zM6 27h57v3h-57zM9 30h51v3h-51zM15 33h45v3h-45zM21 36h36v3h-36zM24 39h30v3h-30zM18 42h12v3h-12zM18 45h6v3h-6z"/><path fill="#98E7B5" d="M48 0h24v3h-24zM45 3h3v3h-3z"/><path fill="#161616" d="M54 9h3v3h-3zM60 18h15v3h-15z"/><path fill="#FFFFFF" d="M51 9h3v3h-3z"/></svg></span></div>
+      </div>
+      <div class="cac"><svg viewBox="0 0 39 42" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#43602F" d="M24 0h3v3h-3zM24 3h3v3h-3zM24 6h3v3h-3zM36 6h3v3h-3zM24 9h3v3h-3zM36 9h3v3h-3zM24 12h3v3h-3zM36 12h3v3h-3zM36 15h3v3h-3zM12 18h3v3h-3zM24 18h3v3h-3zM12 21h3v3h-3zM24 21h3v3h-3zM12 24h3v3h-3zM24 24h3v3h-3zM24 27h3v3h-3zM24 30h3v3h-3zM24 33h3v3h-3zM24 36h3v3h-3zM24 39h3v3h-3z"/><path fill="#6B8F52" d="M21 0h3v3h-3zM21 3h3v3h-3zM21 6h3v3h-3zM33 6h3v3h-3zM21 9h3v3h-3zM33 9h3v3h-3zM21 12h3v3h-3zM33 12h3v3h-3zM21 15h15v3h-15zM9 18h3v3h-3zM21 18h3v3h-3zM9 21h3v3h-3zM21 21h3v3h-3zM9 24h3v3h-3zM21 24h3v3h-3zM9 27h15v3h-15zM21 30h3v3h-3zM21 33h3v3h-3zM21 39h3v3h-3z"/><path fill="#9CBF80" d="M18 0h3v3h-3zM18 3h3v3h-3zM18 6h3v3h-3zM30 6h3v3h-3zM18 9h3v3h-3zM30 9h3v3h-3zM18 12h3v3h-3zM30 12h3v3h-3zM18 15h3v3h-3zM6 18h3v3h-3zM18 18h3v3h-3zM6 21h3v3h-3zM18 21h3v3h-3zM6 24h3v3h-3zM18 24h3v3h-3zM6 27h3v3h-3zM18 30h3v3h-3zM18 33h3v3h-3zM18 36h3v3h-3zM18 39h3v3h-3z"/><path fill="#E6EBD2" d="M21 36h3v3h-3z"/></svg></div>
+      <div class="bird"><span class="f1"><svg viewBox="0 0 48 27" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#5B6B80" d="M30 0h3v3h-3zM27 3h6v3h-6zM24 6h9v3h-9zM21 9h12v3h-12zM18 12h18v3h-18zM0 15h45v3h-45zM6 18h42v3h-42zM12 21h30v3h-30zM18 24h15v3h-15z"/></svg></span><span class="f2"><svg viewBox="0 0 48 27" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#5B6B80" d="M30 6h3v3h-3zM0 9h45v3h-45zM6 12h42v3h-42zM12 15h30v3h-30zM18 18h21v3h-21zM21 21h15v3h-15zM27 24h6v3h-6z"/></svg></span></div>
     </div>
   </header>
 
@@ -451,26 +463,41 @@
 <script src="leaderboard.js"></script>
 <script>
 (function () {
-  // Hero scene: the cactus slides past at a constant speed and the dino hops exactly when it arrives.
-  // Timing is computed from the scene's real width, so it stays in sync on any screen size.
+  // Hero scene: a cactus and then a bird slide past at a constant speed. The dino runs (legs alternate),
+  // hops over the cactus and ducks under the bird, each timed from the scene's real width so it stays
+  // in sync on any screen size.
   var scene = document.querySelector('.scene');
   if (scene && scene.animate && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-    var dinoEl = scene.querySelector('.dino'), cacEl = scene.querySelector('.cac'), anims = [];
-    var SPEED = 170, AIR = 0.72, FEET = 81, CAC_HALF = 17, LIFT = 66;    // px/s, hop length (s), dino feet centre (px), px
+    var q = function (sel) { return scene.querySelector(sel); };
+    var dinoEl = q('.dino'), cacEl = q('.cac'), birdEl = q('.bird'), runEl = q('.pose.run'), jumpEl = q('.pose.jump'), duckEl = q('.pose.duck'), anims = [];
+    var SPEED = 170, AIR = 0.72, DUCK = 0.8, FEET = 81, BODY = 80, CAC_HALF = 17, BIRD_HALF = 22, LIFT = 66, GAP = 260;   // px/s, s, px
+    var windows = function (wins, on, off) {       // an opacity track that is `on` inside each [a, b] and `off` elsewhere
+      var kf = [{ opacity: off, offset: 0, easing: 'steps(1,end)' }];
+      wins.forEach(function (w) { kf.push({ opacity: on, offset: w[0], easing: 'steps(1,end)' }, { opacity: off, offset: w[1], easing: 'steps(1,end)' }); });
+      kf.push({ opacity: off, offset: 1 });
+      return kf;
+    };
     var build = function () {
       anims.forEach(function (a) { a.cancel(); }); anims = [];
-      var W = scene.clientWidth, travel = W + 50, cycle = travel / SPEED * 1000;
-      var meet = (W - (FEET - CAC_HALF)) / SPEED * 1000;                 // when the cactus is under the dino
-      var o1 = (meet - AIR * 500) / cycle, o2 = meet / cycle, o3 = (meet + AIR * 500) / cycle;
+      var W = scene.clientWidth, travel = W + 50 + GAP, cycle = travel / SPEED * 1000;
+      var meetC = (W - (FEET - CAC_HALF)) / SPEED * 1000;                // cactus is under the dino
+      var meetB = (W + GAP - (BODY - BIRD_HALF)) / SPEED * 1000;         // bird is over the dino
+      var hop = [(meetC - AIR * 500) / cycle, meetC / cycle, (meetC + AIR * 500) / cycle];
+      var duck = [(meetB - DUCK * 500) / cycle, (meetB + DUCK * 500) / cycle];
+      cacEl.style.left = W + 'px'; birdEl.style.left = (W + GAP) + 'px';
       scene.classList.add('live');
-      anims.push(cacEl.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(' + (-travel) + 'px)' }],
-        { duration: cycle, iterations: Infinity, easing: 'linear' }));
+      var move = function (el) { return el.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(' + (-travel) + 'px)' }], { duration: cycle, iterations: Infinity, easing: 'linear' }); };
+      anims.push(move(cacEl), move(birdEl));
       anims.push(dinoEl.animate([
         { transform: 'translateY(0)', offset: 0 },
-        { transform: 'translateY(0)', offset: o1, easing: 'cubic-bezier(.2,.75,.4,1)' },
-        { transform: 'translateY(-' + LIFT + 'px)', offset: o2, easing: 'cubic-bezier(.6,0,.8,.25)' },
-        { transform: 'translateY(0)', offset: o3 },
+        { transform: 'translateY(0)', offset: hop[0], easing: 'cubic-bezier(.2,.75,.4,1)' },
+        { transform: 'translateY(-' + LIFT + 'px)', offset: hop[1], easing: 'cubic-bezier(.6,0,.8,.25)' },
+        { transform: 'translateY(0)', offset: hop[2] },
         { transform: 'translateY(0)', offset: 1 }], { duration: cycle, iterations: Infinity }));
+      var wins = [[hop[0], hop[2]], [duck[0], duck[1]]], opts = { duration: cycle, iterations: Infinity };
+      anims.push(runEl.animate(windows(wins, 0, 1), opts));              // running pose, except in the air or ducking
+      anims.push(jumpEl.animate(windows([wins[0]], 1, 0), opts));        // jumping pose
+      anims.push(duckEl.animate(windows([wins[1]], 1, 0), opts));        // ducking pose
     };
     build();
     if (window.ResizeObserver) { var last = scene.clientWidth; new ResizeObserver(function () { if (Math.abs(scene.clientWidth - last) > 2) { last = scene.clientWidth; build(); } }).observe(scene); }

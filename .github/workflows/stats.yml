@@ -1,7 +1,7 @@
 name: Refresh stats
 
 # Fetches fresh GitHub and LeetCode numbers once a day, redraws stats/*.svg in the Playful style
-# (in the activity section's theme) and commits them, together with the numbers in tools/stats.json.
+# (in the activity section's theme, in both the Day and Night looks) and commits them, together with the numbers in tools/stats.json.
 # Run it by hand from the Actions tab ("Refresh stats" -> "Run workflow") to update right away.
 on:
   schedule:
@@ -33,13 +33,15 @@ jobs:
       - name: Fetch numbers and draw the cards
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python tools/gen_stats.py . --fetch
+        run: |
+          python tools/gen_stats.py . --fetch
+          RAHUL_MODE=night python tools/gen_stats.py night      # the Night set the README shows after 7 pm
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add stats tools/stats.json
+          git add stats night/stats tools/stats.json
           if git diff --cached --quiet; then
             echo "Numbers unchanged."
           else

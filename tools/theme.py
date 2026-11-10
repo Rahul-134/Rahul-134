@@ -18,6 +18,8 @@ game (the playable game page).
 What it regenerates: dino-banner.svg (+ dino-banner-mobile.svg), about-card.svg, tech-stack.svg, projects/*.svg, connect/*.svg,
 stats/*.svg (from the numbers saved in tools/stats.json), dino/index.html
 and the colour codes inside README.md (each region of the README follows its own section's theme).
+Every card is drawn twice: the day files above, and a Night version of each under night/ (same paths).
+tools/daynight.py points the README at one set or the other (the "Day / Night" workflow does it at 7 am / 7 pm).
 It needs Python 3 and Pillow (`pip install pillow`). Nothing else.
 """
 import json
@@ -115,8 +117,8 @@ def summary(state):
 
 
 # ------------------------------------------------------------------ generators
-def run(script, out_dir, theme, *extra):
-    env = dict(os.environ, RAHUL_THEME=theme, PYTHONDONTWRITEBYTECODE="1")
+def run(script, out_dir, theme, *extra, mode="day"):
+    env = dict(os.environ, RAHUL_THEME=theme, RAHUL_MODE=mode, PYTHONDONTWRITEBYTECODE="1")
     r = subprocess.run([sys.executable, os.path.join(TOOLS, script), out_dir, *extra], env=env, cwd=ROOT,
                        capture_output=True, text=True)
     if r.returncode != 0:
@@ -124,18 +126,19 @@ def run(script, out_dir, theme, *extra):
         raise SystemExit(f"{script} failed")
 
 
-def build_projects(cards):
+def build_projects(cards, dest=None, mode="day"):
     """One generator run per distinct theme; each card file is taken from the run with its own theme."""
-    dest = os.path.join(ROOT, "projects")
+    dest = dest or os.path.join(ROOT, "projects")
+    os.makedirs(dest, exist_ok=True)
     by_theme = {}
     for slug, th in cards.items():
         by_theme.setdefault(th, []).append(slug)
     if len(by_theme) == 1:
-        run("gen_projects.py", dest, next(iter(by_theme)))
+        run("gen_projects.py", dest, next(iter(by_theme)), mode=mode)
         return
     for th, slugs in by_theme.items():
         with tempfile.TemporaryDirectory() as tmp:
-            run("gen_projects.py", tmp, th)
+            run("gen_projects.py", tmp, th, mode=mode)
             for slug in slugs:
                 shutil.copyfile(os.path.join(tmp, slug + ".svg"), os.path.join(dest, slug + ".svg"))
 
@@ -164,6 +167,21 @@ def recolour_readme(sec):
     return count
 
 
+def build_night(sec, cards):
+    """The Night version of every README card, under night/ with the same file names."""
+    night = os.path.join(ROOT, "night")
+    os.makedirs(night, exist_ok=True)
+    with tempfile.TemporaryDirectory() as tmp:                    # gen_dino also writes a game page; keep only the banners
+        run("gen_dino.py", tmp, sec["header"], mode="night")
+        for f in ("dino-banner.svg", "dino-banner-mobile.svg"):
+            shutil.copyfile(os.path.join(tmp, f), os.path.join(night, f))
+    run("gen_about.py", night, sec["about"], mode="night")
+    run("gen_stack.py", night, sec["about"], mode="night")
+    build_projects(cards, os.path.join(night, "projects"), mode="night")
+    run("gen_connect.py", night, sec["connect"], mode="night")
+    run("gen_stats.py", night, sec["activity"], mode="night")
+
+
 def apply(state):
     sec, cards = effective(state)
     run("gen_dino.py", ROOT, sec["header"])                       # dino-banner(-mobile).svg (+ a game page in the same colour)
@@ -176,6 +194,7 @@ def apply(state):
     build_projects(cards)                                         # projects/*.svg
     run("gen_connect.py", ROOT, sec["connect"])                   # connect/*.svg
     run("gen_stats.py", ROOT, sec["activity"])                    # stats/*.svg (saved numbers, no network)
+    build_night(sec, cards)                                       # night/: the same cards after dark
     changed = recolour_readme(sec)
     save(state)
     print(f"Applied {summary(state)}; recoloured {changed} README colour codes.")

@@ -163,13 +163,13 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{
     {banner.ground_tile(40)}
   </defs>
 
-  <!-- the card: cream, dark outline, offset shadow, console top bar -->
+  <!-- the card: cream (dusk purple at night), dark outline, offset shadow, console top bar -->
   <rect x="11" y="11" width="{W - 14}" height="{H - 14}" rx="24" fill="{INK}"/>
-  <rect x="3" y="3" width="{W - 14}" height="{H - 14}" rx="24" fill="#FFFDF7" stroke="{INK}" stroke-width="4"/>
+  <rect x="3" y="3" width="{W - 14}" height="{H - 14}" rx="24" fill="{banner.PAPER}" stroke="{INK}" stroke-width="4"/>
   <circle cx="34" cy="33" r="7.5" fill="#FF6B4A" stroke="{INK}" stroke-width="2.5"/>
   <circle cx="58" cy="33" r="7.5" fill="#FFC83D" stroke="{INK}" stroke-width="2.5"/>
   <circle cx="82" cy="33" r="7.5" fill="#BFF0CF" stroke="{INK}" stroke-width="2.5"/>
-  <text class="round" x="{(TX0 + TX1) / 2:.0f}" y="40" text-anchor="middle" font-size="19" font-weight="800" fill="{INK}">rahul@github: ~/about</text>
+  <text class="round" x="{(TX0 + TX1) / 2:.0f}" y="40" text-anchor="middle" font-size="19" font-weight="800" fill="{banner.TEXT}">rahul@github: ~/about</text>
   <rect x="{SX1 - 120}" y="18" width="116" height="30" rx="15" fill="{ACCENT}" stroke="{INK}" stroke-width="3"/>
   <text class="round" x="{SX1 - 62}" y="39" text-anchor="middle" font-size="15" font-weight="800" fill="{INK}" letter-spacing="1.5">ABOUT ME</text>
 
@@ -186,6 +186,7 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{
   <!-- sky window: sun, a drifting cloud, sand, cacti and the T-rex -->
   <rect x="{SX0}" y="{SY0}" width="{SX1 - SX0}" height="{SY1 - SY0}" rx="16" fill="{banner.SKY}"/>
   <g clip-path="url(#sky)">
+    {banner.stars(SX0 + 8, SY0 + 8, SX1 - SX0 - 16, GROUND_Y - SY0 - 50, 9, seed=11, avoid=[(SX1 - 90, SY0, 90, 90)])}
     {banner.sun(SX1 - 46, SY0 + 46, 0.82)}
     <g class="cl">{banner.cloud(0, SY0 + 70, 0.62)}</g>
     <g transform="translate({SX0},{GROUND_Y - 10})"><rect width="{SX1 - SX0}" height="50" fill="url(#sand)"/></g>

@@ -36,8 +36,8 @@ LC_USER = "Rahul_134"
 DATA = os.path.join(HERE, "stats.json")
 T = theme_colors.current()
 ACCENT = T.accent
-INK, SKY, PAPER = banner.INK, banner.SKY, "#FFFDF7"
-EMPTY = "#F1E7D0"                                       # an empty heat-map cell / progress track
+INK, TEXT, SKY, PAPER, PANEL = banner.INK, banner.TEXT, banner.SKY, banner.PAPER, banner.PANEL
+EMPTY = banner.TRACK                                    # an empty heat-map cell / progress track
 EASY, MEDIUM, HARD = "#5BD68A", "#FFC83D", "#FF7A6B"
 ROUND = "'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif"
 e = html.escape
@@ -182,7 +182,7 @@ def shell(w, h, fill=PAPER, rx=24):
             f'<rect x="3" y="3" width="{w - 14}" height="{h - 14}" rx="{rx}" fill="{fill}" stroke="{INK}" stroke-width="4"/>')
 
 
-def tile(x, y, w, h, fill="#FFFFFF", rx=16, sh=4, sw=3):
+def tile(x, y, w, h, fill=PANEL, rx=16, sh=4, sw=3):
     return (f'<rect x="{x + sh}" y="{y + sh}" width="{w}" height="{h}" rx="{rx}" fill="{INK}"/>'
             f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}" fill="{fill}" stroke="{INK}" stroke-width="{sw}"/>')
 
@@ -193,12 +193,12 @@ def pill(x, y, text, fill=ACCENT, size=12.5, h=30, anchor="start"):
         x -= w
     return (f'<rect x="{x + 3:.1f}" y="{y + 3}" width="{w:.1f}" height="{h}" rx="{h / 2}" fill="{INK}"/>'
             f'<rect x="{x:.1f}" y="{y}" width="{w:.1f}" height="{h}" rx="{h / 2}" fill="{fill}" stroke="{INK}" stroke-width="2.5"/>'
-            f'<text x="{x + 15:.1f}" y="{y + h / 2 + size * 0.36:.1f}" font-size="{size}" font-weight="800" fill="{INK}" letter-spacing="1.5">{e(text)}</text>')
+            f'<text x="{x + 15:.1f}" y="{y + h / 2 + size * 0.36:.1f}" font-size="{size}" font-weight="800" fill="{TEXT if fill == PANEL else INK}" letter-spacing="1.5">{e(text)}</text>')
 
 
 def head(label, title, extra=""):
     return (pill(36, 26, label) +
-            f'<text x="36" y="92" font-size="32" font-weight="800" fill="{INK}">{e(title)}</text>{extra}')
+            f'<text x="36" y="92" font-size="32" font-weight="800" fill="{TEXT}">{e(title)}</text>{extra}')
 
 
 def svg(w, h, title, desc, body, css=""):
@@ -294,8 +294,8 @@ def github_card(g):
     for i, (kind, label, val) in enumerate(stats):
         x, y = X0 + (i % 3) * (TW + GX), Y0 + (i // 3) * (TH + GY)
         tiles.append(tile(x, y, TW, TH) + icon(kind, x + 30, y + 30) +
-                     f'<text x="{x + 54}" y="{y + 35}" font-size="13" font-weight="700" fill="{INK}" fill-opacity=".7">{e(label)}</text>'
-                     f'<text x="{x + 18}" y="{y + 80}" font-size="32" font-weight="800" fill="{INK}">{num(val)}</text>')
+                     f'<text x="{x + 54}" y="{y + 35}" font-size="13" font-weight="700" fill="{TEXT}" fill-opacity=".7">{e(label)}</text>'
+                     f'<text x="{x + 18}" y="{y + 80}" font-size="32" font-weight="800" fill="{TEXT}">{num(val)}</text>')
     # top languages panel
     PX, PY, PW, PH = X0 + 3 * TW + 2 * GX + 22, Y0, 0, 2 * TH + GY
     PW = W - 36 - 4 - PX
@@ -309,17 +309,17 @@ def github_card(g):
         bar.append(f'<rect x="{x:.1f}" y="{PY + 50}" width="{w + 0.4:.1f}" height="20" fill="{colour}"/>')
         x += w
     if len(langs) > len(top):
-        bar.append(f'<rect x="{x:.1f}" y="{PY + 50}" width="{BX + BW - x:.1f}" height="20" fill="#D6CCB8"/>')
+        bar.append(f'<rect x="{x:.1f}" y="{PY + 50}" width="{BX + BW - x:.1f}" height="20" fill="{"#5A5678" if banner.NIGHT else "#D6CCB8"}"/>')
     rows = []
     for i, (name, colour, size) in enumerate(top):
         cx, cy = PX + 20 + (i % 2) * (BW / 2 + 6), PY + 104 + (i // 2) * 30
         rows.append(f'<circle cx="{cx + 7}" cy="{cy - 5}" r="7" fill="{colour}" stroke="{INK}" stroke-width="2"/>'
-                    f'<text x="{cx + 21}" y="{cy}" font-size="15" font-weight="700" fill="{INK}">{e(alias.get(name, name))}</text>'
-                    f'<text x="{cx + BW / 2 - 8:.1f}" y="{cy}" text-anchor="end" font-size="15" font-weight="800" fill="{INK}" fill-opacity=".6">{e(pct(size, total))}</text>')
+                    f'<text x="{cx + 21}" y="{cy}" font-size="15" font-weight="700" fill="{TEXT}">{e(alias.get(name, name))}</text>'
+                    f'<text x="{cx + BW / 2 - 8:.1f}" y="{cy}" text-anchor="end" font-size="15" font-weight="800" fill="{TEXT}" fill-opacity=".6">{e(pct(size, total))}</text>')
     if not top:
-        rows.append(f'<text x="{PX + PW / 2}" y="{PY + 130}" text-anchor="middle" font-size="16" font-weight="700" fill="{INK}" fill-opacity=".6">syncing…</text>')
+        rows.append(f'<text x="{PX + PW / 2}" y="{PY + 130}" text-anchor="middle" font-size="16" font-weight="700" fill="{TEXT}" fill-opacity=".6">syncing…</text>')
     panel = (tile(PX, PY, PW, PH) +
-             f'<text x="{PX + 20}" y="{PY + 33}" font-size="13" font-weight="800" fill="{INK}" letter-spacing="1.5">TOP LANGUAGES</text>'
+             f'<text x="{PX + 20}" y="{PY + 33}" font-size="13" font-weight="800" fill="{TEXT}" letter-spacing="1.5">TOP LANGUAGES</text>'
              f'<clipPath id="bar"><rect x="{BX}" y="{PY + 50}" width="{BW}" height="20" rx="10"/></clipPath>'
              f'<rect x="{BX}" y="{PY + 50}" width="{BW}" height="20" rx="10" fill="{EMPTY}"/>'
              f'<g clip-path="url(#bar)">{"".join(bar)}</g>'
@@ -347,18 +347,19 @@ def activity_card(g):
     tiles_y, TH = 116, 102
     TW = (W - 72 - 4 - 2 * 18) // 3
     since = fmt_day(d.get("first"), year=True)
-    hud = [("Total contributions", d.get("total"), f"since {since}" if since else "syncing…", "commit", "#FFFFFF"),
+    hud = [("Total contributions", d.get("total"), f"since {since}" if since else "syncing…", "commit", PANEL),
            ("Current streak", (d.get("current") or {}).get("days"), fmt_span(d.get("current"), today), "flame", ACCENT),
-           ("Longest streak", (d.get("longest") or {}).get("days"), fmt_span(d.get("longest"), today), "star", "#FFFFFF")]
+           ("Longest streak", (d.get("longest") or {}).get("days"), fmt_span(d.get("longest"), today), "star", PANEL)]
     tiles = []
     for i, (label, val, sub, kind, fill) in enumerate(hud):
         x = 36 + i * (TW + 18)
         unit = "" if i == 0 or val is None else (" day" if val == 1 else " days")
+        tc = INK if fill == ACCENT else TEXT
         tiles.append(tile(x, tiles_y, TW, TH, fill) + icon(kind, x + 32, tiles_y + 32, 18, "#FFFFFF" if fill == ACCENT else ACCENT) +
-                     f'<text x="{x + 60}" y="{tiles_y + 37}" font-size="14" font-weight="800" fill="{INK}" fill-opacity=".75">{e(label)}</text>'
-                     f'<text x="{x + 20}" y="{tiles_y + 82}" font-size="32" font-weight="800" fill="{INK}">{num(val)}'
+                     f'<text x="{x + 60}" y="{tiles_y + 37}" font-size="14" font-weight="800" fill="{tc}" fill-opacity=".75">{e(label)}</text>'
+                     f'<text x="{x + 20}" y="{tiles_y + 82}" font-size="32" font-weight="800" fill="{tc}">{num(val)}'
                      f'<tspan font-size="18" fill-opacity=".7">{unit}</tspan></text>'
-                     f'<text x="{x + TW - 18}" y="{tiles_y + 82}" text-anchor="end" font-size="13" font-weight="700" fill="{INK}" fill-opacity=".65">{e(sub)}</text>')
+                     f'<text x="{x + TW - 18}" y="{tiles_y + 82}" text-anchor="end" font-size="13" font-weight="700" fill="{tc}" fill-opacity=".65">{e(sub)}</text>')
     # calendar panel
     PX, PY = 36, tiles_y + TH + 24
     PW = W - 72 - 4
@@ -368,7 +369,7 @@ def activity_card(g):
     GY = PY + 40
     counts = sorted(n for _, n in cal if n)
     q = [counts[min(len(counts) - 1, int(len(counts) * f))] for f in (0.25, 0.5, 0.75)] if counts else [1, 2, 3]
-    shades = [EMPTY, mix(ACCENT, PAPER, 0.35), mix(ACCENT, PAPER, 0.62), ACCENT, T.shade]
+    shades = [EMPTY, mix(ACCENT, PAPER, 0.35), mix(ACCENT, PAPER, 0.62), ACCENT, T.light if banner.NIGHT else T.shade]   # busiest = brightest at night
 
     def level(n):
         return 0 if not n else 1 + sum(n > t for t in q)
@@ -387,8 +388,8 @@ def activity_card(g):
             if not months or x - months[-1][0] > 3 * STEP:
                 months.append((x, dt.date.fromisoformat(day).strftime("%b")))
             last_m = m
-    mlabels = "".join(f'<text x="{x:.1f}" y="{GY - 10}" font-size="12.5" font-weight="700" fill="{INK}" fill-opacity=".65">{t}</text>' for x, t in months)
-    dlabels = "".join(f'<text x="{GXL - 8:.1f}" y="{GY + r * STEP + 10}" text-anchor="end" font-size="11.5" font-weight="700" fill="{INK}" fill-opacity=".55">{t}</text>'
+    mlabels = "".join(f'<text x="{x:.1f}" y="{GY - 10}" font-size="12.5" font-weight="700" fill="{TEXT}" fill-opacity=".65">{t}</text>' for x, t in months)
+    dlabels = "".join(f'<text x="{GXL - 8:.1f}" y="{GY + r * STEP + 10}" text-anchor="end" font-size="11.5" font-weight="700" fill="{TEXT}" fill-opacity=".55">{t}</text>'
                       for r, t in ((1, "Mon"), (3, "Wed"), (5, "Fri")))
     LY = GY + 7 * STEP + 22
     gx_right = GXL + weeks * STEP - GAP
@@ -396,16 +397,16 @@ def activity_card(g):
     lx = gx_right - more_w - 6 - 5 * STEP + GAP                 # first legend cell
     legend = "".join(f'<rect x="{lx + i * STEP:.1f}" y="{LY - 10}" width="{CELL}" height="{CELL}" rx="3.5" fill="{c}" '
                      f'stroke="{INK}" stroke-opacity="{.45 if i else .1}" stroke-width="1.2"/>' for i, c in enumerate(shades))
-    legend += (f'<text x="{lx - 6:.1f}" y="{LY}" text-anchor="end" font-size="12.5" font-weight="700" fill="{INK}" fill-opacity=".6">Less</text>'
-               f'<text x="{gx_right:.1f}" y="{LY}" text-anchor="end" font-size="12.5" font-weight="700" fill="{INK}" fill-opacity=".6">More</text>')
+    legend += (f'<text x="{lx - 6:.1f}" y="{LY}" text-anchor="end" font-size="12.5" font-weight="700" fill="{TEXT}" fill-opacity=".6">Less</text>'
+               f'<text x="{gx_right:.1f}" y="{LY}" text-anchor="end" font-size="12.5" font-weight="700" fill="{TEXT}" fill-opacity=".6">More</text>')
     year = d.get("year")
-    caption = (f'<text x="{GXL:.1f}" y="{LY}" font-size="13.5" font-weight="800" fill="{INK}">{num(year)}'
+    caption = (f'<text x="{GXL:.1f}" y="{LY}" font-size="13.5" font-weight="800" fill="{TEXT}">{num(year)}'
                f'<tspan font-weight="700" fill-opacity=".65"> contributions in the last year</tspan></text>')
     PH = LY + 18 - PY
     panel = tile(PX, PY, PW, PH) + mlabels + dlabels + "".join(cells) + legend + caption
     H = PY + PH + 4 + 11 + 14
     active = sum(1 for _, n in cal[-365:] if n) if cal else None
-    title_extra = pill(W - 36 - 4, 26, f"{active} ACTIVE DAYS THIS YEAR" if active is not None else "SYNCING", "#FFFFFF", anchor="end")
+    title_extra = pill(W - 36 - 4, 26, f"{active} ACTIVE DAYS THIS YEAR" if active is not None else "SYNCING", PANEL, anchor="end")
     body = head("ACTIVITY", "Contributions & streaks", title_extra) + "".join(tiles) + panel
     cur, lng = (d.get("current") or {}).get("days"), (d.get("longest") or {}).get("days")
     desc = (f"{num(d.get('total'))} contributions since {since or 'joining'}; current streak {num(cur)} days; "
@@ -441,9 +442,9 @@ def leetcode_card(lc):
                             f'L{CX + (R + SW / 2) * math.cos(math.radians(a0)):.2f} {CY + (R + SW / 2) * math.sin(math.radians(a0)):.2f}" stroke="{INK}" stroke-width="2.5"/>')
             a0 = a1
     ring += [f'<circle cx="{CX}" cy="{CY}" r="{R + SW / 2}" fill="none" stroke="{INK}" stroke-width="3"/>',
-             f'<circle cx="{CX}" cy="{CY}" r="{R - SW / 2}" fill="#FFFFFF" stroke="{INK}" stroke-width="3"/>',
-             f'<text x="{CX}" y="{CY + 8}" text-anchor="middle" font-size="40" font-weight="800" fill="{INK}">{num(all_solved)}</text>',
-             f'<text x="{CX}" y="{CY + 30}" text-anchor="middle" font-size="12" font-weight="800" fill="{INK}" fill-opacity=".6" letter-spacing="1.5">SOLVED</text>']
+             f'<circle cx="{CX}" cy="{CY}" r="{R - SW / 2}" fill="{PANEL}" stroke="{INK}" stroke-width="3"/>',
+             f'<text x="{CX}" y="{CY + 8}" text-anchor="middle" font-size="40" font-weight="800" fill="{TEXT}">{num(all_solved)}</text>',
+             f'<text x="{CX}" y="{CY + 30}" text-anchor="middle" font-size="12" font-weight="800" fill="{TEXT}" fill-opacity=".6" letter-spacing="1.5">SOLVED</text>']
     # one chunky progress bar per difficulty
     BX, BW = 296, W - 36 - 4 - 296 - 2
     bars = []
@@ -452,8 +453,8 @@ def leetcode_card(lc):
         n, t = solved.get(name), total.get(name)
         frac = (n or 0) / t if t else 0
         bars.append(f'<circle cx="{BX + 7}" cy="{y - 6}" r="7" fill="{colour}" stroke="{INK}" stroke-width="2"/>'
-                    f'<text x="{BX + 22}" y="{y}" font-size="18" font-weight="800" fill="{INK}">{name}</text>'
-                    f'<text x="{BX + BW}" y="{y}" text-anchor="end" font-size="18" font-weight="800" fill="{INK}">{num(n)}'
+                    f'<text x="{BX + 22}" y="{y}" font-size="18" font-weight="800" fill="{TEXT}">{name}</text>'
+                    f'<text x="{BX + BW}" y="{y}" text-anchor="end" font-size="18" font-weight="800" fill="{TEXT}">{num(n)}'
                     f'<tspan font-size="14" fill-opacity=".55"> / {num(t)}</tspan></text>'
                     f'<rect x="{BX + 3}" y="{y + 13}" width="{BW}" height="22" rx="11" fill="{INK}"/>'
                     f'<rect x="{BX}" y="{y + 10}" width="{BW}" height="22" rx="11" fill="{EMPTY}"/>')
@@ -463,7 +464,7 @@ def leetcode_card(lc):
                         f'<rect x="{BX + 7}" y="{y + 14}" width="{max(0, fw - 14):.1f}" height="5" rx="2.5" fill="#FFFFFF" opacity=".55"/>')
         bars.append(f'<rect x="{BX}" y="{y + 10}" width="{BW}" height="22" rx="11" fill="none" stroke="{INK}" stroke-width="2.5"/>')
     rank = (lc or {}).get("ranking")
-    extra = pill(W - 36 - 4, 26, f"RANK #{rank:,}" if rank else "RANK —", "#FFFFFF", anchor="end")
+    extra = pill(W - 36 - 4, 26, f"RANK #{rank:,}" if rank else "RANK —", PANEL, anchor="end")
     streak = (lc or {}).get("streak")
     if streak:
         extra += pill(W - 36 - 4 - tw(f"RANK #{rank:,}" if rank else "RANK —", 12.5) - 1.5 * len(f"RANK #{rank:,}" if rank else "RANK —") - 30 - 12,

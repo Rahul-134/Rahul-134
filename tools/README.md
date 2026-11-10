@@ -96,3 +96,22 @@ Switching themes redraws the cards from the saved numbers, in the `activity` sec
 [simple-icons](https://simpleicons.org) paths (CC0) kept in `tools/stack_icons.json`. To add a
 technology, copy its slug, title, hex and path into that file and add it to `GROUPS` in
 `gen_stack.py`, then run `python tools/theme.py about=same` (or any theme command) to redraw.
+
+## Day / Night
+
+Every card is drawn in two looks: the Day files (`dino-banner.svg`, `about-card.svg`, `tech-stack.svg`,
+`projects/`, `stats/`, `connect/`) and a Night version of each under `night/` with the same names.
+`tools/theme.py` always redraws both.
+
+The README can't follow each visitor's clock, so the **Day / Night** workflow points it at the
+Night cards at 7 pm and back at the Day cards at 7 am, India time (both are set at the top of
+`tools/daynight.py`). To switch by hand, run that workflow from the Actions tab, or locally:
+
+```bash
+python tools/daynight.py           # by the clock
+python tools/daynight.py night     # or day
+```
+
+The game page switches on its own, by each visitor's local clock (Night from 7 pm to 7 am).
+Its Day / Night button overrides that until the next 7 o'clock.
+

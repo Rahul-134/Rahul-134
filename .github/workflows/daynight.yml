@@ -1,0 +1,56 @@
+name: Day / Night
+
+# Points the README's cards at the Night set (night/) from 7 pm to 7 am India time, and at the Day set
+# otherwise. Only image paths in README.md change; the cards themselves are drawn by tools/theme.py.
+# The time zone and hours are at the top of tools/daynight.py.
+# Run it by hand from the Actions tab to switch now ("auto" picks by the clock).
+on:
+  schedule:
+    - cron: "30 1,2,13,14 * * *"     # 07:00 and 19:00 IST, plus a catch-up an hour later if a run was dropped
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: auto = by the clock; or force day / night until the next scheduled switch
+        type: choice
+        default: auto
+        options: [auto, day, night]
+  push:
+    branches: [main]
+    paths:
+      - tools/daynight.py
+      - .github/workflows/daynight.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daynight
+  cancel-in-progress: false
+
+jobs:
+  switch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Switch the README
+        env:
+          MODE: ${{ inputs.mode || 'auto' }}
+        run: python tools/daynight.py "$MODE"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          if git diff --cached --quiet; then
+            echo "README already shows the right look."
+          else
+            git commit -m "README: switch to $(python tools/daynight.py --status) cards"
+            git pull --rebase origin main
+            git push
+          fi

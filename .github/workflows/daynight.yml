@@ -5,8 +5,12 @@ name: Day / Night
 # The time zone and hours are at the top of tools/daynight.py.
 # Run it by hand from the Actions tab to switch now ("auto" picks by the clock).
 on:
+  # GitHub can delay or drop scheduled runs, so don't rely on one exact time: three tries just after each
+  # switch (07:01, 07:11, 07:21 and 19:01, 19:11, 19:21 IST) and an hourly check. A run only commits when the
+  # README shows the wrong look, so the extra runs add no commits.
   schedule:
-    - cron: "30 1,2,13,14 * * *"     # 07:00 and 19:00 IST, plus a catch-up an hour later if a run was dropped
+    - cron: "31,41,51 1,13 * * *"
+    - cron: "7 * * * *"
   workflow_dispatch:
     inputs:
       mode:

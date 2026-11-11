@@ -86,7 +86,7 @@ tools only run when you change the theme.
 
 The cards in the GitHub Activity and LeetCode sections (`stats/*.svg`) are drawn by
 `tools/gen_stats.py` from the numbers saved in `tools/stats.json`. The **Refresh stats** workflow
-fetches fresh numbers every day (GitHub's GraphQL API with the workflow's own token, and LeetCode's
+fetches fresh numbers every few hours (GitHub's GraphQL API with the workflow's own token, and LeetCode's
 public API), redraws the cards and commits them. Run it from the Actions tab to update right away.
 Switching themes redraws the cards from the saved numbers, in the `activity` section's colour.
 
@@ -104,7 +104,8 @@ Every card is drawn in two looks: the Day files (`dino-banner.svg`, `about-card.
 `tools/theme.py` always redraws both.
 
 The README can't follow each visitor's clock, so the **Day / Night** workflow points it at the
-Night cards at 7 pm and back at the Day cards at 7 am, India time (both are set at the top of
+Night cards at 7 pm and back at the Day cards at 7 am, India time (it tries a few times just after
+each switch and checks every hour, because GitHub sometimes drops scheduled runs) (both are set at the top of
 `tools/daynight.py`). To switch by hand, run that workflow from the Actions tab, or locally:
 
 ```bash

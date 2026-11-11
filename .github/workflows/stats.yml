@@ -1,11 +1,11 @@
 name: Refresh stats
 
-# Fetches fresh GitHub and LeetCode numbers once a day, redraws stats/*.svg in the Playful style
+# Fetches fresh GitHub and LeetCode numbers every few hours, redraws stats/*.svg in the Playful style
 # (in the activity section's theme, in both the Day and Night looks) and commits them, together with the numbers in tools/stats.json.
 # Run it by hand from the Actions tab ("Refresh stats" -> "Run workflow") to update right away.
 on:
   schedule:
-    - cron: "37 1 * * *"          # every day at 01:37 UTC
+    - cron: "37 1,7,13,19 * * *"  # every 6 hours (GitHub sometimes drops a scheduled run); commits only when numbers change
   workflow_dispatch:
   push:
     branches: [main]

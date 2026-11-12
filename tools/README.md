@@ -91,6 +91,10 @@ fetches fresh numbers every few hours (GitHub's GraphQL API with the workflow's 
 public API), redraws the cards and commits them. Run it from the Actions tab to update right away.
 Switching themes redraws the cards from the saved numbers, in the `activity` section's colour.
 
+The same workflow keeps the rounded LeetCode count ("160+", from `tools/counts.py`) in step everywhere
+else it appears: it runs `python tools/theme.py --counts`, which redraws the About cards and the
+LeetCode Solutions project card and fixes the number in README.md's text.
+
 ## Tech Stack
 
 `tech-stack.svg` is drawn by `tools/gen_stack.py` in the `about` section's colour. The logos are
@@ -101,11 +105,12 @@ technology, copy its slug, title, hex and path into that file and add it to `GRO
 ## About Me intro
 
 The intro under the About card and the three "tap a row" sections (`about/*.svg`) are drawn by
-`tools/gen_intro.py` in the `about` section's colour: `intro.svg`, one `focus-<project>.svg` button
-per Focus project, `problem-solving.svg`, and one `build-<project>.svg` button per build. Each link is
-its own image, so the README wraps it in a normal `<a>`. The words, projects and the LeetCode count
-(`SOLVED`, `WRITTEN_UP`) are at the top of each part of `gen_intro.py`; edit them there, then run
-`python tools/theme.py about=same` to redraw. Adding a project also needs its `<a><img></a>` line in
+`tools/gen_intro.py` in the `about` section's colour: `intro.svg`; `row-<name>.svg`, the big
+clickable title of each row (inside its `<summary>`); one `focus-<project>.svg` button per Focus
+project; `problem-solving.svg`; and one `build-<project>.svg` button per build. Each link is its own
+image, so the README wraps it in a normal `<a>`. The words and projects are in lists in
+`gen_intro.py`; edit them there, then run `python tools/theme.py about=same` to redraw. The solved
+count updates itself (see the stats section above); `WRITTEN_UP` is set by hand. Adding a project also needs its `<a><img></a>` line in
 the README.
 
 ## Day / Night

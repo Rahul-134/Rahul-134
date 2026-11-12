@@ -3,6 +3,8 @@
 
     intro.svg              the intro: "I turn models into products", a sky window with the T-rex, and the
                            data -> model -> backend -> pixel strip
+    hint.svg               the "Tap a row to see what's behind it" sign above the rows
+    row-<slug>.svg         the clickable title of each row (Focus, Problem solving, Builds), used in <summary>
     focus-<slug>.svg       Focus: one wide button per project (the README links each to its repository)
     problem-solving.svg    Problem solving: the solved count, the write-ups and the topics
     build-<slug>.svg       Builds: one button per project, tagged AI co-pilot / web app / game
@@ -22,6 +24,7 @@ sys.path.insert(0, HERE)
 import sprites as S  # noqa: E402
 import theme_colors  # noqa: E402
 import banner  # noqa: E402
+import counts  # noqa: E402
 
 T = theme_colors.current()
 ACCENT = T.accent
@@ -29,7 +32,7 @@ INK, TEXT, PAPER, PANEL, SKY = banner.INK, banner.TEXT, banner.PAPER, banner.PAN
 ROUND = "'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif"
 e = html.escape
 
-SOLVED = "160+"            # LeetCode problems solved (rounded down; the live number is on the stats card)
+SOLVED = counts.solved()   # LeetCode problems solved, rounded down to a ten, from tools/stats.json
 WRITTEN_UP = "60+"         # solutions written up in leetcode-solutions-python
 
 out_dir = os.path.join(sys.argv[1] if len(sys.argv) > 1 else sys.exit(__doc__), "about")
@@ -165,6 +168,20 @@ def icon(kind, cx, cy, size=34):
         return g(f'<rect x="2.5" y="3.5" width="19" height="13" rx="2" fill="#fff" stroke="{INK}" stroke-width="1.9"/>'
                  f'<rect x="13" y="8" width="4" height="4" fill="{ACCENT}" stroke="{INK}" stroke-width="1"/>'
                  f'<path d="M9 21h6M12 16.5V21" stroke="{INK}" stroke-width="1.9" stroke-linecap="round"/>')
+    if kind == "scope":                  # Focus: a crosshair on a lens
+        return g(f'<circle cx="12" cy="12" r="9.5" fill="#fff" stroke="{INK}" stroke-width="2"/>'
+                 f'<circle cx="12" cy="12" r="4.2" fill="#FF6B4A" stroke="{INK}" stroke-width="1.6"/>'
+                 f'<path d="M12 1v5M12 18v5M1 12h5M18 12h5" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>'
+                 f'<circle cx="12" cy="12" r="1.3" fill="{INK}"/>')
+    if kind == "puzzle":                 # Problem solving
+        return g(f'<path d="M3.5 8.5h5a3 3 0 1 1 6 0h5v5a3 3 0 1 1 0 6v1.5H3.5V15a3 3 0 1 0 0-6z" fill="#FFC83D" '
+                 f'stroke="{INK}" stroke-width="2" stroke-linejoin="round"/>'
+                 f'<path d="M6.5 11.5h3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" opacity=".8"/>')
+    if kind == "rocket":                 # Builds
+        return g(f'<path d="M9.5 19.5c-1.4 1.6-2 3-2.5 4 1-.3 2.6-1 4.2-2.4" fill="#FF6B4A" stroke="{INK}" stroke-width="1.4" stroke-linejoin="round"/>'
+                 f'<path d="M7 13l-3.6 1.4 2.4-4.6 4-.6zM11 17l-1.4 3.6 4.6-2.4.6-4z" fill="#FF6B4A" stroke="{INK}" stroke-width="1.5" stroke-linejoin="round"/>'
+                 f'<path d="M7.5 16.5c2-6.5 6.5-12 14-13.5-1.5 7.5-7 12-13.5 14z" fill="#fff" stroke="{INK}" stroke-width="2" stroke-linejoin="round"/>'
+                 f'<circle cx="15" cy="9" r="2.4" fill="{ACCENT}" stroke="{INK}" stroke-width="1.6"/>')
     raise ValueError(kind)
 
 
@@ -396,11 +413,67 @@ def build(p):
     write(f'build-{p["slug"]}.svg', svg)
 
 
+# ------------------------------------------------------------------ the three rows' clickable titles
+ROWS = [
+    dict(slug="focus", title="Focus", sub="Generative AI, LLM apps and data & ML platforms", icon="scope"),
+    dict(slug="problems", title="Problem solving", sub=f"{SOLVED} LeetCode problems solved", icon="puzzle"),
+    dict(slug="builds", title="Builds", sub="AI co-pilots, web apps and interactive console games", icon="rocket"),
+]
+
+
+def row(i, p):
+    """A big button-card for a row's <summary>, so the rows stand out between the cards around them."""
+    W, H = 900, 112
+    cy = (3 + H - 11) / 2
+    tap, tap_w = pill(0, 0, "TAP TO OPEN", ACCENT, size=12, h=30)
+    tx = W - 46 - tap_w
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-labelledby="t">
+  <title id="t">{e(p["title"])}: {e(p["sub"])}. Tap to open.</title>
+  {style('''
+    .tap{animation:tap 2.2s ease-in-out infinite}
+    @keyframes tap{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}''')}
+  {shell(W, H, PAPER, 22)}
+  <g class="bob" style="animation-delay:{-i * 0.5:.1f}s"><circle cx="70" cy="{cy + 4}" r="34" fill="{INK}"/>
+  <circle cx="66" cy="{cy}" r="34" fill="{ACCENT}" stroke="{INK}" stroke-width="3"/>
+  {icon(p["icon"], 66, cy, 40)}</g>
+  <text x="122" y="{cy - 3}" font-size="30" font-weight="800" fill="{TEXT}">{e(p["title"])}</text>
+  <text x="122" y="{cy + 23}" font-size="17" font-weight="600" fill="{TEXT}" fill-opacity=".75">{e(p["sub"])}</text>
+  <g transform="translate({tx:.1f},{cy - 15})"><g class="tap" style="animation-delay:{-i * 0.4:.1f}s">{tap}</g></g>
+</svg>
+"""
+    write(f'row-{p["slug"]}.svg', svg)
+
+
+def hint():
+    """The "tap a row" sign between the intro and the rows: a bouncing sticker arrow on a theme-colour banner."""
+    W, H = 620, 84
+    text = "Tap a row to see what's behind it"
+    bw = 96 + tw(text, 23) + 40
+    x0 = (W - 14 - bw) / 2 + 3
+    cy = (3 + H - 11) / 2
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-labelledby="t">
+  <title id="t">{e(text)}</title>
+  {style('''
+    .down{animation:down 1.3s ease-in-out infinite}
+    @keyframes down{0%,100%{transform:translateY(-3px)}50%{transform:translateY(4px)}}''')}
+  <rect x="{x0 + 6:.1f}" y="9" width="{bw:.1f}" height="{H - 18}" rx="{(H - 18) / 2}" fill="{INK}"/>
+  <rect x="{x0:.1f}" y="3" width="{bw:.1f}" height="{H - 18}" rx="{(H - 18) / 2}" fill="{ACCENT}" stroke="{INK}" stroke-width="3.5"/>
+  <circle cx="{x0 + 40:.1f}" cy="{cy}" r="22" fill="#fff" stroke="{INK}" stroke-width="3"/>
+  <g class="down"><path d="M{x0 + 40:.1f} {cy - 11}v20M{x0 + 31:.1f} {cy + 1}l9 9 9-9" stroke="{INK}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text x="{x0 + 76:.1f}" y="{cy + 8}" font-size="23" font-weight="800" fill="{INK}">{e(text)}</text>
+</svg>
+"""
+    write("hint.svg", svg)
+
+
 intro()
+hint()
+for i, p in enumerate(ROWS):
+    row(i, p)
 for p in FOCUS:
     focus(p)
 problems()
 for p in BUILDS:
     build(p)
-print("intro: intro.svg, " + ", ".join(f'focus-{p["slug"]}.svg' for p in FOCUS) + ", problem-solving.svg, "
+print("intro: intro.svg, hint.svg, " + ", ".join(f'row-{p["slug"]}.svg' for p in ROWS) + ", " + ", ".join(f'focus-{p["slug"]}.svg' for p in FOCUS) + ", problem-solving.svg, "
       + ", ".join(f'build-{p["slug"]}.svg' for p in BUILDS), file=sys.stderr)

@@ -45,14 +45,14 @@
 
 <img src="night/about/intro.svg" width="100%" alt="I'm an AI/ML engineer and Generative AI enthusiast who turns models into products: LLM-powered apps, data platforms and ML tooling built with Python, FastAPI, Django and React. I like owning a project end to end, from the data and the model to the last pixel on screen." />
 
-<sub>👇 &nbsp;Tap a row to see what's behind it</sub>
+<img src="night/about/hint.svg" width="62%" alt="Tap a row to see what's behind it" />
 
 </div>
 
 <br/>
 
 <details>
-<summary><b>🧠&nbsp; Focus</b> &nbsp;—&nbsp; Generative AI, LLM apps and data &amp; ML platforms</summary>
+<summary><img src="night/about/row-focus.svg" width="94%" align="absmiddle" alt="Focus: Generative AI, LLM apps and data and ML platforms. Tap to open." /></summary>
 <br/>
 
 <div align="center">
@@ -68,14 +68,14 @@
 </details>
 
 <details>
-<summary><b>🧩&nbsp; Problem solving</b> &nbsp;—&nbsp; 160+ LeetCode problems solved</summary>
+<summary><img src="night/about/row-problems.svg" width="94%" align="absmiddle" alt="Problem solving: 160+ LeetCode problems solved. Tap to open." /></summary>
 <br/>
 
 <div align="center">
 
 <a href="https://github.com/Rahul-134/leetcode-solutions-python"><img src="night/about/problem-solving.svg" width="100%" alt="160+ LeetCode problems solved, with 60+ of the solutions written up in leetcode-solutions-python, each one runnable, type-hinted and shipped with a built-in test case. Topics: arrays and hashing, strings, two pointers, sliding window, dynamic programming, bit manipulation." /></a>
 
-<sub>📈 Live numbers on my <a href="https://leetcode.com/Rahul_134">LeetCode profile ↗</a> &nbsp;·&nbsp; or <a href="#-leetcode">jump to the stats card ↓</a></sub>
+<sub>📈 Live on <a href="https://leetcode.com/Rahul_134">LeetCode ↗</a> &nbsp;·&nbsp; <a href="#-leetcode">stats card ↓</a></sub>
 
 </div>
 
@@ -84,7 +84,7 @@
 </details>
 
 <details>
-<summary><b>🚀&nbsp; Builds</b> &nbsp;—&nbsp; AI co-pilots, web apps and interactive console games</summary>
+<summary><img src="night/about/row-builds.svg" width="94%" align="absmiddle" alt="Builds: AI co-pilots, web apps and interactive console games. Tap to open." /></summary>
 <br/>
 
 <div align="center">

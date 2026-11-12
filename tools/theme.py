@@ -7,6 +7,7 @@
     python tools/theme.py about=violet            # change just one section, keep the rest as it is
     python tools/theme.py projects=cyan bitnote=rose game=orange
     python tools/theme.py about=same              # drop an override (back to the base theme)
+    python tools/theme.py --counts                # only redraw what shows the LeetCode solved count (stats workflow)
 
 A bare theme name sets the base theme and clears every override. `section=theme` overrides one
 section; `card=theme` overrides a single project card (cards otherwise follow `projects`).
@@ -35,6 +36,7 @@ ROOT = os.path.dirname(TOOLS)
 sys.path.insert(0, TOOLS)
 sys.dont_write_bytecode = True
 import theme_colors  # noqa: E402
+import counts  # noqa: E402
 
 STATE = os.path.join(TOOLS, "theme.json")
 
@@ -202,6 +204,31 @@ def apply(state):
     print(f"Applied {summary(state)}; recoloured {changed} README colour codes.")
 
 
+SOLVED_TEXT = re.compile(r"\b\d+\+(?= (?:LeetCode )?problems solved)")     # "160+ problems solved" in README.md
+
+
+def update_counts(state):
+    """After a stats refresh: redraw only the cards that show the LeetCode solved count (the About cards and the
+    LeetCode Solutions project card, Day and Night) and put the same number in README.md's text."""
+    sec, cards = effective(state)
+    night = os.path.join(ROOT, "night")
+    run("gen_intro.py", ROOT, sec["about"])
+    run("gen_intro.py", night, sec["about"], mode="night")
+    slug = "leetcode-solutions"
+    for mode, dest in (("day", os.path.join(ROOT, "projects")), ("night", os.path.join(night, "projects"))):
+        with tempfile.TemporaryDirectory() as tmp:
+            run("gen_projects.py", tmp, cards[slug], mode=mode)
+            shutil.copyfile(os.path.join(tmp, slug + ".svg"), os.path.join(dest, slug + ".svg"))
+    path = os.path.join(ROOT, "README.md")
+    with open(path, encoding="utf-8") as f:
+        text = f.read()
+    new = SOLVED_TEXT.sub(counts.solved(), text)
+    if new != text:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(new)
+    print(f"LeetCode count: {counts.solved()}")
+
+
 def show(state):
     cur = state["theme"]
     print("Themes:")
@@ -224,6 +251,9 @@ def main():
     state = load()
     if "--summary" in args:
         print(summary(state))
+        return
+    if "--counts" in args:
+        update_counts(state)
         return
     if not args or args[0] in ("list", "-l", "--list"):
         show(state)

@@ -106,8 +106,13 @@ def stars(x0, y0, w, h, n=14, seed=7, avoid=()):
 
 
 def ground_tile(h):
-    """A 200-wide sand tile (matches the game's Playful ground), tufts poking 10 units above the line."""
+    """A 200-wide sand tile (matches the game's Playful ground), tufts poking 10 units above the line.
+
+    The sand runs on 40 units below `h`, and the tile's last 4 units are left empty. When a browser scales the
+    image it blends a sliver of a tile's bottom row into the top of the strip; with sand there, that drew a thin
+    sand-coloured line across the sky above the ground on every card."""
     pts = " ".join(f"L{x} {10 + h * 0.62 + 3.5 * math.sin(x / 200 * 4 * math.pi):.1f}" for x in range(0, 201, 4))
+    deep = h + 40                                    # sand below the line (strips can be up to h + 50 tall)
     pebbles = "".join(
         f'<ellipse cx="{x}" cy="{10 + y}" rx="{rx}" ry="{ry}" fill="{PEBBLE}" stroke="rgba(43,26,18,.55)" stroke-width="1.3"/>'
         f'<ellipse cx="{x - rx * .3:.1f}" cy="{10 + y - ry * .35:.1f}" rx="{rx * .35:.1f}" ry="{ry * .3:.1f}" fill="#fff" opacity=".55"/>'
@@ -117,9 +122,9 @@ def ground_tile(h):
         d = f"M{x - 5} 11 L{x - 6} 5 L{x - 2.5} 10 L{x} 2 L{x + 2.5} 10 L{x + 6} 4 L{x + 5} 11 Z"
         s = f'<path d="{d}" fill="{TUFT}" stroke="{INK}" stroke-width="1.4" stroke-linejoin="round"/>'
         return s + (f'<circle cx="{x}" cy="1.6" r="2.2" fill="{FLOWER}" stroke="{INK}" stroke-width="1.1"/>' if flower else "")
-    return (f'<pattern id="sand" width="200" height="{h + 10}" patternUnits="userSpaceOnUse">'
-            f'<rect y="10" width="200" height="{h}" fill="{SAND}"/><rect y="13" width="200" height="7" fill="{SAND_TOP}"/>'
-            f'<path d="M0 {h + 10} {pts[1:] if pts.startswith("L") else pts} L200 {h + 10} Z" fill="{SAND_LOW}"/>'
+    return (f'<pattern id="sand" width="200" height="{deep + 14}" patternUnits="userSpaceOnUse">'
+            f'<rect y="10" width="200" height="{deep}" fill="{SAND}"/><rect y="13" width="200" height="7" fill="{SAND_TOP}"/>'
+            f'<path d="M0 {deep + 10} {pts[1:] if pts.startswith("L") else pts} L200 {deep + 10} Z" fill="{SAND_LOW}"/>'
             f'{pebbles}<rect y="10" width="200" height="3.5" fill="{INK}"/>{tuft(72, False)}{tuft(150, True)}</pattern>')
 
 

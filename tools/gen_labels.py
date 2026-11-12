@@ -5,6 +5,8 @@
 
 Groups, each drawn in its own section's (or project card's) theme by tools/theme.py:
 
+    header      link-followers.svg (count from tools/stats.json), link-repositories.svg, link-linkedin.svg,
+                link-leetcode.svg, link-github.svg: the badge row under the banner
     about       h-about-me.svg, h-tech-stack.svg, link-leetcode-profile.svg, link-stats-card.svg
     projects    h-featured-projects.svg, h-more-builds.svg, projects-intro.svg, link-browse-all.svg
     activity    h-github-activity.svg, h-leetcode.svg
@@ -24,6 +26,7 @@ sys.dont_write_bytecode = True
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import banner  # noqa: E402
+import counts  # noqa: E402
 from playful import (ACCENT, INK, TEXT, PAPER, PANEL, SKY, e, shell, pill, style, text_width,  # noqa: E402
                      DINO_H, dino, cactus, icon)
 
@@ -244,7 +247,7 @@ def caption(slug, i, title, text):
 
 
 # ------------------------------------------------------------------ link buttons
-def link_button(name, label, kind, glyph, sym="↗"):
+def link_button(name, label, kind, glyph, sym="↗", circle=None):
     size, H = 21, 62
     cy = (3 + H - 9) / 2
     w = 66 + text_width(label, size) + 60
@@ -253,10 +256,13 @@ def link_button(name, label, kind, glyph, sym="↗"):
     if kind == "live":
         lead = (f'<circle cx="36" cy="{cy:.1f}" r="16" fill="#fff" stroke="{INK}" stroke-width="2.6"/>'
                 f'<circle class="pulse" cx="36" cy="{cy:.1f}" r="7" fill="{LIVE_GREEN}" stroke="{INK}" stroke-width="1.8"/>')
+    elif glyph == "in":                             # LinkedIn's "in" on its own blue
+        lead = (f'<circle cx="36" cy="{cy:.1f}" r="18" fill="{circle}" stroke="{INK}" stroke-width="2.6"/>'
+                f'<text x="36" y="{cy + 7:.1f}" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">in</text>')
     else:
-        lead = (f'<circle cx="36" cy="{cy:.1f}" r="18" fill="{"#fff" if kind == "main" else ACCENT}" stroke="{INK}" stroke-width="2.6"/>'
+        lead = (f'<circle cx="36" cy="{cy:.1f}" r="18" fill="{circle or ("#fff" if kind == "main" else ACCENT)}" stroke="{INK}" stroke-width="2.6"/>'
                 f'{icon(glyph, 36, cy, 22)}')
-    words = label + sym
+    words = label + sym + ("in" if glyph == "in" else "")
     svg = svg_open(int(w) + 8, H, label, words, '''
     .pulse{animation:pulse 1.6s ease-in-out infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}''')
@@ -304,6 +310,13 @@ GROUPS = sys.argv[2:]
 for n, (slug, (group, title, kind)) in enumerate(HEADINGS.items()):
     if group in GROUPS:
         heading(slug, title, kind, n)
+if "header" in GROUPS:                                # the badge row under the banner
+    n = counts.followers()
+    link_button("followers", f"{n} follower{'s' if n != 1 else ''}" if n is not None else "Follow me", "main", "github")
+    link_button("repositories", "Explore repos", "plain", "book")
+    link_button("linkedin", "Connect on LinkedIn", "plain", "in", circle="#0A66C2")
+    link_button("leetcode", "Rahul_134 on LeetCode", "plain", "code", circle="#FFA116")
+    link_button("github", "Rahul-134 on GitHub", "plain", "github")
 if "about" in GROUPS:                                 # under the Problem solving card
     link_button("leetcode-profile", "Live on LeetCode", "main", "code")
     link_button("stats-card", "Stats card", "plain", "chart", sym="↓")
@@ -321,7 +334,7 @@ for n, (slug, (name, count, caps)) in enumerate(PEEKS.items()):
     if slug == "datapilot":
         datapilot_features()
         note("datapilot-note.svg", [DATAPILOT_NOTE], "sparkle", DATAPILOT_NOTE)
-unknown = [g for g in GROUPS if g not in {"about", "projects", "activity", "connect"} | set(PEEKS)]
+unknown = [g for g in GROUPS if g not in {"header", "about", "projects", "activity", "connect"} | set(PEEKS)]
 if unknown:
     raise SystemExit(f"unknown group(s): {', '.join(unknown)}")
 print(f"labels: {len(written)} files ({', '.join(GROUPS)})", file=sys.stderr)

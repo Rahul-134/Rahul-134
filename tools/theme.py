@@ -146,7 +146,7 @@ def build_projects(cards, dest=None, mode="day"):
                 shutil.copyfile(os.path.join(tmp, slug + ".svg"), os.path.join(dest, slug + ".svg"))
 
 
-LABEL_SECTIONS = ["about", "projects", "activity", "connect"]                  # their headings and notes
+LABEL_SECTIONS = ["header", "about", "projects", "activity", "connect"]        # badges, headings and notes
 PEEK_CARDS = ["bitcareer", "bitnote", "datapilot", "business-bytes", "portfolio"]   # captions and buttons per project
 
 
@@ -226,8 +226,8 @@ SOLVED_TEXT = re.compile(r"\b\d+\+(?= (?:LeetCode )?problems solved)")     # "16
 
 
 def update_counts(state):
-    """After a stats refresh: redraw only the cards that show the LeetCode solved count (the About cards and the
-    LeetCode Solutions project card, Day and Night) and put the same number in README.md's text."""
+    """After a stats refresh: redraw only what shows a live count (the About cards and the LeetCode Solutions project
+    card for the solved count, the header's followers badge), Day and Night, and put the solved count in README.md's text."""
     sec, cards = effective(state)
     night = os.path.join(ROOT, "night")
     run("gen_intro.py", ROOT, sec["about"])
@@ -237,6 +237,8 @@ def update_counts(state):
         with tempfile.TemporaryDirectory() as tmp:
             run("gen_projects.py", tmp, cards[slug], mode=mode)
             shutil.copyfile(os.path.join(tmp, slug + ".svg"), os.path.join(dest, slug + ".svg"))
+    for mode, root in (("day", ROOT), ("night", night)):              # the followers badge in the header
+        run("gen_labels.py", root, sec["header"], "header", mode=mode)
     path = os.path.join(ROOT, "README.md")
     with open(path, encoding="utf-8") as f:
         text = f.read()
@@ -244,7 +246,7 @@ def update_counts(state):
     if new != text:
         with open(path, "w", encoding="utf-8") as f:
             f.write(new)
-    print(f"LeetCode count: {counts.solved()}")
+    print(f"LeetCode count: {counts.solved()}, followers: {counts.followers()}")
 
 
 def show(state):

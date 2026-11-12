@@ -150,7 +150,10 @@
 <!-- ───────────── 02 · BitNote ───────────── -->
 <div align="center">
 
-<a href="https://github.com/Rahul-134/bitnote"><img src="night/projects/bitnote.svg" width="100%" alt="BitNote: Notion-style notebooks with a built-in AI tutor. Built with FastAPI, Ollama, SQLite, Firebase and Tailwind." /></a>
+<a href="https://bitnote-five.vercel.app/"><img src="night/projects/bitnote.svg" width="100%" alt="BitNote (live): Notion-style notebooks with a built-in AI tutor. Built with FastAPI, Ollama, SQLite, Firebase and Tailwind." /></a>
+
+<a href="https://bitnote-five.vercel.app/"><img src="night/labels/link-bitnote-live.svg" height="46" alt="Live app" /></a>
+<a href="https://github.com/Rahul-134/bitnote"><img src="night/labels/link-bitnote-code.svg" height="46" alt="Source code" /></a>
 
 </div>
 
@@ -162,7 +165,8 @@
 <p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_7.svg" width="80%" alt="Home" /><br/><picture><img src="night/labels/cap-bitnote-2.svg" width="80%" alt="Home: all your notebooks in one place" /></picture></p>
 <p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_8.svg" width="80%" alt="Notebook layout" /><br/><picture><img src="night/labels/cap-bitnote-3.svg" width="80%" alt="Notebook layout: an AI-generated learning roadmap beside the cell editor" /></picture></p>
 <p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_4.svg" width="80%" alt="In-cell AI" /><br/><picture><img src="night/labels/cap-bitnote-4.svg" width="80%" alt="In-cell AI: instant summaries and BitBuddy chat, in context of the cell" /></picture></p>
-<p align="center"><a href="https://github.com/Rahul-134/bitnote"><img src="night/labels/link-bitnote-repo.svg" height="46" alt="Setup, API and deployment notes in the repository" /></a></p>
+<p align="center"><a href="https://bitnote-five.vercel.app/"><img src="night/labels/link-bitnote-live.svg" height="46" alt="Live app" /></a>
+<a href="https://github.com/Rahul-134/bitnote"><img src="night/labels/link-bitnote-repo.svg" height="46" alt="Setup, API and deployment notes in the repository" /></a></p>
 
 </details>
 

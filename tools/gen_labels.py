@@ -89,7 +89,8 @@ PEEKS = {      # project: (what the row says, count, [(caption title, caption te
 
 LINKS = {      # project: [(name, label, kind, icon)]; kind: live (green), main (theme colour) or plain
     "bitcareer": [("repo", "Full write-up in the repository", "plain", "github")],
-    "bitnote": [("repo", "Setup, API and deployment notes", "plain", "github")],
+    "bitnote": [("live", "Live app", "live", None), ("code", "Source code", "plain", "github"),
+                ("repo", "Setup, API and deployment notes", "plain", "github")],
     "datapilot": [("live", "Live app", "live", None), ("trainer", "ML Trainer", "main", "model"),
                   ("code", "Source code", "plain", "github")],
     "business-bytes": [("repo", "Design notes in the repository", "plain", "github")],

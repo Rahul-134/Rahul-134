@@ -3,8 +3,8 @@
 
 <a href="https://rahul-134.github.io/Rahul-134/dino/">
   <picture>
-    <source media="(max-width: 600px)" srcset="night/dino-banner-mobile.svg" />
-    <img src="night/dino-banner.svg" alt="Hey I am Rahul Lumbhani — AI/ML Engineer and GenAI Enthusiast. Click to play the dino game." width="100%" />
+    <source media="(max-width: 600px)" srcset="dino-banner-mobile.svg" />
+    <img src="dino-banner.svg" alt="Hey I am Rahul Lumbhani — AI/ML Engineer and GenAI Enthusiast. Click to play the dino game." width="100%" />
   </picture>
 </a>
 
@@ -35,7 +35,7 @@
 
 <div align="center">
 
-<img src="night/about-card.svg" alt="Animated terminal card. whoami: Rahul Lumbhani, AI/ML engineer. interests: generative AI, LLM apps, data and ML platforms. stack: languages Python, Java, JavaScript; frameworks React, Django, FastAPI; databases SQL. builds: AI co-pilots, web apps and interactive console games." width="100%" />
+<img src="about-card.svg" alt="Animated terminal card. whoami: Rahul Lumbhani, AI/ML engineer. interests: generative AI, LLM apps, data and ML platforms. stack: languages Python, Java, JavaScript; frameworks React, Django, FastAPI; databases SQL. builds: AI co-pilots, web apps and interactive console games." width="100%" />
 
 </div>
 
@@ -94,7 +94,7 @@ More in [Featured Projects ↓](#-featured-projects)
 
 <div align="center">
 
-<img src="night/tech-stack.svg" width="100%" alt="Tech stack. Languages: Python, Java, JavaScript, HTML, CSS. Databases: SQLite, MySQL, PostgreSQL, MongoDB. Frameworks and libraries: FastAPI, React, Node.js, Express, Django, Tailwind CSS, Bootstrap. Tools and platforms: Git, GitHub, Docker, Vercel, VS Code, IntelliJ IDEA, PyCharm, Figma." />
+<img src="tech-stack.svg" width="100%" alt="Tech stack. Languages: Python, Java, JavaScript, HTML, CSS. Databases: SQLite, MySQL, PostgreSQL, MongoDB. Frameworks and libraries: FastAPI, React, Node.js, Express, Django, Tailwind CSS, Bootstrap. Tools and platforms: Git, GitHub, Docker, Vercel, VS Code, IntelliJ IDEA, PyCharm, Figma." />
 
 </div>
 
@@ -114,7 +114,7 @@ More in [Featured Projects ↓](#-featured-projects)
 <!-- ───────────── 01 · BitCareer ───────────── -->
 <div align="center">
 
-<a href="https://github.com/Rahul-134/bitcareer-showcase"><img src="night/projects/bitcareer.svg" width="100%" alt="BitCareer: AI-powered learning and career-readiness platform for developers. Built with React, Django, PostgreSQL, Docker and Gemini." /></a>
+<a href="https://github.com/Rahul-134/bitcareer-showcase"><img src="projects/bitcareer.svg" width="100%" alt="BitCareer: AI-powered learning and career-readiness platform for developers. Built with React, Django, PostgreSQL, Docker and Gemini." /></a>
 
 </div>
 
@@ -136,7 +136,7 @@ More in [Featured Projects ↓](#-featured-projects)
 <!-- ───────────── 02 · BitNote ───────────── -->
 <div align="center">
 
-<a href="https://github.com/Rahul-134/bitnote"><img src="night/projects/bitnote.svg" width="100%" alt="BitNote: Notion-style notebooks with a built-in AI tutor. Built with FastAPI, Ollama, SQLite, Firebase and Tailwind." /></a>
+<a href="https://github.com/Rahul-134/bitnote"><img src="projects/bitnote.svg" width="100%" alt="BitNote: Notion-style notebooks with a built-in AI tutor. Built with FastAPI, Ollama, SQLite, Firebase and Tailwind." /></a>
 
 </div>
 
@@ -157,7 +157,7 @@ More in [Featured Projects ↓](#-featured-projects)
 <!-- ───────────── 03 · DataPilot ───────────── -->
 <div align="center">
 
-<a href="https://datapilot-alpha-flame.vercel.app/"><img src="night/projects/datapilot.svg" width="100%" alt="DataPilot: AI-powered data analysis, web scraping and machine learning in one workspace. Built with FastAPI, Streamlit, scikit-learn and Gemini." /></a>
+<a href="https://datapilot-alpha-flame.vercel.app/"><img src="projects/datapilot.svg" width="100%" alt="DataPilot: AI-powered data analysis, web scraping and machine learning in one workspace. Built with FastAPI, Streamlit, scikit-learn and Gemini." /></a>
 
 <sub>🟢 <a href="https://datapilot-alpha-flame.vercel.app/"><b>Live app ↗</b></a> &nbsp;·&nbsp; <a href="https://datapilot-ml-trainer.streamlit.app/">ML Trainer ↗</a> &nbsp;·&nbsp; <a href="https://github.com/Rahul-134/datapilot">Source code ↗</a></sub>
 
@@ -192,7 +192,7 @@ More in [Featured Projects ↓](#-featured-projects)
 <!-- ───────────── 04 · Business Bytes ───────────── -->
 <div align="center">
 
-<a href="https://github.com/Rahul-134/business-bytes-showcase"><img src="night/projects/business-bytes.svg" width="100%" alt="Business Bytes: an India-themed Monopoly board game for the desktop. Built with Java, JavaFX, MySQL and Maven." /></a>
+<a href="https://github.com/Rahul-134/business-bytes-showcase"><img src="projects/business-bytes.svg" width="100%" alt="Business Bytes: an India-themed Monopoly board game for the desktop. Built with Java, JavaFX, MySQL and Maven." /></a>
 
 </div>
 
@@ -215,7 +215,7 @@ More in [Featured Projects ↓](#-featured-projects)
 <!-- ───────────── 05 · Portfolio ───────────── -->
 <div align="center">
 
-<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="night/projects/portfolio.svg" width="100%" alt="Portfolio: my personal site with projects, skills, live stats and an ask-me-anything chatbot terminal. Built with Python, Django, React, Next.js and OpenRouter for the LLM API." /></a>
+<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="projects/portfolio.svg" width="100%" alt="Portfolio: my personal site with projects, skills, live stats and an ask-me-anything chatbot terminal. Built with Python, Django, React, Next.js and OpenRouter for the LLM API." /></a>
 
 <sub>🟢 <a href="https://rahul-lumbhani-portfolio.vercel.app/"><b>Live site ↗</b></a></sub>
 
@@ -241,8 +241,8 @@ More in [Featured Projects ↓](#-featured-projects)
 
 ### 🧩 More Builds
 
-<a href="https://github.com/Rahul-134/virtual-arcade-zone"><img src="night/projects/virtual-arcade-zone.svg" width="49%" alt="Virtual Arcade Zone: seven console mini-games in pure core Java." /></a>
-<a href="https://github.com/Rahul-134/leetcode-solutions-python"><img src="night/projects/leetcode-solutions.svg" width="49%" alt="LeetCode Solutions: 160+ problems solved, 60+ written up in clean runnable Python." /></a>
+<a href="https://github.com/Rahul-134/virtual-arcade-zone"><img src="projects/virtual-arcade-zone.svg" width="49%" alt="Virtual Arcade Zone: seven console mini-games in pure core Java." /></a>
+<a href="https://github.com/Rahul-134/leetcode-solutions-python"><img src="projects/leetcode-solutions.svg" width="49%" alt="LeetCode Solutions: 160+ problems solved, 60+ written up in clean runnable Python." /></a>
 
 <br/>
 
@@ -258,13 +258,13 @@ More in [Featured Projects ↓](#-featured-projects)
 <div align="center">
 
 <a href="https://github.com/Rahul-134">
-  <img src="night/stats/github.svg" width="100%" alt="GitHub stats: stars, commits, pull requests, issues, repositories and top languages." />
+  <img src="stats/github.svg" width="100%" alt="GitHub stats: stars, commits, pull requests, issues, repositories and top languages." />
 </a>
 
 <br/><br/>
 
 <a href="https://github.com/Rahul-134">
-  <img src="night/stats/activity.svg" width="100%" alt="GitHub contributions: total, current streak, longest streak and the contribution calendar for the last year." />
+  <img src="stats/activity.svg" width="100%" alt="GitHub contributions: total, current streak, longest streak and the contribution calendar for the last year." />
 </a>
 
 </div>
@@ -276,7 +276,7 @@ More in [Featured Projects ↓](#-featured-projects)
 <div align="center">
 
 <a href="https://leetcode.com/u/Rahul_134/">
-  <img src="night/stats/leetcode.svg" width="100%" alt="LeetCode stats: problems solved by difficulty and global ranking." />
+  <img src="stats/leetcode.svg" width="100%" alt="LeetCode stats: problems solved by difficulty and global ranking." />
 </a>
 
 </div>
@@ -288,13 +288,13 @@ More in [Featured Projects ↓](#-featured-projects)
 
 <div align="center">
 
-<img src="night/connect/card.svg" width="100%" alt="Let's build something useful, together. I'm open to interesting projects and conversations about AI, backend engineering and building useful products." />
+<img src="connect/card.svg" width="100%" alt="Let's build something useful, together. I'm open to interesting projects and conversations about AI, backend engineering and building useful products." />
 
-<a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b/"><img src="night/connect/linkedin.svg" width="49%" alt="LinkedIn: say hello and let's talk." /></a>
-<a href="https://github.com/Rahul-134"><img src="night/connect/github.svg" width="49%" alt="GitHub: follow along at Rahul-134." /></a>
-<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="night/connect/portfolio.svg" width="49%" alt="Portfolio: projects, skills, live stats and an ask-me-anything terminal." /></a>
-<a href="https://rahul-134.github.io/Rahul-134/dino/"><img src="night/connect/play.svg" width="49%" alt="Play my dino game and try to top the leaderboard." /></a>
+<a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b/"><img src="connect/linkedin.svg" width="49%" alt="LinkedIn: say hello and let's talk." /></a>
+<a href="https://github.com/Rahul-134"><img src="connect/github.svg" width="49%" alt="GitHub: follow along at Rahul-134." /></a>
+<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="connect/portfolio.svg" width="49%" alt="Portfolio: projects, skills, live stats and an ask-me-anything terminal." /></a>
+<a href="https://rahul-134.github.io/Rahul-134/dino/"><img src="connect/play.svg" width="49%" alt="Play my dino game and try to top the leaderboard." /></a>
 
-<img src="night/connect/wave.svg" width="100%" alt="" />
+<img src="connect/wave.svg" width="100%" alt="" />
 
 </div>

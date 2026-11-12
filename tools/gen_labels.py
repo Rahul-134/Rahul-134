@@ -5,7 +5,7 @@
 
 Groups, each drawn in its own section's (or project card's) theme by tools/theme.py:
 
-    header      link-followers.svg (count from tools/stats.json), link-repositories.svg, link-linkedin.svg,
+    header      link-followers.svg (count from tools/stats.json), link-repositories.svg, link-portfolio.svg, link-linkedin.svg,
                 link-leetcode.svg, link-github.svg: the badge row under the banner
     about       h-about-me.svg, h-tech-stack.svg, link-leetcode-profile.svg, link-stats-card.svg
     projects    h-featured-projects.svg, h-more-builds.svg, projects-intro.svg, link-browse-all.svg
@@ -314,6 +314,7 @@ if "header" in GROUPS:                                # the badge row under the 
     n = counts.followers()
     link_button("followers", f"{n} follower{'s' if n != 1 else ''}" if n is not None else "Follow me", "main", "github")
     link_button("repositories", "Explore repos", "plain", "book")
+    link_button("portfolio", "My portfolio", "plain", "globe")
     link_button("linkedin", "Connect on LinkedIn", "plain", "in", circle="#0A66C2")
     link_button("leetcode", "Rahul_134 on LeetCode", "plain", "code", circle="#FFA116")
     link_button("github", "Rahul-134 on GitHub", "plain", "github")

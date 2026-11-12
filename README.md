@@ -16,12 +16,10 @@
 
 <br/>
 
-<a href="https://github.com/Rahul-134"><img src="night/labels/link-followers.svg" height="42" align="absmiddle" alt="Followers on GitHub" /></a>
-<a href="https://github.com/Rahul-134?tab=repositories"><img src="night/labels/link-repositories.svg" height="42" align="absmiddle" alt="Explore my repositories" /></a>
-<img src="https://komarev.com/ghpvc/?username=Rahul-134&style=for-the-badge&label=Profile+Views&color=4ADE80&labelColor=161616" align="absmiddle" alt="Profile views" />
-
+<a href="https://github.com/Rahul-134"><img src="night/labels/link-followers.svg" height="42" alt="Followers on GitHub" /></a>
+<a href="https://github.com/Rahul-134?tab=repositories"><img src="night/labels/link-repositories.svg" height="42" alt="Explore my repositories" /></a>
+<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="night/labels/link-portfolio.svg" height="42" alt="My portfolio" /></a>
 <br/>
-
 <a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b/"><img src="night/labels/link-linkedin.svg" height="42" alt="Connect on LinkedIn" /></a>
 <a href="https://leetcode.com/Rahul_134"><img src="night/labels/link-leetcode.svg" height="42" alt="Rahul_134 on LeetCode" /></a>
 <a href="https://github.com/Rahul-134"><img src="night/labels/link-github.svg" height="42" alt="Rahul-134 on GitHub" /></a>

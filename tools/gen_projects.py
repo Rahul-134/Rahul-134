@@ -44,6 +44,7 @@ PROJECTS = [
                   "Gamified ranks, from Fresher to Legend"],
          chips=["React", "Django", "PostgreSQL", "Docker", "Gemini"], mirror=False),
     dict(slug="bitnote", num="02", tag="GENAI · LOCAL LLMs", title="BitNote", shot="bitnote.jpg", live=True,
+         live_url="https://bitnote-five.vercel.app/",
          url_label="bitnote — notebook",
          pitch=["Notion-style notebooks with a built-in", "AI tutor."],
          bullets=["Syllabus & week-by-week roadmap from one goal",

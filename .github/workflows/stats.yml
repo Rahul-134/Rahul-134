@@ -2,6 +2,7 @@ name: Refresh stats
 
 # Fetches fresh GitHub and LeetCode numbers every few hours, redraws stats/*.svg in the Playful style
 # (in the activity section's theme, in both the Day and Night looks) and commits them, together with the numbers in tools/stats.json.
+# It also keeps the rounded LeetCode count ("160+") on the About and LeetCode Solutions cards and in README.md in step.
 # Run it by hand from the Actions tab ("Refresh stats" -> "Run workflow") to update right away.
 on:
   schedule:
@@ -11,6 +12,7 @@ on:
     branches: [main]
     paths:
       - tools/gen_stats.py
+      - tools/counts.py
       - .github/workflows/stats.yml
 
 permissions:
@@ -30,18 +32,21 @@ jobs:
         with:
           python-version: "3.12"
 
+      - run: pip install pillow                              # the project cards need it
+
       - name: Fetch numbers and draw the cards
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python tools/gen_stats.py . --fetch
           RAHUL_MODE=night python tools/gen_stats.py night      # the Night set the README shows after 7 pm
+          python tools/theme.py --counts                        # the "160+" solved count on the About and project cards and in README.md
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add stats night/stats tools/stats.json
+          git add stats night/stats tools/stats.json about night/about projects night/projects README.md
           if git diff --cached --quiet; then
             echo "Numbers unchanged."
           else

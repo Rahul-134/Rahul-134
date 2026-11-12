@@ -16,6 +16,7 @@ os.makedirs(out_dir, exist_ok=True)
 
 import theme_colors
 import banner
+import counts
 
 ACCENT = theme_colors.current().accent
 W, H = 900, 336
@@ -224,7 +225,7 @@ MINI = [
          desc=["7 mini-games — Hangman, Simon Says,", "Hand Cricket and more — in pure core Java."],
          chips=["Java", "OOP"]),
     dict(slug="leetcode-solutions", num="07", tag="PRACTICE", title="LeetCode Solutions", art=CHECK, col="#4DAE6C",
-         desc=["160+ problems solved, 60+ written up here", "in clean, runnable, type-hinted Python."],
+         desc=[f"{counts.solved()} problems solved, 60+ written up here", "in clean, runnable, type-hinted Python."],
          chips=["Python", "Algorithms"]),
 ]
 

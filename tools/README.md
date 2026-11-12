@@ -96,8 +96,7 @@ Switching themes redraws the cards from the saved numbers, in the `activity` sec
 The same workflow keeps the rounded LeetCode count ("160+", from `tools/counts.py`) in step everywhere
 else it appears: it runs `python tools/theme.py --counts`, which redraws the About cards and the
 LeetCode Solutions project card and fixes the number in README.md's text. It also redraws the header's
-followers button from the follower count it fetched. (The Profile Views badge stays an external
-counter: it counts visits by being loaded, so it can't be redrawn.)
+followers button from the follower count it fetched.
 
 ## Tech Stack
 
@@ -120,7 +119,7 @@ the README.
 ## Headings, captions and link buttons
 
 Every bit of text in the README that isn't a card is a small image too, drawn by `tools/gen_labels.py`
-into `labels/`: the header's badge buttons (followers, repositories, LinkedIn, LeetCode, GitHub), the section headings (`h-*.svg`, wrapped in real `<h2>`/`<h3>` tags with an `id`, so
+into `labels/`: the header's badge buttons (followers, repositories, portfolio, LinkedIn, LeetCode, GitHub), the section headings (`h-*.svg`, wrapped in real `<h2>`/`<h3>` tags with an `id`, so
 links like `#leetcode` still work), the Featured Projects intro, each project's "Peek inside" row
 (`peek-*.svg`), one caption per screenshot (`cap-<project>-<n>.svg`), the DataPilot feature list and
 note, and the link buttons (`link-*.svg`). Headings follow their section's theme; a project's

@@ -17,6 +17,7 @@ projects (the project cards), activity (GitHub stats + LeetCode), connect (Let's
 game (the playable game page).
 
 What it regenerates: dino-banner.svg (+ dino-banner-mobile.svg), about-card.svg, about/*.svg, tech-stack.svg, projects/*.svg, connect/*.svg,
+labels/*.svg (the headings, captions and link buttons),
 stats/*.svg (from the numbers saved in tools/stats.json), dino/index.html
 and the colour codes inside README.md (each region of the README follows its own section's theme).
 Every card is drawn twice: the day files above, and a Night version of each under night/ (same paths).
@@ -145,6 +146,21 @@ def build_projects(cards, dest=None, mode="day"):
                 shutil.copyfile(os.path.join(tmp, slug + ".svg"), os.path.join(dest, slug + ".svg"))
 
 
+LABEL_SECTIONS = ["about", "projects", "activity", "connect"]                  # their headings and notes
+PEEK_CARDS = ["bitcareer", "bitnote", "datapilot", "business-bytes", "portfolio"]   # captions and buttons per project
+
+
+def build_labels(sec, cards, root, mode="day"):
+    """labels/*.svg: each section's headings in that section's theme, each project's captions and buttons in its card's."""
+    by_theme = {}
+    for g in LABEL_SECTIONS:
+        by_theme.setdefault(sec[g], []).append(g)
+    for c in PEEK_CARDS:
+        by_theme.setdefault(cards[c], []).append(c)
+    for th, groups in by_theme.items():
+        run("gen_labels.py", root, th, *groups, mode=mode)
+
+
 def recolour_readme(sec):
     """Swap every known accent hex (as written in README URLs, no leading #) inside each marked region."""
     path = os.path.join(ROOT, "README.md")
@@ -183,6 +199,7 @@ def build_night(sec, cards):
     build_projects(cards, os.path.join(night, "projects"), mode="night")
     run("gen_connect.py", night, sec["connect"], mode="night")
     run("gen_stats.py", night, sec["activity"], mode="night")
+    build_labels(sec, cards, night, mode="night")
 
 
 def apply(state):
@@ -198,6 +215,7 @@ def apply(state):
     build_projects(cards)                                         # projects/*.svg
     run("gen_connect.py", ROOT, sec["connect"])                   # connect/*.svg
     run("gen_stats.py", ROOT, sec["activity"])                    # stats/*.svg (saved numbers, no network)
+    build_labels(sec, cards, ROOT)                                # labels/*.svg (headings, captions, link buttons)
     build_night(sec, cards)                                       # night/: the same cards after dark
     changed = recolour_readme(sec)
     save(state)

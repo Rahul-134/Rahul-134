@@ -14,23 +14,16 @@ theme, and RAHUL_MODE=night draws the Night look (tools/theme.py draws both).
 
 usage: python3 gen_intro.py OUT_DIR      # writes OUT_DIR/about/*.svg
 """
-import html
 import os
 import sys
 
 sys.dont_write_bytecode = True
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import sprites as S  # noqa: E402
-import theme_colors  # noqa: E402
 import banner  # noqa: E402
 import counts  # noqa: E402
-
-T = theme_colors.current()
-ACCENT = T.accent
-INK, TEXT, PAPER, PANEL, SKY = banner.INK, banner.TEXT, banner.PAPER, banner.PANEL, banner.SKY
-ROUND = "'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif"
-e = html.escape
+from playful import (ACCENT, INK, TEXT, PAPER, PANEL, SKY, e, tw, shell, pill, style, arrow,  # noqa: E402
+                     DINO_H, dino, cactus, icon)
 
 SOLVED = counts.solved()   # LeetCode problems solved, rounded down to a ten, from tools/stats.json
 WRITTEN_UP = "60+"         # solutions written up in leetcode-solutions-python
@@ -42,147 +35,6 @@ os.makedirs(out_dir, exist_ok=True)
 def write(name, text):
     with open(os.path.join(out_dir, name), "w") as f:
         f.write(text)
-
-
-# ------------------------------------------------------------------ shared bits
-def tw(text, size):
-    return len(text) * size * 0.56
-
-
-def shell(w, h, fill=PAPER, rx=24):
-    return (f'<rect x="11" y="11" width="{w - 14}" height="{h - 14}" rx="{rx}" fill="{INK}"/>'
-            f'<rect x="3" y="3" width="{w - 14}" height="{h - 14}" rx="{rx}" fill="{fill}" stroke="{INK}" stroke-width="4"/>')
-
-
-def pill(x, y, text, fill=ACCENT, size=12.5, h=28, anchor="start", shadow=True, dot=None, spacing=1.5):
-    """A rounded label. Returns (svg, width). `dot` adds a coloured dot in front (category chips)."""
-    pad = 34 if dot else 14
-    w = tw(text, size) + spacing * len(text) + pad + 14
-    if anchor == "end":
-        x -= w
-    fg = TEXT if fill == PANEL else INK
-    s = f'<rect x="{x + 3:.1f}" y="{y + 3}" width="{w:.1f}" height="{h}" rx="{h / 2}" fill="{INK}"/>' if shadow else ""
-    s += f'<rect x="{x:.1f}" y="{y}" width="{w:.1f}" height="{h}" rx="{h / 2}" fill="{fill}" stroke="{INK}" stroke-width="2.5"/>'
-    if dot:
-        s += f'<circle cx="{x + 15:.1f}" cy="{y + h / 2}" r="5" fill="{dot}" stroke="{INK}" stroke-width="1.6"/>'
-    s += (f'<text x="{x + pad:.1f}" y="{y + h / 2 + size * 0.36:.1f}" font-size="{size}" font-weight="800" fill="{fg}" '
-          f'letter-spacing="{spacing}">{e(text)}</text>')
-    return s, w
-
-
-def style(extra=""):
-    return f"""<style>
-    {banner.font_face()}
-    text{{font-family:{ROUND}}}
-    .nudge{{animation:nudge 2.4s ease-in-out infinite}}
-    @keyframes nudge{{0%,100%{{transform:translate(0,0)}}50%{{transform:translate(3px,-3px)}}}}
-    .bob{{animation:bob 2.8s ease-in-out infinite}}
-    @keyframes bob{{0%,100%{{transform:translateY(0)}}50%{{transform:translateY(-3px)}}}}{extra}
-    @media (prefers-reduced-motion:reduce){{*{{animation:none!important}}}}
-  </style>"""
-
-
-def arrow(cx, cy, sym="↗"):
-    return (f'<g class="nudge"><circle cx="{cx}" cy="{cy}" r="17" fill="#fff" stroke="{INK}" stroke-width="2.6"/>'
-            f'<text x="{cx}" y="{cy + 7}" text-anchor="middle" font-size="19" font-weight="800" fill="{INK}">{sym}</text></g>')
-
-
-DINO_H = (len(S.ART["dinoBody"]) + len(S.ART["legsA"])) * S.DINO_U
-DINO_W = S.DINO_W * S.DINO_U
-
-
-def dino(legs="legsA"):
-    body = banner.shapes(S.pad(S.ART["dinoBody"], S.DINO_W), S.DINO_U)
-    lg = banner.shapes(S.pad(S.ART[legs], S.DINO_W), S.DINO_U)
-    return f'{body}<g transform="translate(0,{len(S.ART["dinoBody"]) * S.DINO_U})">{lg}</g>'
-
-
-def cactus(x, y_bottom, kind, k=1.0):
-    rows = S.ART[kind]
-    return (f'<g transform="translate({x},{y_bottom - len(rows) * S.OBJ_U * k:.1f}) scale({k})">'
-            f'{banner.shapes(rows, S.OBJ_U)}</g>')
-
-
-# ------------------------------------------------------------------ icons (drawn on a 24-unit grid, centred on cx, cy)
-INVADER = ["..X.....X..", "...X...X...", "..XXXXXXX..", ".XX.XXX.XX.", "XXXXXXXXXXX", "X.XXXXXXX.X", "X.X.....X.X", "...XX.XX..."]
-GLOBE = ('<g fill="none" stroke="{ink}" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9.6" fill="#fff"/>'
-         '<ellipse cx="12" cy="12" rx="4.2" ry="9.6"/><path d="M2.4 12h19.2M4 7h16M4 17h16"/></g>')
-
-
-def icon(kind, cx, cy, size=34):
-    k = size / 24
-    g = lambda inner: f'<g transform="translate({cx - size / 2:.1f},{cy - size / 2:.1f}) scale({k:.3f})">{inner}</g>'
-    if kind == "compass":
-        return g(f'<circle cx="12" cy="12" r="10" fill="#fff" stroke="{INK}" stroke-width="2"/>'
-                 f'<path d="M12 4.6 L14.7 12 L12 19.4 L9.3 12Z" fill="{INK}"/>'
-                 f'<path d="M12 4.6 L14.7 12 L9.3 12Z" fill="#FF6B4A" stroke="{INK}" stroke-width="1.1" stroke-linejoin="round"/>'
-                 f'<circle cx="12" cy="12" r="1.7" fill="#fff" stroke="{INK}" stroke-width="1.1"/>')
-    if kind == "notebook":
-        lines = "".join(f'<path d="M10 {y}h7" stroke="{INK}" stroke-width="1.6" stroke-linecap="round"/>' for y in (8.5, 12, 15.5))
-        rings = "".join(f'<rect x="3.6" y="{y}" width="4" height="2" rx="1" fill="{INK}"/>' for y in (6, 11, 16))
-        return g(f'<rect x="5.5" y="2.5" width="14" height="19" rx="2.4" fill="#fff" stroke="{INK}" stroke-width="2"/>'
-                 f'<rect x="15.5" y="2.5" width="2.6" height="7" fill="#FF6B4A" stroke="{INK}" stroke-width="1"/>{lines}{rings}')
-    if kind == "target":
-        return g(f'<circle cx="11" cy="13" r="9.5" fill="#fff" stroke="{INK}" stroke-width="2"/>'
-                 f'<circle cx="11" cy="13" r="6" fill="#FF6B4A" stroke="{INK}" stroke-width="1.6"/>'
-                 f'<circle cx="11" cy="13" r="2.6" fill="#fff" stroke="{INK}" stroke-width="1.4"/>'
-                 f'<path d="M11 13 L20.5 3.5" stroke="{INK}" stroke-width="2" stroke-linecap="round"/>'
-                 f'<path d="M18 3 L21 3 L21 6 M20.5 3.5 L23 1" stroke="{INK}" stroke-width="1.8" stroke-linecap="round" fill="none"/>')
-    if kind == "globe":
-        return g(GLOBE.format(ink=INK))
-    if kind == "dice":
-        pips = "".join(f'<circle cx="{x}" cy="{y}" r="1.7" fill="{INK}"/>' for x, y in ((7.5, 7.5), (16.5, 7.5), (12, 12), (7.5, 16.5), (16.5, 16.5)))
-        return g(f'<g transform="rotate(-10 12 12)"><rect x="3" y="3" width="18" height="18" rx="4.5" fill="#fff" stroke="{INK}" stroke-width="2"/>{pips}</g>')
-    if kind == "invader":
-        u = 2
-        rects = []
-        for y, row in enumerate(INVADER):
-            for x, c in enumerate(row):
-                if c == "X":
-                    rects.append(f'<rect x="{x * u}" y="{y * u}" width="{u}" height="{u}"/>')
-        return g(f'<g transform="translate(1,4)" fill="{INK}" shape-rendering="crispEdges">{"".join(rects)}</g>')
-    if kind == "dino":
-        k2 = size * 1.25 / DINO_H
-        w, h = DINO_W * k2, DINO_H * k2
-        return f'<g transform="translate({cx - w / 2 + 1:.1f},{cy - h / 2 + 1:.1f}) scale({k2:.3f})">{dino()}</g>'
-    if kind == "down":
-        return g(f'<rect x="4" y="2.5" width="16" height="11" rx="2.5" fill="#fff" stroke="{INK}" stroke-width="1.8"/>'
-                 f'<rect x="7" y="5.5" width="10" height="5" rx="1" fill="{ACCENT}" stroke="{INK}" stroke-width="1.2"/>'
-                 f'<path d="M12 15.5v6M8.5 18.5l3.5 3.5 3.5-3.5" stroke="{INK}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>')
-    if kind == "data":
-        return g(f'<g fill="#fff" stroke="{INK}" stroke-width="1.9"><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/>'
-                 f'<path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3" fill="none"/><ellipse cx="12" cy="6" rx="7" ry="3"/></g>')
-    if kind == "model":
-        nodes = [(5, 7), (5, 17), (12, 4.5), (12, 12), (12, 19.5), (19, 12)]
-        edges = [(0, 2), (0, 3), (0, 4), (1, 2), (1, 3), (1, 4), (2, 5), (3, 5), (4, 5)]
-        ln = "".join(f'<path d="M{nodes[a][0]} {nodes[a][1]}L{nodes[b][0]} {nodes[b][1]}"/>' for a, b in edges)
-        dots = "".join(f'<circle cx="{x}" cy="{y}" r="2.6" fill="#fff" stroke="{INK}" stroke-width="1.6"/>' for x, y in nodes)
-        return g(f'<g stroke="{INK}" stroke-width="1.3">{ln}</g>{dots}')
-    if kind == "backend":
-        return g(f'<g fill="#fff" stroke="{INK}" stroke-width="1.9"><rect x="3.5" y="4" width="17" height="7" rx="2"/>'
-                 f'<rect x="3.5" y="13" width="17" height="7" rx="2"/></g>'
-                 f'<circle cx="7.5" cy="7.5" r="1.4" fill="#5BD68A" stroke="{INK}" stroke-width=".9"/>'
-                 f'<circle cx="7.5" cy="16.5" r="1.4" fill="#5BD68A" stroke="{INK}" stroke-width=".9"/>'
-                 f'<path d="M12 7.5h5M12 16.5h5" stroke="{INK}" stroke-width="1.6" stroke-linecap="round"/>')
-    if kind == "pixel":
-        return g(f'<rect x="2.5" y="3.5" width="19" height="13" rx="2" fill="#fff" stroke="{INK}" stroke-width="1.9"/>'
-                 f'<rect x="13" y="8" width="4" height="4" fill="{ACCENT}" stroke="{INK}" stroke-width="1"/>'
-                 f'<path d="M9 21h6M12 16.5V21" stroke="{INK}" stroke-width="1.9" stroke-linecap="round"/>')
-    if kind == "scope":                  # Focus: a crosshair on a lens
-        return g(f'<circle cx="12" cy="12" r="9.5" fill="#fff" stroke="{INK}" stroke-width="2"/>'
-                 f'<circle cx="12" cy="12" r="4.2" fill="#FF6B4A" stroke="{INK}" stroke-width="1.6"/>'
-                 f'<path d="M12 1v5M12 18v5M1 12h5M18 12h5" stroke="{INK}" stroke-width="2.2" stroke-linecap="round"/>'
-                 f'<circle cx="12" cy="12" r="1.3" fill="{INK}"/>')
-    if kind == "puzzle":                 # Problem solving
-        return g(f'<path d="M3.5 8.5h5a3 3 0 1 1 6 0h5v5a3 3 0 1 1 0 6v1.5H3.5V15a3 3 0 1 0 0-6z" fill="#FFC83D" '
-                 f'stroke="{INK}" stroke-width="2" stroke-linejoin="round"/>'
-                 f'<path d="M6.5 11.5h3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" opacity=".8"/>')
-    if kind == "rocket":                 # Builds
-        return g(f'<path d="M9.5 19.5c-1.4 1.6-2 3-2.5 4 1-.3 2.6-1 4.2-2.4" fill="#FF6B4A" stroke="{INK}" stroke-width="1.4" stroke-linejoin="round"/>'
-                 f'<path d="M7 13l-3.6 1.4 2.4-4.6 4-.6zM11 17l-1.4 3.6 4.6-2.4.6-4z" fill="#FF6B4A" stroke="{INK}" stroke-width="1.5" stroke-linejoin="round"/>'
-                 f'<path d="M7.5 16.5c2-6.5 6.5-12 14-13.5-1.5 7.5-7 12-13.5 14z" fill="#fff" stroke="{INK}" stroke-width="2" stroke-linejoin="round"/>'
-                 f'<circle cx="15" cy="9" r="2.4" fill="{ACCENT}" stroke="{INK}" stroke-width="1.6"/>')
-    raise ValueError(kind)
 
 
 # ------------------------------------------------------------------ intro card
@@ -198,7 +50,7 @@ def intro():
         x += w + 12
     mark_w = tw("into products.", 40) + 28
     tech = ["Python", "FastAPI", "Django", "React"]
-    tech_line = (f'<tspan fill-opacity=".75">built with </tspan>' +
+    tech_line = ('<tspan fill-opacity=".75">built with </tspan>' +
                  "".join(f'<tspan font-weight="800">{t}</tspan><tspan fill-opacity=".75">{sep}</tspan>'
                          for t, sep in zip(tech, [", ", ", ", " and ", "."])))
     # the end-to-end strip

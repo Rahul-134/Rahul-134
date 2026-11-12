@@ -21,7 +21,7 @@ theme: leaf-green dino on sage-olive cacti, so the two don't blend together).
 ## Switch locally
 
 ```bash
-pip install pillow
+pip install pillow fonttools brotli
 python tools/theme.py                                   # list themes and what is applied now
 python tools/theme.py violet                            # one theme for everything
 python tools/theme.py green about=blue projects=violet  # green base, with two sections overridden
@@ -72,6 +72,8 @@ To recolour the cacti as well, add `"cactus": {"G": ..., "g": ..., "h": ..., "S"
 | `banner.py` | `dino-banner.svg` (wide) and `dino-banner-mobile.svg` (phones); the README picks one with a `<picture>` media query |
 | `gen_about.py` | `about-card.svg` |
 | `gen_intro.py` | the `about/*.svg` intro and the Focus, Problem solving and Builds rows under it |
+| `gen_labels.py` | the `labels/*.svg` headings, captions, Peek inside rows and link buttons |
+| `playful.py` | drawing helpers shared by `gen_intro.py` and `gen_labels.py` (pills, icons, the T-rex) |
 | `gen_projects.py` | the `projects/*.svg` cards |
 | `gen_connect.py` | the `connect/*.svg` art for Let's Connect |
 | `assets/` | the screenshots embedded in the project cards |
@@ -113,9 +115,26 @@ image, so the README wraps it in a normal `<a>`. The words and projects are in l
 count updates itself (see the stats section above); `WRITTEN_UP` is set by hand. Adding a project also needs its `<a><img></a>` line in
 the README.
 
+## Headings, captions and link buttons
+
+Every bit of text in the README that isn't a card is a small image too, drawn by `tools/gen_labels.py`
+into `labels/`: the section headings (`h-*.svg`, wrapped in real `<h2>`/`<h3>` tags with an `id`, so
+links like `#leetcode` still work), the Featured Projects intro, each project's "Peek inside" row
+(`peek-*.svg`), one caption per screenshot (`cap-<project>-<n>.svg`), the DataPilot feature list and
+note, and the link buttons (`link-*.svg`). Headings follow their section's theme; a project's
+captions and buttons follow that project card's theme. The words are in the lists at the top of
+`gen_labels.py`; change one there, keep the README's alt text in step, and run
+`python tools/theme.py about=same`.
+
+Images inside a `<summary>` (the rows that open and close), and the ones that aren't links, are wrapped
+in `<picture>`: GitHub turns any other bare image into a link to its own file, which would steal the
+click. Each label embeds only the letters it uses, which keeps it around 10 KB; that needs
+`pip install fonttools brotli` (the theme workflow installs them). Without them the whole font is
+embedded, which looks the same but is about 45 KB a file.
+
 ## Day / Night
 
-Every card is drawn in two looks: the Day files (`dino-banner.svg`, `about-card.svg`, `about/`, `tech-stack.svg`,
+Every card is drawn in two looks: the Day files (`dino-banner.svg`, `about-card.svg`, `about/`, `labels/`, `tech-stack.svg`,
 `projects/`, `stats/`, `connect/`) and a Night version of each under `night/` with the same names.
 `tools/theme.py` always redraws both.
 

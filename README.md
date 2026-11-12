@@ -45,14 +45,14 @@
 
 <img src="night/about/intro.svg" width="100%" alt="I'm an AI/ML engineer and Generative AI enthusiast who turns models into products: LLM-powered apps, data platforms and ML tooling built with Python, FastAPI, Django and React. I like owning a project end to end, from the data and the model to the last pixel on screen." />
 
-<img src="night/about/hint.svg" width="62%" alt="Tap a row to see what's behind it" />
+<picture><img src="night/about/hint.svg" width="62%" alt="Tap a row to see what's behind it" /></picture>
 
 </div>
 
 <br/>
 
 <details>
-<summary><img src="night/about/row-focus.svg" width="94%" align="absmiddle" alt="Focus: Generative AI, LLM apps and data and ML platforms. Tap to open." /></summary>
+<summary><picture><img src="night/about/row-focus.svg" width="94%" align="absmiddle" alt="Focus: Generative AI, LLM apps and data and ML platforms. Tap to open." /></picture></summary>
 <br/>
 
 <div align="center">
@@ -68,7 +68,7 @@
 </details>
 
 <details>
-<summary><img src="night/about/row-problems.svg" width="94%" align="absmiddle" alt="Problem solving: 160+ LeetCode problems solved. Tap to open." /></summary>
+<summary><picture><img src="night/about/row-problems.svg" width="94%" align="absmiddle" alt="Problem solving: 160+ LeetCode problems solved. Tap to open." /></picture></summary>
 <br/>
 
 <div align="center">
@@ -84,7 +84,7 @@
 </details>
 
 <details>
-<summary><img src="night/about/row-builds.svg" width="94%" align="absmiddle" alt="Builds: AI co-pilots, web apps and interactive console games. Tap to open." /></summary>
+<summary><picture><img src="night/about/row-builds.svg" width="94%" align="absmiddle" alt="Builds: AI co-pilots, web apps and interactive console games. Tap to open." /></picture></summary>
 <br/>
 
 <div align="center">

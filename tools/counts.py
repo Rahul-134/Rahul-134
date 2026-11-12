@@ -1,4 +1,4 @@
-"""The LeetCode solved count as the cards and the README show it: rounded down to a ten, "160+".
+"""Counts the cards and the README show: the LeetCode solved count rounded down to a ten ("160+"), and GitHub followers.
 
 It comes from tools/stats.json, which the Refresh stats workflow keeps up to date; that workflow then runs
 `python tools/theme.py --counts` to redraw the cards that show it and fix the number in README.md.
@@ -21,3 +21,12 @@ def solved_number():
 
 def solved():
     return f"{solved_number()}+"
+
+
+def followers():
+    """GitHub followers from tools/stats.json, or None until the Refresh stats workflow has fetched them."""
+    try:
+        with open(STATS) as f:
+            return int(json.load(f)["github"]["followers"])
+    except (OSError, ValueError, KeyError, TypeError):
+        return None

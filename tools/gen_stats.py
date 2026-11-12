@@ -60,6 +60,7 @@ def fetch_github(token):
                               {"Authorization": f"bearer {token}"})
     u = gql("""query($login:String!){user(login:$login){
       createdAt
+      followers{totalCount}
       pullRequests{totalCount} issues{totalCount}
       repositoriesContributedTo(contributionTypes:[COMMIT,PULL_REQUEST,ISSUE,REPOSITORY],includeUserRepositories:false){totalCount}
       repositories(ownerAffiliations:OWNER,isFork:false,privacy:PUBLIC,first:100){totalCount nodes{
@@ -90,6 +91,7 @@ def fetch_github(token):
         "issues": u["issues"]["totalCount"],
         "contributed": u["repositoriesContributedTo"]["totalCount"],
         "repos": u["repositories"]["totalCount"],
+        "followers": u["followers"]["totalCount"],
         "languages": sorted(langs.values(), key=lambda l: -l[2]),
         "days": days_summary(days, now.date()),
     }

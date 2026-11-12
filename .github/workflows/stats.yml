@@ -32,7 +32,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install pillow                              # the project cards need it
+      - run: pip install pillow fonttools brotli             # the project cards need Pillow; the labels fonttools + brotli
 
       - name: Fetch numbers and draw the cards
         env:
@@ -40,13 +40,13 @@ jobs:
         run: |
           python tools/gen_stats.py . --fetch
           RAHUL_MODE=night python tools/gen_stats.py night      # the Night set the README shows after 7 pm
-          python tools/theme.py --counts                        # the "160+" solved count on the About and project cards and in README.md
+          python tools/theme.py --counts                        # the "160+" solved count (About and project cards, README) and the followers badge
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add stats night/stats tools/stats.json about night/about projects night/projects README.md
+          git add stats night/stats tools/stats.json about night/about projects night/projects labels night/labels README.md
           if git diff --cached --quiet; then
             echo "Numbers unchanged."
           else

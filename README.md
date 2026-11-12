@@ -16,15 +16,15 @@
 
 <br/>
 
-<a href="https://github.com/Rahul-134"><img src="https://img.shields.io/github/followers/Rahul-134?style=for-the-badge&logo=github&logoColor=white&label=Followers&labelColor=161616&color=4ADE80" alt="GitHub followers" /></a>
-<a href="https://github.com/Rahul-134?tab=repositories"><img src="https://img.shields.io/badge/Repositories-Explore-4ADE80?style=for-the-badge&logo=githubsponsors&logoColor=white&labelColor=161616" alt="Repositories" /></a>
-<img src="https://komarev.com/ghpvc/?username=Rahul-134&style=for-the-badge&label=Profile+Views&color=4ADE80&labelColor=161616" alt="Profile views" />
+<a href="https://github.com/Rahul-134"><img src="night/labels/link-followers.svg" height="42" align="absmiddle" alt="Followers on GitHub" /></a>
+<a href="https://github.com/Rahul-134?tab=repositories"><img src="night/labels/link-repositories.svg" height="42" align="absmiddle" alt="Explore my repositories" /></a>
+<img src="https://komarev.com/ghpvc/?username=Rahul-134&style=for-the-badge&label=Profile+Views&color=4ADE80&labelColor=161616" align="absmiddle" alt="Profile views" />
 
-<br/><br/>
+<br/>
 
-<a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b/"><img src="https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
-<a href="https://leetcode.com/Rahul_134"><img src="https://img.shields.io/badge/LeetCode-Rahul__134-FFA116?style=flat-square&logo=leetcode&logoColor=white" alt="LeetCode" /></a>
-<a href="https://github.com/Rahul-134"><img src="https://img.shields.io/badge/GitHub-Rahul--134-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub" /></a>
+<a href="https://www.linkedin.com/in/rahul-lumbhani-89304130b/"><img src="night/labels/link-linkedin.svg" height="42" alt="Connect on LinkedIn" /></a>
+<a href="https://leetcode.com/Rahul_134"><img src="night/labels/link-leetcode.svg" height="42" alt="Rahul_134 on LeetCode" /></a>
+<a href="https://github.com/Rahul-134"><img src="night/labels/link-github.svg" height="42" alt="Rahul-134 on GitHub" /></a>
 
 </div>
 

@@ -119,7 +119,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install pillow
+        run: pip install pillow fonttools brotli      # fonttools + brotli: the labels embed only the letters they use
 
       - name: Apply theme
         env:

@@ -25,8 +25,9 @@ DAY_STARTS, NIGHT_STARTS = 7, 19         # hours, 24-hour clock
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 README = os.path.join(ROOT, "README.md")
-# local card images: the banner, About (card, intro and its rows), Tech Stack, project, stats and Connect cards
-CARD = re.compile(r'((?:src|srcset)=")(night/)?((?:dino-banner(?:-mobile)?|about-card|tech-stack|(?:about|projects|stats|connect)/[\w-]+)\.svg)(")')
+# local card images: the banner, About (card, intro and its rows), Tech Stack, project, stats and Connect cards,
+# and the headings, captions and link buttons (labels/)
+CARD = re.compile(r'((?:src|srcset)=")(night/)?((?:dino-banner(?:-mobile)?|about-card|tech-stack|(?:about|labels|projects|stats|connect)/[\w-]+)\.svg)(")')
 
 
 def wanted_now():

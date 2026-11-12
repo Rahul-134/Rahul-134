@@ -31,7 +31,7 @@
 <br/>
 
 <!-- theme:about -->
-## 👨‍💻 About Me
+<h2 id="about-me"><picture><img src="night/labels/h-about-me.svg" width="100%" alt="About Me" /></picture></h2>
 
 <div align="center">
 
@@ -75,7 +75,8 @@
 
 <a href="https://github.com/Rahul-134/leetcode-solutions-python"><img src="night/about/problem-solving.svg" width="100%" alt="160+ LeetCode problems solved, with 60+ of the solutions written up in leetcode-solutions-python, each one runnable, type-hinted and shipped with a built-in test case. Topics: arrays and hashing, strings, two pointers, sliding window, dynamic programming, bit manipulation." /></a>
 
-<sub>📈 Live on <a href="https://leetcode.com/Rahul_134">LeetCode ↗</a> &nbsp;·&nbsp; <a href="#-leetcode">stats card ↓</a></sub>
+<a href="https://leetcode.com/Rahul_134"><img src="night/labels/link-leetcode-profile.svg" height="46" alt="Live on LeetCode" /></a>
+<a href="#leetcode"><img src="night/labels/link-stats-card.svg" height="46" alt="Jump to the LeetCode stats card" /></a>
 
 </div>
 
@@ -96,7 +97,7 @@
 <a href="https://github.com/Rahul-134/virtual-arcade-zone"><img src="night/about/build-virtual-arcade-zone.svg" width="49%" alt="Virtual Arcade Zone, a game: 7 console mini-games in pure Java." /></a>
 <a href="https://github.com/Rahul-134/business-bytes-showcase"><img src="night/about/build-business-bytes.svg" width="49%" alt="Business Bytes, a game: a desktop Monopoly." /></a>
 <a href="https://rahul-134.github.io/Rahul-134/dino/"><img src="night/about/build-dino.svg" width="49%" alt="Play the dino game and try to top the leaderboard." /></a>
-<a href="#-featured-projects"><img src="night/about/build-more.svg" width="49%" alt="More in Featured Projects, just below." /></a>
+<a href="#featured-projects"><img src="night/about/build-more.svg" width="49%" alt="More in Featured Projects, just below." /></a>
 
 </div>
 
@@ -105,7 +106,7 @@
 </details>
 <br/>
 
-## 🛠️ Tech Stack
+<h2 id="tech-stack"><picture><img src="night/labels/h-tech-stack.svg" width="100%" alt="Tech Stack" /></picture></h2>
 
 <div align="center">
 
@@ -116,11 +117,11 @@
 <br/>
 
 <!-- theme:projects -->
-## 🚀 Featured Projects
+<h2 id="featured-projects"><picture><img src="night/labels/h-featured-projects.svg" width="100%" alt="Featured Projects" /></picture></h2>
 
 <div align="center">
 
-<sub>A selection of things I've designed, built and shipped — click a card to open the project, or peek inside.</sub>
+<picture><img src="night/labels/projects-intro.svg" width="100%" alt="A selection of things I've designed, built and shipped. Click a card to open the project, or peek inside." /></picture>
 
 </div>
 
@@ -134,15 +135,15 @@
 </div>
 
 <details>
-<summary>📸&nbsp; <b>Peek inside BitCareer</b> &nbsp;—&nbsp; 5 screens</summary>
+<summary><picture><img src="night/labels/peek-bitcareer.svg" width="94%" align="absmiddle" alt="Peek inside BitCareer: 5 screens. Tap to open." /></picture></summary>
 <br/>
 
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/dashboard.png" width="80%" alt="Career Dashboard" /><br/><sub><b>Career Dashboard</b> — readiness score, resume and GitHub analysis, skill ranks and an AI-written career analysis</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/learning-workspace.png" width="80%" alt="Learning Workspace" /><br/><sub><b>Learning Workspace</b> — roadmap sidebar, study notebook and code sandbox in one place</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/interview-dashboard.png" width="80%" alt="AI Interview Dashboard" /><br/><sub><b>AI Interview Dashboard</b> — configure a session, then review past sessions and score trends</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/interview-session.png" width="80%" alt="Live Interview Session" /><br/><sub><b>Live Interview Session</b> — speak or type your answer, or switch to the code editor</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/bitbuddy-overview.png" width="80%" alt="Ask BitBuddy" /><br/><sub><b>Ask BitBuddy</b> — a personalised career overview with daily AI insights</sub></p>
-<p align="center"><sub>Full write-up in the <a href="https://github.com/Rahul-134/bitcareer-showcase">repository ↗</a></sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/dashboard.png" width="80%" alt="Career Dashboard" /><br/><picture><img src="night/labels/cap-bitcareer-1.svg" width="80%" alt="Career Dashboard: readiness score, resume and GitHub analysis, skill ranks and an AI-written career analysis" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/learning-workspace.png" width="80%" alt="Learning Workspace" /><br/><picture><img src="night/labels/cap-bitcareer-2.svg" width="80%" alt="Learning Workspace: roadmap sidebar, study notebook and code sandbox in one place" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/interview-dashboard.png" width="80%" alt="AI Interview Dashboard" /><br/><picture><img src="night/labels/cap-bitcareer-3.svg" width="80%" alt="AI Interview Dashboard: configure a session, then review past sessions and score trends" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/interview-session.png" width="80%" alt="Live Interview Session" /><br/><picture><img src="night/labels/cap-bitcareer-4.svg" width="80%" alt="Live Interview Session: speak or type your answer, or switch to the code editor" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitcareer-showcase/HEAD/docs/screenshots/bitbuddy-overview.png" width="80%" alt="Ask BitBuddy" /><br/><picture><img src="night/labels/cap-bitcareer-5.svg" width="80%" alt="Ask BitBuddy: a personalised career overview with daily AI insights" /></picture></p>
+<p align="center"><a href="https://github.com/Rahul-134/bitcareer-showcase"><img src="night/labels/link-bitcareer-repo.svg" height="46" alt="Full write-up in the repository" /></a></p>
 
 </details>
 
@@ -156,14 +157,14 @@
 </div>
 
 <details>
-<summary>📸&nbsp; <b>Peek inside BitNote</b> &nbsp;—&nbsp; 4 screens</summary>
+<summary><picture><img src="night/labels/peek-bitnote.svg" width="94%" align="absmiddle" alt="Peek inside BitNote: 4 screens. Tap to open." /></picture></summary>
 <br/>
 
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_6.svg" width="80%" alt="Sign up &amp; log in" /><br/><sub><b>Sign up &amp; log in</b> — email and password, or Google Sign-In</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_7.svg" width="80%" alt="Home" /><br/><sub><b>Home</b> — all your notebooks in one place</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_8.svg" width="80%" alt="Notebook layout" /><br/><sub><b>Notebook layout</b> — an AI-generated learning roadmap beside the cell editor</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_4.svg" width="80%" alt="In-cell AI" /><br/><sub><b>In-cell AI</b> — instant summaries and BitBuddy chat, in context of the cell</sub></p>
-<p align="center"><sub>Setup, API and deployment notes in the <a href="https://github.com/Rahul-134/bitnote">repository ↗</a></sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_6.svg" width="80%" alt="Sign up &amp; log in" /><br/><picture><img src="night/labels/cap-bitnote-1.svg" width="80%" alt="Sign up &amp; log in: email and password, or Google Sign-In" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_7.svg" width="80%" alt="Home" /><br/><picture><img src="night/labels/cap-bitnote-2.svg" width="80%" alt="Home: all your notebooks in one place" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_8.svg" width="80%" alt="Notebook layout" /><br/><picture><img src="night/labels/cap-bitnote-3.svg" width="80%" alt="Notebook layout: an AI-generated learning roadmap beside the cell editor" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/bitnote/HEAD/docs/screenshots/Group_4.svg" width="80%" alt="In-cell AI" /><br/><picture><img src="night/labels/cap-bitnote-4.svg" width="80%" alt="In-cell AI: instant summaries and BitBuddy chat, in context of the cell" /></picture></p>
+<p align="center"><a href="https://github.com/Rahul-134/bitnote"><img src="night/labels/link-bitnote-repo.svg" height="46" alt="Setup, API and deployment notes in the repository" /></a></p>
 
 </details>
 
@@ -174,30 +175,32 @@
 
 <a href="https://datapilot-alpha-flame.vercel.app/"><img src="night/projects/datapilot.svg" width="100%" alt="DataPilot: AI-powered data analysis, web scraping and machine learning in one workspace. Built with FastAPI, Streamlit, scikit-learn and Gemini." /></a>
 
-<sub>🟢 <a href="https://datapilot-alpha-flame.vercel.app/"><b>Live app ↗</b></a> &nbsp;·&nbsp; <a href="https://datapilot-ml-trainer.streamlit.app/">ML Trainer ↗</a> &nbsp;·&nbsp; <a href="https://github.com/Rahul-134/datapilot">Source code ↗</a></sub>
+<a href="https://datapilot-alpha-flame.vercel.app/"><img src="night/labels/link-datapilot-live.svg" height="46" alt="Live app" /></a>
+<a href="https://datapilot-ml-trainer.streamlit.app/"><img src="night/labels/link-datapilot-trainer.svg" height="46" alt="ML Trainer" /></a>
+<a href="https://github.com/Rahul-134/datapilot"><img src="night/labels/link-datapilot-code.svg" height="46" alt="Source code" /></a>
 
 </div>
 
 <details>
-<summary>📸&nbsp; <b>Peek inside DataPilot</b> &nbsp;—&nbsp; 7 screens</summary>
+<summary><picture><img src="night/labels/peek-datapilot.svg" width="94%" align="absmiddle" alt="Peek inside DataPilot: 7 screens. Tap to open." /></picture></summary>
 <br/>
 
-- 📊 **Dashboard** — upload CSV or Excel files for instant stats, a data health score and a column profile
-- 🧹 **Data cleaning** — remove duplicates and handle nulls with a live preview, then download the cleaned file
-- 💬 **Natural-language analysis** — ask in plain English (or by voice); Gemini writes the pandas code, which is shown for transparency, and returns the results
-- 🕸️ **AI web scraper** *(beta)* — URL and search modes with pagination detection, relevance filtering and a multi-model fallback
-- 🤖 **ML trainer** — regression and classification with automatic hyperparameter tuning, reports, predictions, seven chart types and Python code export
+<p align="center"><picture><img src="night/labels/datapilot-features.svg" width="100%" alt="What's inside DataPilot. Dashboard: upload CSV or Excel files for instant stats, a data health score and a column profile. Data cleaning: remove duplicates and handle nulls with a live preview, then download the cleaned file. Natural-language analysis: ask in plain English (or by voice); Gemini writes the pandas code, which is shown for transparency, and returns the results. AI web scraper (beta): URL and search modes with pagination detection, relevance filtering and a multi-model fallback. ML trainer: regression and classification with automatic hyperparameter tuning, reports, predictions, seven chart types and Python code export." /></picture></p>
 
-<p align="center"><sub>The screens below are the real app, shown on a made-up sample dataset (used-car listings).</sub></p>
+<p align="center"><picture><img src="night/labels/datapilot-note.svg" width="100%" alt="The screens below are the real app, shown on a made-up sample dataset (used-car listings)." /></picture></p>
 
-<p align="center"><img src="projects/datapilot/dashboard.jpg" width="80%" alt="Dashboard" /><br/><sub><b>Dashboard</b> — row and column counts, duplicates, nulls, a data health score and a column profile</sub></p>
-<p align="center"><img src="projects/datapilot/cleaning.jpg" width="80%" alt="Data cleaning" /><br/><sub><b>Data cleaning</b> — pick what to fix and preview the impact before applying</sub></p>
-<p align="center"><img src="projects/datapilot/analytics.jpg" width="80%" alt="Analytics" /><br/><sub><b>Analytics</b> — ask questions in plain English, by typing or by voice</sub></p>
-<p align="center"><img src="projects/datapilot/scraper.jpg" width="80%" alt="AI web scraper" /><br/><sub><b>AI web scraper</b> — URL mode and search mode (beta)</sub></p>
-<p align="center"><img src="projects/datapilot/trainer-clean.jpg" width="70%" alt="ML Trainer · clean" /><br/><sub><b>ML Trainer · clean</b> — null counts, duplicates and IQR outlier detection before training</sub></p>
-<p align="center"><img src="projects/datapilot/trainer-train.jpg" width="70%" alt="ML Trainer · train" /><br/><sub><b>ML Trainer · train</b> — choose a task, a model, the features and the target</sub></p>
-<p align="center"><img src="projects/datapilot/trainer-results.jpg" width="70%" alt="ML Trainer · results" /><br/><sub><b>ML Trainer · results</b> — metrics, trained models, an auto-built prediction form, and code export</sub></p>
-<p align="center"><sub>Try the <a href="https://datapilot-alpha-flame.vercel.app/">live app ↗</a> · the <a href="https://datapilot-ml-trainer.streamlit.app/">ML Trainer ↗</a> · or browse the <a href="https://github.com/Rahul-134/datapilot">repository ↗</a></sub></p>
+<p align="center"><img src="projects/datapilot/dashboard.jpg" width="80%" alt="Dashboard" /><br/><picture><img src="night/labels/cap-datapilot-1.svg" width="80%" alt="Dashboard: row and column counts, duplicates, nulls, a data health score and a column profile" /></picture></p>
+<p align="center"><img src="projects/datapilot/cleaning.jpg" width="80%" alt="Data cleaning" /><br/><picture><img src="night/labels/cap-datapilot-2.svg" width="80%" alt="Data cleaning: pick what to fix and preview the impact before applying" /></picture></p>
+<p align="center"><img src="projects/datapilot/analytics.jpg" width="80%" alt="Analytics" /><br/><picture><img src="night/labels/cap-datapilot-3.svg" width="80%" alt="Analytics: ask questions in plain English, by typing or by voice" /></picture></p>
+<p align="center"><img src="projects/datapilot/scraper.jpg" width="80%" alt="AI web scraper" /><br/><picture><img src="night/labels/cap-datapilot-4.svg" width="80%" alt="AI web scraper: URL mode and search mode (beta)" /></picture></p>
+<p align="center"><img src="projects/datapilot/trainer-clean.jpg" width="70%" alt="ML Trainer · clean" /><br/><picture><img src="night/labels/cap-datapilot-5.svg" width="70%" alt="ML Trainer · clean: null counts, duplicates and IQR outlier detection before training" /></picture></p>
+<p align="center"><img src="projects/datapilot/trainer-train.jpg" width="70%" alt="ML Trainer · train" /><br/><picture><img src="night/labels/cap-datapilot-6.svg" width="70%" alt="ML Trainer · train: choose a task, a model, the features and the target" /></picture></p>
+<p align="center"><img src="projects/datapilot/trainer-results.jpg" width="70%" alt="ML Trainer · results" /><br/><picture><img src="night/labels/cap-datapilot-7.svg" width="70%" alt="ML Trainer · results: metrics, trained models, an auto-built prediction form, and code export" /></picture></p>
+<p align="center">
+<a href="https://datapilot-alpha-flame.vercel.app/"><img src="night/labels/link-datapilot-live.svg" height="46" alt="Live app" /></a>
+<a href="https://datapilot-ml-trainer.streamlit.app/"><img src="night/labels/link-datapilot-trainer.svg" height="46" alt="ML Trainer" /></a>
+<a href="https://github.com/Rahul-134/datapilot"><img src="night/labels/link-datapilot-code.svg" height="46" alt="Source code" /></a>
+</p>
 <br/>
 
 </details>
@@ -212,16 +215,16 @@
 </div>
 
 <details>
-<summary>📸&nbsp; <b>Peek inside Business Bytes</b> &nbsp;—&nbsp; 6 screens</summary>
+<summary><picture><img src="night/labels/peek-business-bytes.svg" width="94%" align="absmiddle" alt="Peek inside Business Bytes: 6 screens. Tap to open." /></picture></summary>
 <br/>
 
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/main-menu.png" width="80%" alt="Main menu" /><br/><sub><b>Main menu</b> — start, load a saved game or read how to play</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/login-signup.png" width="80%" alt="Login &amp; sign up" /><br/><sub><b>Login &amp; sign up</b> — accounts with live password-strength feedback</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/player-setup.png" width="80%" alt="Player setup" /><br/><sub><b>Player setup</b> — 2–4 players, custom names and tokens</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/board.png" width="80%" alt="Game board" /><br/><sub><b>Game board</b> — a circular board of Indian cities</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/load-game.png" width="80%" alt="Load game" /><br/><sub><b>Load game</b> — resume any of your saved games</sub></p>
-<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/leaderboard.png" width="80%" alt="Leaderboard" /><br/><sub><b>Leaderboard</b> — net-worth ranking when the game ends</sub></p>
-<p align="center"><sub>Design notes in the <a href="https://github.com/Rahul-134/business-bytes-showcase">repository ↗</a></sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/main-menu.png" width="80%" alt="Main menu" /><br/><picture><img src="night/labels/cap-business-bytes-1.svg" width="80%" alt="Main menu: start, load a saved game or read how to play" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/login-signup.png" width="80%" alt="Login &amp; sign up" /><br/><picture><img src="night/labels/cap-business-bytes-2.svg" width="80%" alt="Login &amp; sign up: accounts with live password-strength feedback" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/player-setup.png" width="80%" alt="Player setup" /><br/><picture><img src="night/labels/cap-business-bytes-3.svg" width="80%" alt="Player setup: 2–4 players, custom names and tokens" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/board.png" width="80%" alt="Game board" /><br/><picture><img src="night/labels/cap-business-bytes-4.svg" width="80%" alt="Game board: a circular board of Indian cities" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/load-game.png" width="80%" alt="Load game" /><br/><picture><img src="night/labels/cap-business-bytes-5.svg" width="80%" alt="Load game: resume any of your saved games" /></picture></p>
+<p align="center"><img src="https://raw.githubusercontent.com/Rahul-134/business-bytes-showcase/HEAD/docs/screenshots/leaderboard.png" width="80%" alt="Leaderboard" /><br/><picture><img src="night/labels/cap-business-bytes-6.svg" width="80%" alt="Leaderboard: net-worth ranking when the game ends" /></picture></p>
+<p align="center"><a href="https://github.com/Rahul-134/business-bytes-showcase"><img src="night/labels/link-business-bytes-repo.svg" height="46" alt="Design notes in the repository" /></a></p>
 
 </details>
 
@@ -232,43 +235,43 @@
 
 <a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="night/projects/portfolio.svg" width="100%" alt="Portfolio: my personal site with projects, skills, live stats and an ask-me-anything chatbot terminal. Built with Python, Django, React, Next.js and OpenRouter for the LLM API." /></a>
 
-<sub>🟢 <a href="https://rahul-lumbhani-portfolio.vercel.app/"><b>Live site ↗</b></a></sub>
+<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="night/labels/link-portfolio-live.svg" height="46" alt="Live site" /></a>
 
 </div>
 <details>
-<summary>📸&nbsp; <b>Peek inside Portfolio</b> &nbsp;—&nbsp; a quick tour + 7 screens</summary>
+<summary><picture><img src="night/labels/peek-portfolio.svg" width="94%" align="absmiddle" alt="Peek inside Portfolio: a quick tour + 7 screens. Tap to open." /></picture></summary>
 <br/>
 
-<p align="center"><img src="projects/portfolio/tour.gif" width="80%" alt="Quick tour" /><br/><sub><b>Quick tour</b> — hero, skills, tech stack, projects, live stats and the terminal, in dark theme</sub></p>
-<p align="center"><img src="projects/portfolio/themes.jpg" width="80%" alt="Light &amp; dark" /><br/><sub><b>Light &amp; dark</b> — the hero in both themes, switchable from the nav</sub></p>
-<p align="center"><img src="projects/portfolio/skills.jpg" width="80%" alt="Skills" /><br/><sub><b>Skills</b> — tap a card for its proficiency and the projects where it shipped</sub></p>
-<p align="center"><img src="projects/portfolio/techstack.jpg" width="80%" alt="Tech Stack" /><br/><sub><b>Tech Stack</b> — frameworks, databases and tools, filterable by category</sub></p>
-<p align="center"><img src="projects/portfolio/stats.jpg" width="80%" alt="Stats &amp; streaks" /><br/><sub><b>Stats &amp; streaks</b> — live GitHub and LeetCode numbers</sub></p>
-<p align="center"><img src="projects/portfolio/terminal.jpg" width="80%" alt="Ask-me-anything terminal" /><br/><sub><b>Ask-me-anything terminal</b> — ask about my projects, skills or experience</sub></p>
-<p align="center"><img src="projects/portfolio/about.jpg" width="80%" alt="About" /><br/><sub><b>About</b> — my story, what I'm exploring now (RAG, agentic AI, MCP) and education</sub></p>
-<p align="center"><img src="projects/portfolio/mobile.jpg" width="34%" alt="Responsive" /><br/><sub><b>Responsive</b> — the hero on a phone</sub></p>
-<p align="center"><sub>Take a look around the <a href="https://rahul-lumbhani-portfolio.vercel.app/">live site ↗</a></sub></p>
+<p align="center"><img src="projects/portfolio/tour.gif" width="80%" alt="Quick tour" /><br/><picture><img src="night/labels/cap-portfolio-1.svg" width="80%" alt="Quick tour: hero, skills, tech stack, projects, live stats and the terminal, in dark theme" /></picture></p>
+<p align="center"><img src="projects/portfolio/themes.jpg" width="80%" alt="Light &amp; dark" /><br/><picture><img src="night/labels/cap-portfolio-2.svg" width="80%" alt="Light &amp; dark: the hero in both themes, switchable from the nav" /></picture></p>
+<p align="center"><img src="projects/portfolio/skills.jpg" width="80%" alt="Skills" /><br/><picture><img src="night/labels/cap-portfolio-3.svg" width="80%" alt="Skills: tap a card for its proficiency and the projects where it shipped" /></picture></p>
+<p align="center"><img src="projects/portfolio/techstack.jpg" width="80%" alt="Tech Stack" /><br/><picture><img src="night/labels/cap-portfolio-4.svg" width="80%" alt="Tech Stack: frameworks, databases and tools, filterable by category" /></picture></p>
+<p align="center"><img src="projects/portfolio/stats.jpg" width="80%" alt="Stats &amp; streaks" /><br/><picture><img src="night/labels/cap-portfolio-5.svg" width="80%" alt="Stats &amp; streaks: live GitHub and LeetCode numbers" /></picture></p>
+<p align="center"><img src="projects/portfolio/terminal.jpg" width="80%" alt="Ask-me-anything terminal" /><br/><picture><img src="night/labels/cap-portfolio-6.svg" width="80%" alt="Ask-me-anything terminal: ask about my projects, skills or experience" /></picture></p>
+<p align="center"><img src="projects/portfolio/about.jpg" width="80%" alt="About" /><br/><picture><img src="night/labels/cap-portfolio-7.svg" width="80%" alt="About: my story, what I'm exploring now (RAG, agentic AI, MCP) and education" /></picture></p>
+<p align="center"><img src="projects/portfolio/mobile.jpg" width="34%" alt="Responsive" /><br/><picture><img src="night/labels/cap-portfolio-8.svg" width="80%" alt="Responsive: the hero on a phone" /></picture></p>
+<p align="center"><a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="night/labels/link-portfolio-tour.svg" height="46" alt="Take a look around the live site" /></a></p>
 
 </details>
 <br/>
 
 <div align="center">
 
-### 🧩 More Builds
+<h3 id="more-builds"><picture><img src="night/labels/h-more-builds.svg" width="100%" alt="More Builds" /></picture></h3>
 
 <a href="https://github.com/Rahul-134/virtual-arcade-zone"><img src="night/projects/virtual-arcade-zone.svg" width="49%" alt="Virtual Arcade Zone: seven console mini-games in pure core Java." /></a>
 <a href="https://github.com/Rahul-134/leetcode-solutions-python"><img src="night/projects/leetcode-solutions.svg" width="49%" alt="LeetCode Solutions: 160+ problems solved, 60+ written up in clean runnable Python." /></a>
 
 <br/>
 
-<a href="https://github.com/Rahul-134?tab=repositories"><img src="https://img.shields.io/badge/Browse%20all%20repositories%20%E2%86%92-161616?style=for-the-badge&logo=github&logoColor=60A5FA" alt="Browse all repositories" /></a>
+<a href="https://github.com/Rahul-134?tab=repositories"><img src="night/labels/link-browse-all.svg" height="46" alt="Browse all repositories" /></a>
 
 </div>
 
 <br/>
 
 <!-- theme:activity -->
-## 📊 GitHub Activity
+<h2 id="github-activity"><picture><img src="night/labels/h-github-activity.svg" width="100%" alt="GitHub Activity" /></picture></h2>
 
 <div align="center">
 
@@ -286,7 +289,7 @@
 
 <br/>
 
-## 🧮 LeetCode
+<h2 id="leetcode"><picture><img src="night/labels/h-leetcode.svg" width="100%" alt="LeetCode" /></picture></h2>
 
 <div align="center">
 
@@ -299,7 +302,7 @@
 <br/>
 
 <!-- theme:connect -->
-## 🤝 Let's Connect
+<h2 id="lets-connect"><picture><img src="night/labels/h-lets-connect.svg" width="100%" alt="Let's Connect" /></picture></h2>
 
 <div align="center">
 

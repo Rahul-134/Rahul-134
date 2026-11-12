@@ -104,9 +104,11 @@ Every card is drawn in two looks: the Day files (`dino-banner.svg`, `about-card.
 `tools/theme.py` always redraws both.
 
 The README can't follow each visitor's clock, so the **Day / Night** workflow points it at the
-Night cards at 7 pm and back at the Day cards at 7 am, India time (it tries a few times just after
-each switch and checks every hour, because GitHub sometimes drops scheduled runs) (both are set at the top of
-`tools/daynight.py`). To switch by hand, run that workflow from the Actions tab, or locally:
+Night cards at 7 pm and back at the Day cards at 7 am, India time (both are set at the top of
+`tools/daynight.py`). An outside timer starts it on time (see below); its own schedule, a few tries
+just after each switch and an hourly check, is only a backup, because GitHub often skips scheduled
+runs. A run only commits when the README shows the wrong look, so extra runs are harmless.
+To switch by hand, run that workflow from the Actions tab, or locally:
 
 ```bash
 python tools/daynight.py           # by the clock
@@ -115,4 +117,23 @@ python tools/daynight.py night     # or day
 
 The game page switches on its own, by each visitor's local clock (Night from 7 pm to 7 am).
 Its Day / Night button overrides that until the next 7 o'clock.
+
+### The outside timer
+
+A free [cron-job.org](https://cron-job.org) job, **README day / night**, starts the workflow at 7:00 and
+7:05, morning and evening (the 7:05 run is a spare that does nothing if 7:00 already switched):
+
+- **Schedule:** custom, `0,5 7,19 * * *`, time zone `Asia/Kolkata`
+- **Request:** `POST https://api.github.com/repos/Rahul-134/Rahul-134/actions/workflows/daynight.yml/dispatches`
+- **Headers:** `Authorization: Bearer <token>`, `Accept: application/vnd.github+json`,
+  `X-GitHub-Api-Version: 2022-11-28`, `Content-Type: application/json`
+- **Body:** `{"ref":"main","inputs":{"mode":"auto"}}`
+
+GitHub answers a working call with **204**; a 401 means a bad token, a 403 or 404 a token without
+access to this repo. The token is a fine-grained one (Settings → Developer settings → Fine-grained
+tokens) for this repository only, with just **Actions: Read and write**. It is kept only in the
+cron-job.org job, never in this repo. When it expires (GitHub emails a reminder), generate a new one
+the same way and paste it into the job's `Authorization` header (Edit → Advanced), then use
+**Test run** to check for 204. If you change the hours in `tools/daynight.py`, change the job's
+schedule to match.
 

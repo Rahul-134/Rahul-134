@@ -36,7 +36,7 @@ individual sections.
 | Section | What it covers |
 |---|---|
 | `header` | the banner, the typing line and the badge row |
-| `about` | the About card and the Tech Stack |
+| `about` | the About card, the intro and its Focus / Problem solving / Builds rows, and the Tech Stack |
 | `projects` | all project cards |
 | `activity` | the GitHub stats and LeetCode section |
 | `connect` | the Let's Connect section |
@@ -71,6 +71,7 @@ To recolour the cacti as well, add `"cactus": {"G": ..., "g": ..., "h": ..., "S"
 | `gen_dino.py` | the `dino/` game page, and the README banner via `banner.py` |
 | `banner.py` | `dino-banner.svg` (wide) and `dino-banner-mobile.svg` (phones); the README picks one with a `<picture>` media query |
 | `gen_about.py` | `about-card.svg` |
+| `gen_intro.py` | the `about/*.svg` intro and the Focus, Problem solving and Builds rows under it |
 | `gen_projects.py` | the `projects/*.svg` cards |
 | `gen_connect.py` | the `connect/*.svg` art for Let's Connect |
 | `assets/` | the screenshots embedded in the project cards |
@@ -97,9 +98,19 @@ Switching themes redraws the cards from the saved numbers, in the `activity` sec
 technology, copy its slug, title, hex and path into that file and add it to `GROUPS` in
 `gen_stack.py`, then run `python tools/theme.py about=same` (or any theme command) to redraw.
 
+## About Me intro
+
+The intro under the About card and the three "tap a row" sections (`about/*.svg`) are drawn by
+`tools/gen_intro.py` in the `about` section's colour: `intro.svg`, one `focus-<project>.svg` button
+per Focus project, `problem-solving.svg`, and one `build-<project>.svg` button per build. Each link is
+its own image, so the README wraps it in a normal `<a>`. The words, projects and the LeetCode count
+(`SOLVED`, `WRITTEN_UP`) are at the top of each part of `gen_intro.py`; edit them there, then run
+`python tools/theme.py about=same` to redraw. Adding a project also needs its `<a><img></a>` line in
+the README.
+
 ## Day / Night
 
-Every card is drawn in two looks: the Day files (`dino-banner.svg`, `about-card.svg`, `tech-stack.svg`,
+Every card is drawn in two looks: the Day files (`dino-banner.svg`, `about-card.svg`, `about/`, `tech-stack.svg`,
 `projects/`, `stats/`, `connect/`) and a Night version of each under `night/` with the same names.
 `tools/theme.py` always redraws both.
 

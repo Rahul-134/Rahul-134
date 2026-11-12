@@ -41,9 +41,13 @@
 
 <br/>
 
-I'm an **AI/ML engineer** and **Generative AI enthusiast** who turns models into products — LLM-powered apps, data platforms and ML tooling built with **Python, FastAPI, Django and React**. I like owning a project end to end, from the data and the model to the last pixel on screen.
+<div align="center">
 
-<div align="center"><sub>👇 &nbsp;Tap a row to see what's behind it</sub></div>
+<img src="night/about/intro.svg" width="100%" alt="I'm an AI/ML engineer and Generative AI enthusiast who turns models into products: LLM-powered apps, data platforms and ML tooling built with Python, FastAPI, Django and React. I like owning a project end to end, from the data and the model to the last pixel on screen." />
+
+<sub>👇 &nbsp;Tap a row to see what's behind it</sub>
+
+</div>
 
 <br/>
 
@@ -51,11 +55,13 @@ I'm an **AI/ML engineer** and **Generative AI enthusiast** who turns models into
 <summary><b>🧠&nbsp; Focus</b> &nbsp;—&nbsp; Generative AI, LLM apps and data &amp; ML platforms</summary>
 <br/>
 
-| Project | What it does |
-|---|---|
-| 🧭&nbsp;[**DataPilot**](https://github.com/Rahul-134/datapilot) | Ask questions of your data in plain English, scrape the web with AI, and train ML models — all in one workspace |
-| 📓&nbsp;[**BitNote**](https://github.com/Rahul-134/bitnote) | Notion-style notebooks with an AI tutor: syllabuses, learning roadmaps and recall quizzes |
-| 🎯&nbsp;[**BitCareer**](https://github.com/Rahul-134/bitcareer-showcase) | A learning and career-readiness platform with AI mock interviews and skill analysis |
+<div align="center">
+
+<a href="https://github.com/Rahul-134/datapilot"><img src="night/about/focus-datapilot.svg" width="100%" alt="DataPilot: ask questions of your data in plain English, scrape the web with AI, and train ML models, all in one workspace." /></a>
+<a href="https://github.com/Rahul-134/bitnote"><img src="night/about/focus-bitnote.svg" width="100%" alt="BitNote: Notion-style notebooks with an AI tutor: syllabuses, learning roadmaps and recall quizzes." /></a>
+<a href="https://github.com/Rahul-134/bitcareer-showcase"><img src="night/about/focus-bitcareer.svg" width="100%" alt="BitCareer: a learning and career-readiness platform with AI mock interviews and skill analysis." /></a>
+
+</div>
 
 <br/>
 
@@ -65,9 +71,13 @@ I'm an **AI/ML engineer** and **Generative AI enthusiast** who turns models into
 <summary><b>🧩&nbsp; Problem solving</b> &nbsp;—&nbsp; 160+ LeetCode problems solved</summary>
 <br/>
 
-- 🧮 **160+ problems solved** on LeetCode, with 60+ of the solutions written up in [leetcode-solutions-python](https://github.com/Rahul-134/leetcode-solutions-python) — each one runnable, type-hinted and shipped with a built-in test case
-- 🗂️ Arrays &amp; hashing · strings · two pointers · sliding window · dynamic programming · bit manipulation
-- 📈 Live numbers on my [LeetCode profile](https://leetcode.com/Rahul_134), or [jump to the stats card ↓](#-leetcode)
+<div align="center">
+
+<a href="https://github.com/Rahul-134/leetcode-solutions-python"><img src="night/about/problem-solving.svg" width="100%" alt="160+ LeetCode problems solved, with 60+ of the solutions written up in leetcode-solutions-python, each one runnable, type-hinted and shipped with a built-in test case. Topics: arrays and hashing, strings, two pointers, sliding window, dynamic programming, bit manipulation." /></a>
+
+<sub>📈 Live numbers on my <a href="https://leetcode.com/Rahul_134">LeetCode profile ↗</a> &nbsp;·&nbsp; or <a href="#-leetcode">jump to the stats card ↓</a></sub>
+
+</div>
 
 <br/>
 
@@ -77,13 +87,18 @@ I'm an **AI/ML engineer** and **Generative AI enthusiast** who turns models into
 <summary><b>🚀&nbsp; Builds</b> &nbsp;—&nbsp; AI co-pilots, web apps and interactive console games</summary>
 <br/>
 
-| | Where to look |
-|---|---|
-| 🤖&nbsp;**AI&nbsp;co&#8209;pilots** | [DataPilot](https://github.com/Rahul-134/datapilot) · [BitNote](https://github.com/Rahul-134/bitnote) |
-| 🌐&nbsp;**Web&nbsp;apps** | [BitCareer](https://github.com/Rahul-134/bitcareer-showcase) · [BitNote](https://github.com/Rahul-134/bitnote) · [Portfolio](https://rahul-lumbhani-portfolio.vercel.app/) |
-| 🎮&nbsp;**Games** | [Virtual Arcade Zone](https://github.com/Rahul-134/virtual-arcade-zone) — 7 console mini-games in pure Java · [Business Bytes](https://github.com/Rahul-134/business-bytes-showcase) — a desktop Monopoly · 🦖 [**play the dino game**](https://rahul-134.github.io/Rahul-134/dino/) |
+<div align="center">
 
-More in [Featured Projects ↓](#-featured-projects)
+<a href="https://github.com/Rahul-134/datapilot"><img src="night/about/build-datapilot.svg" width="49%" alt="DataPilot, an AI co-pilot: chat with data, scrape, train ML." /></a>
+<a href="https://github.com/Rahul-134/bitnote"><img src="night/about/build-bitnote.svg" width="49%" alt="BitNote, an AI co-pilot and web app: notebooks with an AI tutor." /></a>
+<a href="https://github.com/Rahul-134/bitcareer-showcase"><img src="night/about/build-bitcareer.svg" width="49%" alt="BitCareer, a web app: AI mock interviews and skill analysis." /></a>
+<a href="https://rahul-lumbhani-portfolio.vercel.app/"><img src="night/about/build-portfolio.svg" width="49%" alt="Portfolio, a web app with an ask-me-anything terminal." /></a>
+<a href="https://github.com/Rahul-134/virtual-arcade-zone"><img src="night/about/build-virtual-arcade-zone.svg" width="49%" alt="Virtual Arcade Zone, a game: 7 console mini-games in pure Java." /></a>
+<a href="https://github.com/Rahul-134/business-bytes-showcase"><img src="night/about/build-business-bytes.svg" width="49%" alt="Business Bytes, a game: a desktop Monopoly." /></a>
+<a href="https://rahul-134.github.io/Rahul-134/dino/"><img src="night/about/build-dino.svg" width="49%" alt="Play the dino game and try to top the leaderboard." /></a>
+<a href="#-featured-projects"><img src="night/about/build-more.svg" width="49%" alt="More in Featured Projects, just below." /></a>
+
+</div>
 
 <br/>
 

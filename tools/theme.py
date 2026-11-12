@@ -11,11 +11,11 @@
 A bare theme name sets the base theme and clears every override. `section=theme` overrides one
 section; `card=theme` overrides a single project card (cards otherwise follow `projects`).
 
-Sections: header (banner, typing line, badge row), about (About card + Tech Stack),
+Sections: header (banner, typing line, badge row), about (About card, the intro and its rows, Tech Stack),
 projects (the project cards), activity (GitHub stats + LeetCode), connect (Let's Connect) and
 game (the playable game page).
 
-What it regenerates: dino-banner.svg (+ dino-banner-mobile.svg), about-card.svg, tech-stack.svg, projects/*.svg, connect/*.svg,
+What it regenerates: dino-banner.svg (+ dino-banner-mobile.svg), about-card.svg, about/*.svg, tech-stack.svg, projects/*.svg, connect/*.svg,
 stats/*.svg (from the numbers saved in tools/stats.json), dino/index.html
 and the colour codes inside README.md (each region of the README follows its own section's theme).
 Every card is drawn twice: the day files above, and a Night version of each under night/ (same paths).
@@ -40,7 +40,7 @@ STATE = os.path.join(TOOLS, "theme.json")
 
 SECTIONS = {
     "header": "banner, typing line and badge row",
-    "about": "About card and Tech Stack",
+    "about": "About card, intro and Tech Stack",
     "projects": "the project cards",
     "activity": "GitHub stats and LeetCode",
     "connect": "Let's Connect",
@@ -176,6 +176,7 @@ def build_night(sec, cards):
         for f in ("dino-banner.svg", "dino-banner-mobile.svg"):
             shutil.copyfile(os.path.join(tmp, f), os.path.join(night, f))
     run("gen_about.py", night, sec["about"], mode="night")
+    run("gen_intro.py", night, sec["about"], mode="night")
     run("gen_stack.py", night, sec["about"], mode="night")
     build_projects(cards, os.path.join(night, "projects"), mode="night")
     run("gen_connect.py", night, sec["connect"], mode="night")
@@ -190,6 +191,7 @@ def apply(state):
             run("gen_dino.py", tmp, sec["game"])
             shutil.copyfile(os.path.join(tmp, "dino", "index.html"), os.path.join(ROOT, "dino", "index.html"))
     run("gen_about.py", ROOT, sec["about"])                       # about-card.svg
+    run("gen_intro.py", ROOT, sec["about"])                       # about/*.svg (intro, Focus, Problem solving, Builds)
     run("gen_stack.py", ROOT, sec["about"])                       # tech-stack.svg
     build_projects(cards)                                         # projects/*.svg
     run("gen_connect.py", ROOT, sec["connect"])                   # connect/*.svg

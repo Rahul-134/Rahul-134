@@ -3,7 +3,7 @@
 Rows are left-aligned strings; shorter rows are right-padded with '.' to the sprite width.
 Palette letters: Y body, D shade, L highlight, O outline, B belly, E belly stripe, V spike, M mouth, T tongue,
 K dark, W white,
-G/g/h/S/P cactus colours, X/Z/N/R/I bird, Q cactus outline. The dino is drawn on a finer grid (DINO_U px per cell) than the cacti and birds.
+G/g/h/S/P cactus colours, X/Z/N/R/I bird, Q cactus outline, A/a/j/q boulder, c/C/F/f meteor. The dino is drawn on a finer grid (DINO_U px per cell) than the cacti and birds.
 """
 
 import theme_colors
@@ -16,6 +16,9 @@ PAL = {
     "X": "#B79CF2", "Z": "#8E6FD8", "N": "#FF9F43", "R": "#2E2157", "I": "#E4D9FB",
     # the cartoon T-rex: outline, belly, belly stripes, back spikes, mouth, tongue
     "O": _T.outline, "B": _T.belly, "E": _T.stripe, "V": _T.spike, "M": "#8E2B3A", "T": "#F4758F",
+    # Season 2: the Canyon's rolling boulder (rock, shade, highlight, outline) and the Volcano's meteor (rock, dark, lava)
+    "A": "#C77B54", "a": "#9A5536", "j": "#E8A57C", "q": "#4A2616",
+    "c": "#5E4C4A", "C": "#3B2F2E", "F": "#FF7A3D", "f": "#FFD166",
 }
 PAL.update(_T.cactus)        # a theme may recolour the cacti (the green theme does)
 
@@ -209,6 +212,37 @@ ART = {
         ".......RRRRZZZZZZR......",
         "..........RRZZZZZR......",
         "............RRRRR.......",
+    ],
+    # ---- Season 2 hazards ----
+    "boulder": [            # rolls along the Canyon floor (drawn rotating)
+        "....qqqqqq....",
+        "..qqAAAAjjqq..",
+        ".qAAAAAjjjjAq.",
+        ".qAAaAAAjjAAq.",
+        "qAAAAAAAAAAAAq",
+        "qAAAAAAaAAAAAq",
+        "qAaAAAAAAAAAaq",
+        "qAAAAAAAAAAAAq",
+        "qaAAAAAAAaAAaq",
+        "qaaAAAAAAAAAaq",
+        ".qaaAAAaAAAaq.",
+        ".qaaaAAAAAaaq.",
+        "..qqaaaaaaqq..",
+        "....qqqqqq....",
+    ],
+    "meteor": [             # falls in the Volcano and Starfall; stays as a glowing rock where it lands
+        "...qqqqqq...",
+        "..qcccCccq..",
+        ".qccFccccCq.",
+        "qcccFfccccCq",
+        "qcCccFccFccq",
+        "qcccccccFccq",
+        "qccFccccfCcq",
+        "qcFfcccccccq",
+        "qCcFcccFFccq",
+        ".qCcccccFcq.",
+        "..qCCcccCq..",
+        "...qqqqqq...",
     ],
 }
 

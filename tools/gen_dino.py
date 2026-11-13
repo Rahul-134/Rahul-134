@@ -61,7 +61,11 @@ for key, markup in ART_HTML.items():
 hook = (
     "  window.__dino = { get: function () { return { state: state, score: score, speed: speed, obstacles: obstacles.length,"
     " dinoY: dino.y, dinoX: dino.x, onGround: dino.onGround, ducking: ducking, raw: obstacles.map(function (o) { return { t: o.type, x: o.x, w: o.w, y: o.y, h: o.h }; }), parts: obstacles.map(function (o) { return o.parts ? o.parts.map(function (p) { return p.name; }).join('+') : o.type; }) }; },"
-    " setScore: function (n) { distance = n / 0.025; } };"
+    " setScore: function (n) { distance = n / 0.025; },"
+    " level: function () { return { level: level, fromLevel: fromLevel, fade: fade, banner: !!banner, spawnHold: spawnHold, cap: LEVELS[level].cap, name: LEVELS[level].name }; },"
+    " kinds: function () { return obstacles.map(function (o) { return o.type + (o.type === 'meteor' ? (o.landed ? ':landed' : ':falling') : ''); }); },"
+    " god: function (on) { if (on && !window.__realGameOver) { window.__realGameOver = gameOver; gameOver = function () { window.__hits = (window.__hits || 0) + 1; }; }"
+    " else if (!on && window.__realGameOver) { gameOver = window.__realGameOver; window.__realGameOver = null; } } };"
     if test_hook else ""
 )
 html = html.replace("/*__TESTHOOK__*/", hook)

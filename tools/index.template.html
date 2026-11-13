@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dino Run · Rahul Lumbhani</title>
-<meta name="description" content="A playable dino runner game from Rahul Lumbhani's GitHub profile.">
+<meta name="description" content="A playable dino runner game from Rahul Lumbhani's GitHub profile. Season 2: four worlds, new hazards.">
 <script>
   // Day / Night follows the visitor's own clock: Night from 7 pm to 7 am. Tapping the toggle overrides it until
   // the next 7 o'clock, then the clock takes over again. Set before the page paints, so there is no flash.
@@ -220,7 +220,7 @@
   <header class="hero" id="top">
     <div>
       <h1>Hey, I'm Rahul — let's <span class="hl">play!</span></h1>
-      <p class="sub">Dodge the cacti and birds. How far can you go?</p>
+      <p class="sub">Season 2: run through four worlds, from the desert to a sky full of falling stars. How far can you go?</p>
       <div class="cta">
         <button class="btn" id="playNow" type="button">Play now</button>
         <a class="btn alt" href="#how">How to play <span class="tri">▶</span></a>
@@ -256,7 +256,7 @@
   <section class="how" id="how">
     <h2>How to play</h2>
     <div class="cards">
-      <div class="tip t1"><span class="ico">{{ART_SMALL}}</span><h3>Jump</h3><p>Press <kbd>Space</kbd> or <kbd>↑</kbd>, tap the screen, or hit the A button to leap over cacti.</p></div>
+      <div class="tip t1"><span class="ico">{{ART_SMALL}}</span><h3>Jump</h3><p>Press <kbd>Space</kbd> or <kbd>↑</kbd>, tap the screen, or hit the A button to leap over cacti, boulders and lava.</p></div>
       <div class="tip t2"><span class="ico">{{ART_BIRD}}</span><h3>Duck</h3><p>Hold <kbd>↓</kbd> or the B button to slide under the low-flying birds.</p></div>
       <div class="tip t3"><span class="ico"><svg viewBox="0 0 30 30" width="30" height="30"><path d="M4 22 L7 8 L12 15 L15 5 L18 15 L23 8 L26 22 Z" fill="#FFC83D" stroke="#2B1A12" stroke-width="2.5" stroke-linejoin="round"/></svg></span><h3>Beat the crown</h3><p>Climb the leaderboard and try to pass my best run. Add your name when you set a new high score.</p></div>
     </div>
@@ -354,9 +354,11 @@
   var CACT = { saguaro: sprite(ART.saguaro, U), small: sprite(ART.small, U), barrel: sprite(ART.barrel, U) };
   var birdUp = sprite(ART.birdUp, U);
   var birdDown = sprite(ART.birdDown, U);
+  var BOULDER_U = U * 1.25, METEOR_U = U * 1.5;      // the Season 2 hazards are drawn a little larger than the cacti grid
+  var boulder = sprite(ART.boulder, BOULDER_U), meteor = sprite(ART.meteor, METEOR_U);
 
   // The Playful skin draws the same sprites with a dark outline (and a darker bird), built the first time it is used.
-  var CSET = { dinoA: dinoA, dinoB: dinoB, duckA: duckA, duckB: duckB, CACT: CACT, birdUp: birdUp, birdDown: birdDown }, PSET = null;
+  var CSET = { dinoA: dinoA, dinoB: dinoB, duckA: duckA, duckB: duckB, CACT: CACT, birdUp: birdUp, birdDown: birdDown, boulder: boulder, meteor: meteor }, PSET = null;
   var INK = '#2B1A12', OUT = 3;
   function outlined(rows, u, pal) { var s = sprite(rows, u, pal); s.o = OUT; return s; }
   function buildPlayful() {
@@ -364,7 +366,8 @@
       dinoA: outlined(ART.dinoBody.concat(ART.legsA), DU), dinoB: outlined(ART.dinoBody.concat(ART.legsB), DU),
       duckA: outlined(ART.duckBody.concat(ART.duckLegsA), DU), duckB: outlined(ART.duckBody.concat(ART.duckLegsB), DU),
       CACT: { saguaro: outlined(ART.saguaro, U), small: outlined(ART.small, U), barrel: outlined(ART.barrel, U) },
-      birdUp: outlined(ART.birdUp, U), birdDown: outlined(ART.birdDown, U)
+      birdUp: outlined(ART.birdUp, U), birdDown: outlined(ART.birdDown, U),
+      boulder: outlined(ART.boulder, BOULDER_U), meteor: outlined(ART.meteor, METEOR_U)
     };
   }
   function setSkin(name) {
@@ -403,21 +406,51 @@
     var px = Math.round((x - pad) * SCALE) / SCALE, py = Math.round((y - pad) * SCALE) / SCALE;
     ctx.drawImage(c, px, py, c.width / SCALE, c.height / SCALE);
   }
+  function blitTurned(s, cx, cy, ang) {             // the rolling boulder: the same bitmap, turned about its centre
+    var c = bitmap(s), w = c.width / SCALE, h = c.height / SCALE;
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(ang); ctx.drawImage(c, -w / 2, -h / 2, w, h); ctx.restore();
+  }
 
 
   // cactus clusters; the harder ones only appear once the run is under way
   var EASY_COMBOS = [['small'], ['barrel'], ['saguaro'], ['small', 'small'], ['barrel', 'small']];
   var HARD_COMBOS = EASY_COMBOS.concat([['saguaro', 'small'], ['saguaro', 'barrel'], ['barrel', 'small', 'barrel'], ['small', 'saguaro', 'small']]);
 
+  // ---------- Season 2: levels ----------
+  // One endless run in stages. Every 500 points the world changes (sky, backdrop, ground), the top speed rises a
+  // little and new hazards join the mix: boulders roll in the Canyon, meteors fall and lava pools open in the
+  // Volcano, and Starfall mixes everything. `mix` is the share of spawns that are each hazard (the rest are cacti).
+  var LEVELS = [
+    { at: 0,    name: 'DESERT',   cap: 12, mix: { bird: .30 } },
+    { at: 500,  name: 'CANYON',   cap: 13, mix: { bird: .22, boulder: .28 } },
+    { at: 1000, name: 'VOLCANO',  cap: 14, mix: { bird: .16, boulder: .12, meteor: .22, lava: .18 } },
+    { at: 1500, name: 'STARFALL', cap: 15, mix: { bird: .24, boulder: .12, meteor: .28, lava: .12 } }
+  ];
+  function levelAt(sc) { for (var i = LEVELS.length - 1; i > 0; i--) if (sc >= LEVELS[i].at) return i; return 0; }
+  // Playful scenery per level, by day and by night: sky, sand layers, pebbles, grass (null: none) and backdrop.
+  var LOOKS = [
+    { day:   { sky: '#BFE7F7', sand: '#F2D9A6', top: '#F9E8C4', low: '#E5C48C', peb: '#CFA86E', tuft: '#7BC86C' },
+      night: { sky: '#26325E', sand: '#B3925F', top: '#C5A673', low: '#987A4D', peb: '#7E6240', tuft: '#5E9A57' }, back: null },
+    { day:   { sky: '#FFE3C7', sand: '#EFB287', top: '#F6CBA5', low: '#D9925F', peb: '#B06A44', tuft: '#9DBB6A', far: '#F2B98F', near: '#E39A6C' },
+      night: { sky: '#3A2A4E', sand: '#A9714F', top: '#BC8762', low: '#8A583C', peb: '#6A4128', tuft: '#5E7E4B', far: '#5A3F5E', near: '#4A3150' }, back: 'mesas' },
+    { day:   { sky: '#F7C9B3', sand: '#7A6460', top: '#93807A', low: '#5E4C49', peb: '#463634', tuft: null, far: '#A88378', near: '#8C6A62' },
+      night: { sky: '#2B1B2C', sand: '#5A4744', top: '#6E5955', low: '#433331', peb: '#2F2322', tuft: null, far: '#4A3036', near: '#3B2830' }, back: 'volcano' },
+    { day:   { sky: '#D9D2F7', sand: '#E9CFE0', top: '#F5E3EE', low: '#D3B2CB', peb: '#B48FAE', tuft: '#8FC79A' },
+      night: { sky: '#1C1A44', sand: '#9C7F99', top: '#AF93AC', low: '#7E647D', peb: '#5F4A5E', tuft: '#5E9A57' }, back: 'aurora' }
+  ];
+  function look(i) { return LOOKS[i][night ? 'night' : 'day']; }
+
   // ---------- State ----------
   var state = 'ready';            // ready | running | over
   var speed, distance, score, hi = 0, frame, nextGap, diedAt, runMs = 0;
   var dino, obstacles, clouds, groundOff, ducking = false;
+  var level = 0, fromLevel = 0, fade = 1, banner = null, spawnHold = 0, backOff = 0, sparks = [];
 
   try { hi = parseInt(localStorage.getItem('dinoHi'), 10) || 0; } catch (e) {}
 
   function reset() {
     speed = 6; distance = 0; score = 0; frame = 0; groundOff = 0; runMs = 0;
+    level = 0; fromLevel = 0; fade = 1; banner = null; spawnHold = 0; backOff = 0; sparks = [];
     dino = { x: 60, y: GROUND - dinoA.h, vy: 0, onGround: true };
     obstacles = [];
     nextGap = 380;
@@ -455,8 +488,23 @@
   function rnd(a, b) { return a + Math.random() * (b - a); }
   function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 
+  function pickKind() {
+    var mix = LEVELS[level].mix, r = Math.random(), acc = 0, kind = 'cactus';
+    ['bird', 'boulder', 'meteor', 'lava'].some(function (k) { acc += mix[k] || 0; if (r < acc) { kind = k; return true; } return false; });
+    return kind === 'bird' && score <= 250 ? 'cactus' : kind;
+  }
   function spawn() {
-    if (score > 250 && Math.random() < 0.3) {
+    var kind = pickKind();
+    if (kind === 'boulder') {
+      obstacles.push({ type: 'boulder', x: W + 20, w: boulder.w, h: boulder.h, y: GROUND - boulder.h, rot: 0 });
+    } else if (kind === 'meteor') {
+      // falls on a curve from the upper right and lands 170+ units ahead of the dino; its shadow marks the spot
+      var land = dino.x + 170 + rnd(0, W * 0.25), gx = W + 60;
+      obstacles.push({ type: 'meteor', gx: gx, x: gx + 150, w: meteor.w, h: meteor.h, y: -40, p: 0, F: Math.max(36, (gx - land) / speed), landed: false });
+    } else if (kind === 'lava') {
+      var lw = Math.round(rnd(70, 110));
+      obstacles.push({ type: 'lava', x: W + 20, w: lw, h: 8, y: GROUND - 8 });
+    } else if (kind === 'bird') {
       var low = Math.random() < 0.5;                       // low: jump over · mid: duck under
       var h = birdUp.h;
       obstacles.push({ type: 'bird', x: W + 20, w: birdUp.w, h: h, y: low ? GROUND - 18 - h : GROUND - 56 - h, f: 0 });
@@ -469,6 +517,7 @@
       });
       obstacles.push({ type: 'cactus', x: W + 20, parts: parts, w: dx - 5 });
     }
+    if (kind !== 'bird' && kind !== 'cactus' && kind !== 'meteor') nextGap = speed * rnd(30, 50) + 140; else
     nextGap = speed * rnd(26, 46) + 120;
   }
 
@@ -481,16 +530,29 @@
 
   function boxesOf(o) {                          // slightly forgiving hitboxes
     if (o.type === 'bird') return [{ x: o.x + 5, y: o.y + 5, w: o.w - 10, h: o.h - 8 }];
+    if (o.type === 'boulder' || o.type === 'meteor') return [{ x: o.x + 5, y: o.y + 5, w: o.w - 10, h: o.h - 8 }];
+    if (o.type === 'lava') return [{ x: o.x + 12, y: GROUND - 8, w: o.w - 24, h: 8 }];   // only feet on the ground touch it
     return o.parts.map(function (p) { return { x: o.x + p.dx + 4, y: GROUND - p.s.h + 3, w: p.s.w - 8, h: p.s.h - 5 }; });
   }
+
+  function levelUp(to) {
+    fromLevel = level; level = to; fade = 0;
+    banner = { at: frame }; spawnHold = 100;                       // a short breather while the banner shows
+  }
+  function rightEdge(o) { return (o.type === 'meteor' && !o.landed ? o.gx : o.x) + o.w; }
 
   function update(dt) {
     frame += dt;
     runMs += dt * 16.667;
     distance += speed * dt;
     score = Math.floor(distance * 0.025);
-    speed = Math.min(6 + distance * 0.00045, 14);
+    var lv = levelAt(score);
+    if (lv > level) levelUp(lv);
+    if (fade < 1) fade = Math.min(1, fade + dt / 90);
+    if (spawnHold > 0) spawnHold -= dt;
+    speed = Math.min(6 + distance * 0.00045, LEVELS[level].cap);
     groundOff = (groundOff + speed * dt) % 200;
+    backOff += speed * 0.12 * dt;
 
     // dino physics
     var g = ducking && !dino.onGround ? 1.9 : 0.62;
@@ -504,10 +566,25 @@
     clouds.forEach(function (c) { c.x -= speed * 0.15 * dt; if (c.x < -90) { c.x = W + rnd(20, 200); c.y = rnd(30, 110); } });
 
     // obstacles
-    obstacles.forEach(function (o) { o.x -= (speed + (o.type === 'bird' ? 1.5 : 0)) * dt; if (o.type === 'bird') o.f += dt; });
-    obstacles = obstacles.filter(function (o) { return o.x + o.w > -20; });
+    obstacles.forEach(function (o) {
+      if (o.type === 'meteor' && !o.landed) {
+        o.gx -= speed * dt; o.p = Math.min(1, o.p + dt / o.F);
+        o.x = o.gx + 150 * (1 - o.p); o.y = -40 + (GROUND - o.h + 40) * o.p * o.p;
+        if (o.p >= 1) {                                          // lands: a burst of sparks, then a glowing rock to jump
+          o.landed = true; o.x = o.gx; o.y = GROUND - o.h;
+          for (var k = 0; k < 8; k++) sparks.push({ x: o.x + o.w / 2, y: GROUND - 4, vx: rnd(-2.2, 2.2), vy: rnd(-4.5, -1.5), life: 1 });
+        }
+        return;
+      }
+      o.x -= (speed + (o.type === 'bird' ? 1.5 : o.type === 'boulder' ? 2.4 : 0)) * dt;
+      if (o.type === 'bird') o.f += dt;
+      if (o.type === 'boulder') o.rot -= (speed + 2.4) * dt / (o.w / 2);
+    });
+    obstacles = obstacles.filter(function (o) { return rightEdge(o) > -20; });
+    sparks.forEach(function (sp) { sp.x += (sp.vx - speed) * dt; sp.y += sp.vy * dt; sp.vy += 0.25 * dt; sp.life -= dt / 40; });
+    sparks = sparks.filter(function (sp) { return sp.life > 0; });
     var lastO = obstacles[obstacles.length - 1];
-    if (!lastO || (W - (lastO.x + lastO.w)) > nextGap) spawn();
+    if (spawnHold <= 0 && (!lastO || (W - rightEdge(lastO)) > nextGap)) spawn();
 
     // collisions
     var d = dinoBox();
@@ -589,31 +666,39 @@
   // and again left a faint vertical line at every joint whenever the canvas scale was fractional.)
   // Tufts poke 8 units above the ground line.
   var TILE = 200, TUFT = 8;
-  function paintGroundStrip(g) {
+  function paintGroundStrip(g, L, li) {
     var h = H - GROUND, len = Math.ceil(W / TILE + 1) * TILE;
     g.translate(0, TUFT);
-    g.fillStyle = night ? '#B3925F' : '#F2D9A6'; g.fillRect(0, 0, len, h);                                   // sand
-    g.fillStyle = night ? '#C5A673' : '#F9E8C4'; g.fillRect(0, 3, len, 6);                                   // sunlit top band
-    g.fillStyle = night ? '#987A4D' : '#E5C48C'; g.beginPath(); g.moveTo(0, h);                               // darker wavy layer below
+    g.fillStyle = L.sand; g.fillRect(0, 0, len, h);                                                       // sand
+    g.fillStyle = L.top; g.fillRect(0, 3, len, 6);                                                        // sunlit top band
+    g.fillStyle = L.low; g.beginPath(); g.moveTo(0, h);                                                   // darker wavy layer below
     for (var x = 0; x <= len; x += 2) g.lineTo(x, 31 + 3 * Math.sin(x / TILE * 4 * Math.PI));
     g.lineTo(len, h); g.closePath(); g.fill();
     for (var t = 0; t < len; t += TILE) [[34, 18, 4.2, 2.6], [118, 23, 3.2, 2.0], [166, 15, 2.6, 1.7], [86, 38, 3.0, 1.8]].forEach(function (s) {   // pebbles
-      g.beginPath(); g.ellipse(t + s[0], s[1], s[2], s[3], 0, 0, 6.2832); g.fillStyle = night ? '#7E6240' : '#CFA86E'; g.fill();
+      g.beginPath(); g.ellipse(t + s[0], s[1], s[2], s[3], 0, 0, 6.2832); g.fillStyle = L.peb; g.fill();
       g.lineWidth = 1.2; g.strokeStyle = 'rgba(43,26,18,.55)'; g.stroke();
       g.beginPath(); g.ellipse(t + s[0] - s[2] * .3, s[1] - s[3] * .35, s[2] * .35, s[3] * .3, 0, 0, 6.2832); g.fillStyle = 'rgba(255,255,255,.55)'; g.fill();
     });
+    if (li === 2) for (var t3 = 0; t3 < len; t3 += TILE) [[52, 14, 22], [128, 26, 16]].forEach(function (k) {   // Volcano: glowing cracks
+      g.strokeStyle = '#FF7A3D'; g.lineWidth = 2; g.lineCap = 'round'; g.beginPath(); g.moveTo(t3 + k[0], k[1]);
+      g.lineTo(t3 + k[0] + k[2] * .4, k[1] + 4); g.lineTo(t3 + k[0] + k[2], k[1] + 1); g.stroke();
+    });
     g.fillStyle = INK; g.fillRect(0, 0, len, 3);                                         // the ground line
-    for (var t2 = 0; t2 < len; t2 += TILE) [[72, false], [150, true]].forEach(function (tf) {   // grass tufts (one with a flower)
+    if (L.tuft) for (var t2 = 0; t2 < len; t2 += TILE) [[72, false], [150, true]].forEach(function (tf) {   // grass tufts (one with a flower)
       var x = t2 + tf[0];
       g.beginPath(); g.moveTo(x - 4, 1); g.lineTo(x - 5, -4); g.lineTo(x - 2, 0); g.lineTo(x, -7); g.lineTo(x + 2, 0); g.lineTo(x + 5, -5); g.lineTo(x + 4, 1); g.closePath();
-      g.fillStyle = night ? '#5E9A57' : '#7BC86C'; g.fill(); g.lineJoin = 'round'; g.lineWidth = 1.3; g.strokeStyle = INK; g.stroke();
+      g.fillStyle = L.tuft; g.fill(); g.lineJoin = 'round'; g.lineWidth = 1.3; g.strokeStyle = INK; g.stroke();
       if (tf[1]) { g.beginPath(); g.arc(x, -7.5, 1.9, 0, 6.2832); g.fillStyle = '#F472B6'; g.fill(); g.lineWidth = 1; g.stroke(); }
     });
   }
+  function groundStrip(li) {
+    var L = look(li);
+    return cachedArt('ground' + W + ':' + li, Math.ceil(W / TILE + 1) * TILE, H - GROUND + TUFT, function (g) { paintGroundStrip(g, L, li); });
+  }
   function drawGround() {
     if (playful) {
-      var strip = cachedArt('ground' + W, Math.ceil(W / TILE + 1) * TILE, H - GROUND + TUFT, paintGroundStrip);
-      blitArt(strip, -(groundOff % TILE), GROUND - TUFT);
+      if (fade < 1) blitArt(groundStrip(fromLevel), -(groundOff % TILE), GROUND - TUFT);
+      ctx.globalAlpha = fade; blitArt(groundStrip(level), -(groundOff % TILE), GROUND - TUFT); ctx.globalAlpha = 1;
       return;
     }
     ctx.fillStyle = COL.ground; ctx.fillRect(0, GROUND + 1, W, 2);
@@ -625,6 +710,54 @@
       ctx.beginPath(); ctx.moveTo(0, GROUND + 12 + p * 10); ctx.lineTo(W + 200, GROUND + 12 + p * 10); ctx.stroke();
     }
     ctx.setLineDash([]);
+  }
+
+  // Backdrops behind the clouds, scrolling slowly (parallax): Canyon mesas, Volcano cones, the Starfall aurora.
+  var BACK_W = 900;
+  function paintMesas(g, L) {
+    [[L.far, 0.0, 70], [L.near, 0.5, 40]].forEach(function (layer, n) {
+      g.fillStyle = layer[0]; g.strokeStyle = INK; g.lineWidth = 2.5; g.lineJoin = 'round';
+      for (var k = 0; k < 2; k++) [[60, 120, 70], [330, 90, 55], [600, 150, 80]].forEach(function (m) {
+        var x = k * BACK_W + m[0] + layer[1] * 140, top = GROUND - layer[2] - m[2] * (n ? .55 : 1), w = m[1];
+        g.beginPath(); g.moveTo(x, GROUND); g.lineTo(x + 14, top + 8); g.lineTo(x + 20, top); g.lineTo(x + w - 20, top);
+        g.lineTo(x + w - 14, top + 8); g.lineTo(x + w, GROUND); g.closePath(); g.fill(); g.stroke();
+        g.fillStyle = 'rgba(255,255,255,.18)'; g.fillRect(x + 22, top + 3, w - 44, 4); g.fillStyle = layer[0];
+      });
+    });
+  }
+  function paintVolcano(g, L) {
+    for (var k = 0; k < 2; k++) [[120, 230, 120, L.far], [540, 300, 165, L.near]].forEach(function (v) {
+      var x = k * BACK_W + v[0], w = v[1], top = GROUND - v[2];
+      g.fillStyle = v[3]; g.strokeStyle = INK; g.lineWidth = 2.5; g.lineJoin = 'round';
+      g.beginPath(); g.moveTo(x, GROUND); g.lineTo(x + w * .42, top); g.lineTo(x + w * .58, top); g.lineTo(x + w, GROUND); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = '#FF8A3D'; g.beginPath(); g.moveTo(x + w * .42, top); g.lineTo(x + w * .58, top); g.lineTo(x + w * .54, top + 12); g.lineTo(x + w * .46, top + 12); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = 'rgba(255,138,61,.25)'; g.beginPath(); g.arc(x + w / 2, top, 26, 0, 6.2832); g.fill();
+      g.fillStyle = night ? 'rgba(199,207,230,.35)' : 'rgba(110,90,85,.35)';
+      [[0, -22, 11], [10, -38, 14], [-4, -58, 17]].forEach(function (p) { g.beginPath(); g.arc(x + w / 2 + p[0], top + p[1], p[2], 0, 6.2832); g.fill(); });
+    });
+  }
+  function drawBackdrop(li, alpha) {
+    var kind = LOOKS[li].back;
+    if (!kind || alpha <= 0) return;
+    ctx.globalAlpha = alpha;
+    if (kind === 'aurora') {                                      // three soft bands that sway gently
+      [['rgba(124,242,194,.32)', 40, 0], ['rgba(180,156,255,.28)', 62, 1.7], ['rgba(255,156,214,.22)', 84, 3.1]].forEach(function (b) {
+        ctx.fillStyle = b[0]; ctx.beginPath(); ctx.moveTo(0, b[1] + 26);
+        for (var x = 0; x <= W; x += 30) ctx.lineTo(x, b[1] + 12 * Math.sin(x / 140 + frame / 60 + b[2]));
+        for (var x2 = W; x2 >= 0; x2 -= 30) ctx.lineTo(x2, b[1] + 24 + 10 * Math.sin(x2 / 120 + frame / 70 + b[2]));
+        ctx.closePath(); ctx.fill();
+      });
+    } else {
+      var L = look(li), art = cachedArt(kind + ':' + li, 2 * BACK_W, GROUND, function (g) { (kind === 'mesas' ? paintMesas : paintVolcano)(g, L); });
+      var off = backOff % BACK_W;
+      blitArt(art, -off, 0); if (W > BACK_W - off) blitArt(art, BACK_W * 2 - off, 0);
+    }
+    ctx.globalAlpha = 1;
+  }
+  function drawSky() {
+    ctx.fillStyle = look(fade < 1 ? fromLevel : level).sky; ctx.fillRect(0, 0, W, H);
+    if (fade < 1) { drawBackdrop(fromLevel, 1); ctx.globalAlpha = fade; ctx.fillStyle = look(level).sky; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
+    drawBackdrop(level, fade);
   }
 
   function drawDino() {
@@ -640,14 +773,60 @@
   }
 
   function drawObstacles() {
+    var K = playful ? PSET : CSET;
     obstacles.forEach(function (o) {
+      if (o.type === 'lava') {                                    // a pool of lava cut into the ground
+        ctx.fillStyle = '#FF7A3D'; ctx.fillRect(o.x, GROUND - 1, o.w, H - GROUND + 1);
+        ctx.fillStyle = '#FFD166'; ctx.fillRect(o.x, GROUND + 2, o.w, 5);
+        ctx.fillStyle = playful ? INK : '#FF7A3D'; ctx.fillRect(o.x - 3, GROUND - 2, 3, H - GROUND + 2); ctx.fillRect(o.x + o.w, GROUND - 2, 3, H - GROUND + 2);
+        ctx.fillStyle = 'rgba(255,240,180,.9)';
+        for (var b = 0; b < 3; b++) { var bx = o.x + o.w * (b + 0.5) / 3, ph = (frame / 20 + b * 1.3) % 2; if (ph < 1) { ctx.beginPath(); ctx.arc(bx, GROUND + 14 - ph * 8, 2 + ph * 2, 0, 6.2832); ctx.fill(); } }
+        return;
+      }
+      if (o.type === 'boulder') { blitTurned(K.boulder, o.x + o.w / 2, o.y + o.h / 2, o.rot); return; }
+      if (o.type === 'meteor') {
+        if (!o.landed) {                                          // its shadow on the ground, then the fiery trail
+          var cx = o.gx + o.w / 2, pulse = 0.5 + 0.5 * Math.sin(frame / 4);
+          ctx.fillStyle = 'rgba(30,15,10,' + (0.28 + 0.32 * o.p).toFixed(3) + ')';
+          ctx.beginPath(); ctx.ellipse(cx, GROUND + 2, o.w * (0.45 + 0.5 * o.p), 3.5 + 2 * o.p, 0, 0, 6.2832); ctx.fill();
+          ctx.strokeStyle = 'rgba(255,122,61,' + (0.55 + 0.4 * pulse).toFixed(3) + ')'; ctx.lineWidth = 2.5;      // pulsing ring: it lands here
+          ctx.beginPath(); ctx.ellipse(cx, GROUND + 2, o.w * 0.9 + 4 * pulse, 7 + 2 * pulse, 0, 0, 6.2832); ctx.stroke();
+          [['rgba(255,209,102,.55)', 1, 9], ['rgba(255,122,61,.5)', 2, 7], ['rgba(255,122,61,.28)', 3, 5]].forEach(function (t) {
+            ctx.fillStyle = t[0]; ctx.beginPath(); ctx.arc(o.x + o.w / 2 + t[1] * 11, o.y + o.h / 2 - t[1] * 9, t[2], 0, 6.2832); ctx.fill();
+          });
+        } else {
+          ctx.fillStyle = 'rgba(255,122,61,' + (0.18 + 0.1 * Math.sin(frame / 8)).toFixed(3) + ')';
+          ctx.beginPath(); ctx.arc(o.x + o.w / 2, o.y + o.h / 2, o.w * 0.8, 0, 6.2832); ctx.fill();
+        }
+        blit(K.meteor, o.x, o.y);
+        return;
+      }
       if (o.type === 'cactus') {
         o.parts.forEach(function (p) { var q = (playful ? PSET : CSET).CACT[p.name]; blit(q, o.x + p.dx, GROUND - q.h); });
       } else {
-        var K = playful ? PSET : CSET, s = Math.floor(o.f / 8) % 2 ? K.birdUp : K.birdDown;
+        var s = Math.floor(o.f / 8) % 2 ? K.birdUp : K.birdDown;
         blit(s, o.x, o.y);
       }
     });
+    sparks.forEach(function (sp) { ctx.globalAlpha = Math.max(0, sp.life); ctx.fillStyle = sp.life > .5 ? '#FFD166' : '#FF7A3D'; ctx.fillRect(sp.x - 2, sp.y - 2, 4, 4); });
+    ctx.globalAlpha = 1;
+  }
+  function drawBanner() {                                         // "LEVEL 2 · CANYON", dropping in for about 2.5 s
+    if (!banner) return;
+    var t = (frame - banner.at) / 150;
+    if (t >= 1) { banner = null; return; }
+    var a = t < .12 ? t / .12 : t > .82 ? (1 - t) / .18 : 1, y = 74 - (1 - Math.min(1, t / .12)) * 24;
+    var label = 'LEVEL ' + (level + 1) + '  ·  ' + LEVELS[level].name;
+    ctx.globalAlpha = a; ctx.font = '800 22px ' + COL.font; ctx.textAlign = 'center';
+    if (playful) {
+      var w = ctx.measureText(label).width + 44;
+      ctx.fillStyle = INK; rr(W / 2 - w / 2 + 4, y - 25, w, 40);
+      ctx.fillStyle = '{{ACCENT}}'; rr(W / 2 - w / 2, y - 29, w, 40);
+      ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(W / 2 - w / 2, y - 29, w, 40, 4); else ctx.rect(W / 2 - w / 2, y - 29, w, 40); ctx.stroke();
+      ctx.fillStyle = INK;
+    } else ctx.fillStyle = COL.hot;
+    ctx.fillText(label, W / 2, y);
+    ctx.globalAlpha = 1;
   }
 
   function centerText(t, y, size, color) {
@@ -657,20 +836,23 @@
 
   function render() {
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H);
-    if (playful && night) { blitArt(cachedArt('stars' + W, W, GROUND, paintStars), 0, 0); blitArt(cachedArt('moon', 60, 60, paintMoon), 104 - 30, 44 - 30); }
+    if (playful) drawSky(); else { ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H); }
+    var starry = playful && (night || level === 3);               // Starfall has a moon and stars even by day
+    if (starry) { blitArt(cachedArt('stars' + W, W, GROUND, paintStars), 0, 0); blitArt(cachedArt('moon', 60, 60, paintMoon), 104 - 30, 44 - 30); }
     else if (playful) blitArt(cachedArt('sun', 60, 60, paintSun), 104 - 30, 44 - 30);
     clouds.forEach(function (c) { drawCloud(c.x, c.y); });
-    drawGround(); drawObstacles(); drawDino();
+    drawGround(); drawObstacles(); drawDino(); drawBanner();
 
     // score
     ctx.font = '700 18px ' + COL.font;
     ctx.textAlign = 'right';
     var flash = state === 'running' && score > 0 && score % 100 < 6 && Math.floor(frame / 5) % 2;
     ctx.fillStyle = COL.text; ctx.fillText('HI ' + padScore(hi), W - 120, 32);
+    if (state !== 'ready') ctx.fillText('LV ' + (level + 1), W - 240, 32);
     ctx.fillStyle = flash ? COL.flash : COL.hot; ctx.fillText(padScore(score), W - 24, 32);
 
     if (state === 'ready') {
+      centerText('SEASON 2', 70, 13, COL.sub);
       centerText('PRESS SPACE OR TAP TO START', 100, 22, COL.title);
       centerText('↑ jump   ·   ↓ duck', 132, 14, COL.text);
     } else if (state === 'over') {

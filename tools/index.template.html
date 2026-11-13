@@ -626,27 +626,61 @@
   function startBoss() {
     var k = beaten % 4, round = Math.floor(beaten / 4), B = BOSSES[k], hp = B.hp + 2 * round;
     boss = { k: k, hp: hp, max: hp, pts: B.pts + 100 * round, x: W + 130, tx: W - (k === 1 ? 140 : 165), t: 0, phase: 'enter',
-             cool: 70, wind: 0, flash: 0, orb: 20, n: 0, y: GROUND - 105, headY: GROUND - 88, aimY: 0, next: '' };
+             cool: 70, wind: 0, atk: 0, flash: 0, orb: 20, n: 0, y: GROUND - 105, headY: GROUND - 74, aimY: 0, next: '',
+             dodge: 0, curl: 0, lift: 0, lv: 0, dive: 0 };
     banner = { at: frame, text: 'BOSS  ·  ' + B.name }; spawnHold = 1e9;   // no other obstacles during the fight
   }
-  function bossBoxes(b) {
-    if (b.k === 0) return [{ x: b.x - 62, y: b.y - 26, w: 112, h: 52 }];
-    if (b.k === 3) return [{ x: b.x - 74, y: b.y - 30, w: 134, h: 60 }];
-    if (b.k === 1) return [{ x: b.x - 52, y: GROUND - 128, w: 104, h: 128 }];
-    return [{ x: b.x - 40, y: b.headY - 20, w: 66, h: 40 }];
+  function bossBoxes(b) {                        // where fire hurts it, from its idle pose
+    if (b.curl > 0) { var c = golemBall(); return [{ x: b.x - c.w / 2 + 3, y: GROUND - c.h + 3, w: c.w - 6, h: c.h - 3 }]; }
+    var p = bossAt(b, 0), w = p.s.w, h = p.s.h;
+    if (b.k === 1) return [{ x: p.x + w * 0.15, y: p.y + h * 0.1, w: w * 0.7, h: h * 0.9 }];
+    if (b.k === 2) return [{ x: p.x + w * 0.05, y: p.y, w: w * 0.8, h: h * 0.45 },                                   // head
+                           { x: p.x + w * 0.45, y: p.y + h * 0.45, w: w * 0.45, h: h * 0.55 }]                        // neck
+      .map(function (r) { return { x: r.x, y: r.y, w: r.w, h: Math.min(r.y + r.h, GROUND) - r.y }; })             // only what is above the lava
+      .filter(function (r) { return r.h > 0; });
+    return [{ x: p.x + w * 0.2, y: p.y + h * 0.2, w: w * 0.6, h: h * 0.6 }];
   }
-  function bossCenter(b) { return b.k === 1 ? { x: b.x, y: GROUND - 64 } : b.k === 2 ? { x: b.x - 8, y: b.headY } : { x: b.x, y: b.y }; }
+  function bossCenter(b) { var r = bossBoxes(b)[0]; return r ? { x: r.x + r.w / 2, y: r.y + r.h / 2 } : { x: b.x, y: GROUND - 20 }; }
+  // The ground bosses watch for fire. The Golem curls into a ball under high fire and hops over low fire (so mixing
+  // heights catches it), the Serpent dives into its pool. Each shot is judged once, as it comes close. Never while winding up or attacking (the moment to shoot), and not again straight away.
+  var dodgeP = null;                               // the odds of a dodge; the test hook can pin it
+  function dodgeOdds() { return dodgeP !== null ? dodgeP : Math.min(0.85, 0.65 + 0.1 * Math.floor(beaten / 4)); }
+  function watchFire(b) {
+    if (b.wind > 0 || b.atk > 0 || b.dodge > 0 || b.curl > 0 || b.lift > 0 || b.dive > 0) return;
+    var boxes = bossBoxes(b);
+    for (var i = 0; i < shots.length; i++) {
+      var f = shots[i];
+      if (f.seen || !f.straight) continue;
+      var coming = boxes.some(function (r) { var gap = r.x - (f.x + f.r); return gap > 0 && gap < 130 && f.y + f.r > r.y && f.y - f.r < r.y + r.h; });
+      if (!coming) continue;
+      f.seen = true;
+      if (Math.random() >= dodgeOdds()) continue;
+      if (b.k === 1 && f.y + f.r < GROUND - golemBall().h + 3) { b.curl = 50; b.dodge = 62; burst(b.x, GROUND - 30, 12, false); }   // high: a ball of rock, 3/4 s
+      else if (b.k === 1) { b.lift = 0.01; b.lv = 7.8; b.dodge = 52; }                  // low: a hop (about 75 px), 2/3 s in the air
+      else { b.dive = 48; b.dodge = 64; burst(b.x, GROUND - 4, 14, true); }               // under the lava for 3/4 s, ready again soon after
+      return;
+    }
+  }
   function updateBoss(dt) {
     var b = boss;
-    b.t += dt; if (b.flash > 0) b.flash -= dt;
+    b.t += dt; if (b.flash > 0) b.flash -= dt; if (b.atk > 0) b.atk -= dt; if (b.dodge > 0) b.dodge -= dt;
     if (b.phase === 'down') { b.t2 += dt; if (b.t2 > 110) { boss = null; afterBoss(); } return; }
     if (b.phase === 'enter') { b.x += (b.tx - b.x) * Math.min(1, 0.05 * dt); if (Math.abs(b.x - b.tx) < 1.5) { b.x = b.tx; b.phase = 'fight'; } }
     var aiming = b.wind > 0 && b.next === 'spit';
-    if (b.k === 0 || b.k === 3) b.y += ((aiming ? b.aimY + 8 : GROUND - 105 + 40 * Math.sin(b.t / 45)) - b.y) * Math.min(1, 0.12 * dt);   // bobs high and low
-    if (b.k === 2) b.headY += ((aiming ? b.aimY : GROUND - 88 + 42 * Math.sin(b.t / 38)) - b.headY) * Math.min(1, 0.15 * dt);
+    if (b.k === 0) b.y += (GROUND - 105 + 40 * Math.sin(b.t / 45) - b.y) * Math.min(1, 0.12 * dt);   // bobs high and low
+    if (b.k === 3) b.y += (GROUND - 106 + 26 * Math.sin(b.t / 45) - b.y) * Math.min(1, 0.12 * dt);   // bigger, so less room
+    if (b.k === 2) b.headY += ((b.dive > 0 ? GROUND + 72 : aiming ? b.aimY : GROUND - 74 + 22 * Math.sin(b.t / 38)) - b.headY) * Math.min(1, (b.dive > 0 ? 0.32 : 0.15) * dt);
+    if (b.curl > 0) { b.curl -= dt; if (b.curl <= 0) burst(b.x, GROUND - 40, 12, false); }   // and back up
+    if (b.lift > 0) {
+      b.lift += b.lv * dt; b.lv -= 0.4 * dt;
+      if (b.lift <= 0) { b.lift = 0; burst(b.x - 34, GROUND - 4, 6, false); burst(b.x + 34, GROUND - 4, 6, false); }   // thud
+    }
+    if (b.dive > 0) { b.dive -= dt; if (b.dive <= 0) burst(b.x, GROUND - 4, 16, true); }   // bursts back out of the lava
     b.orb -= dt;                                   // a fire orb every few seconds, low or high
     if (b.orb <= 0) { b.orb = 190; orbs.push({ x: W + 10, y: Math.random() < 0.5 ? GROUND - 30 : GROUND - 92, r: 11, ph: 0 }); }
     if (b.phase !== 'fight') return;
+    if (b.k === 1 || b.k === 2) watchFire(b);
+    if (b.curl > 0 || b.lift > 0 || b.dive > 0) return;   // no attacks while dodging
     if (b.wind > 0) { b.wind -= dt; if (b.wind <= 0) bossAttack(b); return; }
     b.cool -= dt;
     if (b.cool <= 0) {                             // wind up (a visible tell), then attack
@@ -655,14 +689,17 @@
       b.wind = 24; b.cool = BOSSES[b.k].every * (0.85 + Math.random() * 0.3);
     }
   }
-  function bossAttack(b) {
+  function bossAttack(b) {                        // everything leaves from where it is in the wind-up pose
+    var u = BOSS_U[b.k], p = bossAt(b, 1), from = BOSS_FROM[b.k];
+    b.atk = 22;                                    // shows the attack pose for a moment
     if (b.next === 'rock') {                       // falls on a curve; a pulsing ring shows where it lands
-      var F = 52, land = dino.x + 190 + rnd(0, Math.max(60, W * 0.28)), gx = land + speed * F, sx = b.x - 20, sy = b.y + 18;
+      var F = 52, land = dino.x + 190 + rnd(0, Math.max(60, W * 0.28)), gx = land + speed * F;
+      var sx = p.x + from.rock[0] * u - meteor.w / 2, sy = p.y + from.rock[1] * u - meteor.h / 2;
       obstacles.push({ type: 'meteor', gx: gx, x: sx, ox: sx - gx, y0: sy, y: sy, w: meteor.w, h: meteor.h, p: 0, F: F, landed: false });
     } else if (b.next === 'boulder') {
-      obstacles.push({ type: 'boulder', x: b.x - 80, w: boulder.w, h: boulder.h, y: GROUND - boulder.h, rot: 0 });
-    } else {
-      obstacles.push({ type: 'spit', x: b.x - (b.k === 2 ? 52 : 92), y: b.aimY - 9, w: 18, h: 18 });
+      obstacles.push({ type: 'boulder', x: bossAt(b, 0).x - boulder.w / 2, w: boulder.w, h: boulder.h, y: GROUND - boulder.h, rot: 0 });
+    } else {                                       // from its mouth, settling into the lane it aimed at (high: duck, low: jump)
+      obstacles.push({ type: 'spit', x: p.x + from.spit[0] * u - 9, y: p.y + from.spit[1] * u - 9, ty: b.aimY - 9, w: 18, h: 18 });
     }
   }
   function defeatBoss() {
@@ -717,6 +754,7 @@
         return;
       }
       o.x -= (speed + (o.type === 'bird' ? 1.5 : o.type === 'boulder' ? 2.4 : o.type === 'spit' ? 4 : 0)) * dt;
+      if (o.ty !== undefined) o.y += (o.ty - o.y) * Math.min(1, 0.2 * dt);   // a boss's spit settles into its lane
       if (o.type === 'bird') o.f += dt;
       if (o.type === 'boulder') o.rot -= (speed + 2.4) * dt / (o.w / 2);
     });
@@ -1149,77 +1187,105 @@
       ctx.fillStyle = '#FFD166'; ctx.fillText(t.text, t.x, t.y);
     });
     ctx.globalAlpha = 1;
-    if (state !== 'ready') for (var i = 0; i < ammo; i++) fireball(80 + i * 17, 90, 5.5);   // ammo, under the sun
-  }
-  // ---------- boss drawing (cartoon shapes in the Playful style: ink outlines, flat fills) ----------
-  function shape(path, fill, lw) { path(); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = lw || 3; ctx.strokeStyle = INK; ctx.lineJoin = 'round'; ctx.stroke(); }
-  function poly(pts, fill, lw) { shape(function () { ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]); ctx.closePath(); }, fill, lw); }
-  function oval(x, y, rx, ry, fill, lw) { shape(function () { ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 6.2832); }, fill, lw); }
-  function box(x, y, w, h, r, fill, lw) { shape(function () { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); }, fill, lw); }
-  function drawFlyer(b, dragon) {                 // the Sky Tyrant, and the Star Dragon (bigger, darker, starry)
-    var white = b.flash > 0 && Math.floor(b.flash / 2) % 2, c = function (col) { return white ? '#FFFFFF' : col; };
-    var flap = Math.sin(b.t / 7), body = c(dragon ? '#3B2F6E' : '#8E6FD8'), wing = c(dragon ? '#2E2157' : '#B79CF2'), belly = c(dragon ? '#6F5FB8' : '#E4D9FB');
-    ctx.save(); ctx.translate(b.x, b.y); if (dragon) ctx.scale(1.15, 1.15);
-    poly([[10, -10], [74, -54 - 30 * flap], [42, -2]], wing);                                 // far wing
-    poly([[38, -6], [84, 4], [40, 10]], body);                                               // tail
-    oval(0, 0, 48, 22, body); oval(-6, 8, 30, 9, belly, 2);
-    if (dragon) [[-10, -8], [12, -12], [26, 2], [2, 4]].forEach(function (s) { ctx.fillStyle = white ? '#fff' : '#FFF3C4'; ctx.beginPath(); ctx.arc(s[0], s[1], 2.2, 0, 6.2832); ctx.fill(); });
-    poly([[-4, -8], [46, -60 - 34 * flap], [26, 2]], wing);                                  // near wing
-    poly([[-38, -22], [-4, -42], [-26, -12]], body);                                         // crest
-    oval(-46, -12, 21, 15, body);                                                            // head
-    var open = b.wind > 0 && b.next === 'spit';
-    poly([[-60, -18], [-100, -10], [-60, -6]], c('#FF9F43'));                                 // beak / upper jaw
-    if (open) poly([[-60, -4], [-94, 2], [-60, 4]], c('#FF9F43'));                            // lower jaw, open to spit
-    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-50, -16, 4.6, 0, 6.2832); ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
-    ctx.fillStyle = dragon ? '#FFD166' : INK; ctx.beginPath(); ctx.arc(-51, -16, 2.2, 0, 6.2832); ctx.fill();
-    [[-14, 20], [10, 20]].forEach(function (l) { poly([[l[0], l[1] - 4], [l[0] - 4, l[1] + 10], [l[0] + 6, l[1] + 10]], c('#FF9F43'), 2); });   // claws
-    if (b.wind > 0 && b.next === 'rock') { ctx.fillStyle = c('#5E4C4A'); ctx.beginPath(); ctx.arc(-2, 30, 9, 0, 6.2832); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 2.5; ctx.stroke(); }  // a rock in its claws
-    ctx.restore();
-  }
-  function drawGolem(b) {
-    var white = b.flash > 0 && Math.floor(b.flash / 2) % 2, c = function (col) { return white ? '#FFFFFF' : col; };
-    var x = b.x, G = GROUND, lift = b.wind > 0 ? 1 - b.wind / 24 : 0, step = Math.sin(b.t / 10) * 2;
-    box(x - 40, G - 32, 28, 32, 6, c('#7D6E62')); box(x + 12, G - 32 + step * 0.5, 28, 32 - step * 0.5, 6, c('#7D6E62'));   // legs
-    box(x + 36, G - 96, 26, 60, 10, c('#8C7B6D'));                                           // back arm
-    box(x - 52, G - 108, 104, 80, 16, c('#9C8A7A'));                                         // body
-    ctx.strokeStyle = c('#5E5148'); ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(x - 20, G - 98); ctx.lineTo(x - 8, G - 78); ctx.lineTo(x - 18, G - 60);
-    ctx.moveTo(x + 22, G - 70); ctx.lineTo(x + 34, G - 52); ctx.stroke();                     // cracks
-    box(x - 32, G - 136, 64, 34, 12, c('#AE9C8B'));                                          // head
-    [[-14], [10]].forEach(function (e) { ctx.fillStyle = white ? '#fff' : '#FFD166'; ctx.beginPath(); ctx.arc(x + e[0], G - 120, 5, 0, 6.2832); ctx.fill(); });
-    oval(x - 22, G - 136, 10, 4, c('#7BC86C'), 2); oval(x + 14, G - 137, 8, 3.5, c('#7BC86C'), 2);   // moss
-    ctx.save(); ctx.translate(x - 52, G - 96); ctx.rotate(-lift * 2.2);                      // the throwing arm swings up
-    box(-14, -8, 26, 64, 10, c('#8C7B6D')); if (lift > 0) oval(0, 60, 15, 15, c('#C77B54'));
-    ctx.restore();
-  }
-  function drawSerpent(b) {
-    var white = b.flash > 0 && Math.floor(b.flash / 2) % 2, c = function (col) { return white ? '#FFFFFF' : col; };
-    var x = b.x, hy = b.headY, G = GROUND;
-    oval(x + 12, G + 2, 62, 12, '#FF7A3D'); ctx.fillStyle = '#FFD166'; ctx.fillRect(x - 30, G - 1, 84, 3);   // its lava pool
-    for (var i = 7; i >= 0; i--) {                                                           // the neck, from the pool to the head
-      var t = i / 7, nx = x + 18 - 22 * t + 9 * Math.sin(t * 5 + b.t / 14), ny = G - 4 + (hy - G + 4) * t;
-      oval(nx, ny, 17 - 5 * t, 15 - 4 * t, c('#E2552C'), 2.5);
-      ctx.fillStyle = c('#FFB347'); ctx.beginPath(); ctx.ellipse(nx - 8 + 3 * t, ny, 5, 9 - 3 * t, 0, 0, 6.2832); ctx.fill();
+    if (state !== 'ready') {                       // ammo: six slots at the top in the middle; on narrow screens under the score
+      var half = MAX_AMMO * 8.5, narrow = W / 2 + half > W - 290, cx = narrow ? W - 24 - half : W / 2, cy = narrow ? 54 : 26;
+      for (var i = 0; i < MAX_AMMO; i++) {
+        var ax = cx + (i - (MAX_AMMO - 1) / 2) * 17;
+        if (i < ammo) fireball(ax, cy, 5.5);
+        else { ctx.beginPath(); ctx.arc(ax, cy, 5, 0, 6.2832); ctx.lineWidth = 1.5; ctx.strokeStyle = COL.text; ctx.globalAlpha = 0.6; ctx.stroke(); ctx.globalAlpha = 1; }
+      }
     }
-    var open = b.wind > 0;
-    poly([[x - 2, hy - 18], [x + 8, hy - 34], [x + 12, hy - 14]], c('#FFB347'), 2);           // horn
-    oval(x - 10, hy - 2, 30, 18, c('#E2552C'));                                              // head
-    poly([[x - 30, hy + 2], [x - 56, hy + (open ? 14 : 6)], [x - 26, hy + 12]], c('#C8401F'), 2.5);   // jaw
-    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x - 18, hy - 8, 5, 0, 6.2832); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke();
-    ctx.fillStyle = '#FFD166'; ctx.beginPath(); ctx.arc(x - 19, hy - 8, 2.4, 0, 6.2832); ctx.fill();
-    if (open) { ctx.fillStyle = 'rgba(255,94,122,.6)'; ctx.beginPath(); ctx.arc(x - 42, hy + 6, 6 + 3 * Math.sin(b.t), 0, 6.2832); ctx.fill(); }
+  }
+  // ---------- boss drawing ----------
+  function oval(x, y, rx, ry, fill) {
+    ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 6.2832); ctx.fillStyle = fill; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke();
+  }
+  // The bosses are pixel art made from the boss pictures in tools/boss_art (tools/gen_boss_art.py turns them into
+  // BOSS_ART). Each has three poses: idle, the wind-up (the tell before an attack) and the attack itself.
+  var BOSS_KEYS = ['tyrant', 'golem', 'serpent', 'dragon'], BOSS_U = [1.8, 2, 2, 1.75];   // px per cell
+  // where its attacks leave from, in cells of the wind-up pose: the rock in its claws, its mouth
+  var BOSS_FROM = [{ rock: [42, 47] }, {}, { spit: [14, 27] }, { rock: [10, 38], spit: [6, 15] }];
+  var SERPENT_MOUTH = 27, BOSS_SPR = [];          // the row of the Serpent's mouth in its idle pose (headY is that mouth)
+  function bossSprites(k) {
+    if (BOSS_SPR[k]) return BOSS_SPR[k];
+    var A = BOSS_ART[BOSS_KEYS[k]], u = BOSS_U[k];
+    BOSS_SPR[k] = A.frames.map(function (f) {
+      var s = sprite(f.rows, u, A.pal), rows = f.rows, n = rows.length, sum = 0, c = 0;
+      if (A.anchor === 'mass') { s.ax = f.ax * u; s.ay = f.ay * u; }          // flyers: held at their middle
+      else {                                       // standing: held at the middle of whatever touches the ground
+        for (var y = n - 3; y < n; y++) for (var x = 0; x < rows[y].length; x++) if (rows[y][x] !== '.') { sum += x; c++; }
+        s.ax = (sum / c + 0.5) * u; s.ay = n * u;
+      }
+      s.flash = { paths: [], sil: s.sil, base: '#FFFFFF', w: s.w, h: s.h };   // the white blink when it's hit
+      return s;
+    });
+    return BOSS_SPR[k];
+  }
+  function golemBall() {                          // the Golem curled up: a disc of its own rock (shoulder and moss), ringed dark
+    if (golemBall.s) return golemBall.s;
+    var A = BOSS_ART.golem, rows = A.frames[0].rows, R = 10, CX = 53, CY = 21, out = [], dark = null, lum = 1e9;
+    Object.keys(A.pal).forEach(function (ch) {
+      var h = A.pal[ch], v = parseInt(h.slice(1, 3), 16) * 3 + parseInt(h.slice(3, 5), 16) * 6 + parseInt(h.slice(5, 7), 16);
+      if (v < lum) { lum = v; dark = ch; }
+    });
+    for (var y = -R; y <= R; y++) {
+      var r = '';
+      for (var x = -R; x <= R; x++) {
+        var d = Math.sqrt(x * x + y * y), src = (rows[CY + y] || '')[CX + x] || '.';
+        r += d > R + 0.3 ? '.' : d > R - 1.2 ? dark : src === '.' ? 'C' : src;
+      }
+      out.push(r);
+    }
+    var s = sprite(out, BOSS_U[1], A.pal);
+    s.flash = { paths: [], sil: s.sil, base: '#FFFFFF', w: s.w, h: s.h };
+    return (golemBall.s = s);
+  }
+  function bossPose(b) { return b.phase === 'fight' && b.wind > 0 ? 1 : b.atk > 0 ? 2 : 0; }
+  function bossAt(b, i) {                         // a pose and its top-left corner
+    var S = bossSprites(b.k), s = S[i], y = b.y;
+    if (b.k === 1) y = GROUND - b.lift;
+    if (b.k === 2) y = Math.max(GROUND + 4, b.headY + S[0].h - SERPENT_MOUTH * BOSS_U[2]);   // rises out of its pool
+    return { s: s, x: b.x - s.ax, y: y - s.ay };
   }
   function drawBoss() {
     var b = boss;
     if (!b) return;
+    var p = bossAt(b, bossPose(b));
     ctx.save();
     if (b.phase === 'down') { var k = b.t2 / 110; ctx.globalAlpha = Math.max(0, 1 - k); ctx.translate(0, k * k * 60); }
-    if (b.k === 0 || b.k === 3) drawFlyer(b, b.k === 3); else if (b.k === 1) drawGolem(b); else drawSerpent(b);
+    var white = b.flash > 0 && Math.floor(b.flash / 2) % 2;
+    if (b.lift > 2) {                              // the Golem's shadow while it is in the air
+      ctx.fillStyle = 'rgba(43,26,18,.22)'; ctx.beginPath(); ctx.ellipse(b.x, GROUND + 1, 58 * (1 - b.lift / 260), 5, 0, 0, 6.2832); ctx.fill();
+    }
+    ctx.save();
+    if (b.curl > 0) {                              // the Golem, curled up, rocking in place
+      var c = golemBall(), ang = 0.5 * Math.sin(b.t / 5);
+      blitTurned(c, b.x, GROUND - c.h / 2, ang);
+      if (white) { ctx.globalAlpha *= 0.8; blitTurned(c.flash, b.x, GROUND - c.h / 2, ang); }
+    } else {
+      if (b.k === 2) { ctx.beginPath(); ctx.rect(-100, -100, W + 200, GROUND + 103); ctx.clip(); }   // below the surface of the pool
+      blit(p.s, p.x, p.y);
+      if (white) { ctx.globalAlpha *= 0.8; blit(p.s.flash, p.x, p.y); }
+    }
+    ctx.restore();
+    if (b.k === 2) {                               // the Serpent's lava pool
+      oval(b.x, GROUND + 3, 66, 11, '#FF7A3D'); ctx.fillStyle = '#FFD166'; ctx.fillRect(b.x - 46, GROUND, 92, 3);
+      var a0 = ctx.globalAlpha;
+      if (b.dive > 0) for (var i = 0; i < 4; i++) {  // bubbles while it hides under the lava
+        var q = ((b.t * 0.05 + i * 0.27) % 1), bx = b.x - 39 + i * 26 + 4 * Math.sin(b.t / 6 + i);
+        ctx.globalAlpha = a0 * (1 - q); ctx.fillStyle = '#FFD166'; ctx.beginPath(); ctx.arc(bx, GROUND - 2 - q * 14, 2.5 + 2 * (1 - q), 0, 6.2832); ctx.fill();
+        ctx.lineWidth = 1.5; ctx.strokeStyle = INK; ctx.stroke(); ctx.globalAlpha = a0;
+      }
+    }
     ctx.restore();
   }
   function drawBossBar() {                        // the boss's name and health, at the top
     var b = boss;
     if (!b || b.phase === 'down') return;
-    var w = Math.min(320, W - 90), x = (W - w) / 2, y = 44, seg = (w - 128) / b.max;
+    var w = Math.min(320, W - 90), x = (W - w) / 2, y = 44;
+    if (x + w > W - 250) { w = Math.min(w, W - 260); x = 12; }   // narrow screens: keep it clear of the boss, on the left
+    var seg = (w - 128) / b.max;
     ctx.fillStyle = INK; rr(x + 3, y + 3, w, 24); ctx.fillStyle = '#FFFDF7'; rr(x, y, w, 24);
     ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, 24, 4); else ctx.rect(x, y, w, 24); ctx.stroke();
     ctx.font = '800 12px ' + COL.font; ctx.textAlign = 'left'; ctx.fillStyle = INK; ctx.fillText(BOSSES[b.k].name, x + 10, y + 16.5);

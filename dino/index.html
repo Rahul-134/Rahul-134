@@ -123,6 +123,11 @@
   .arc { width:84px; height:84px; padding:0; border-radius:50%; border:3px solid var(--ink); font-family:var(--display); font-weight:800; font-size:36px; line-height:1; box-shadow:0 8px 0 var(--ink); transition:transform .08s, box-shadow .08s; }
   .arc:active, .arc.down { transform:translateY(6px); box-shadow:0 2px 0 var(--ink); }
   .arc.a { background:var(--coral); } .arc.b { background:var(--sun); }
+  .arc { position:relative; }
+  .arc.f { background:#FF9F43; } .arc.f.empty { opacity:.55; }
+  .arc .ammo { position:absolute; top:-6px; right:-6px; min-width:26px; height:26px; padding:0 6px; border:2.5px solid var(--ink); border-radius:99px; background:var(--paper); color:var(--ink); font-size:15px; font-style:normal; line-height:21px; }
+  html[data-season="1"] .s2only, html[data-season="1"] .fire-pad { display:none; }       /* fire breath is a Season 2 thing */
+  html[data-season="2"] .deck { grid-template-columns:auto 1fr auto auto; }
   .mid { display:grid; justify-items:center; gap:12px; text-align:center; font-size:14px; }
   .grille { display:flex; gap:9px; transform:skewX(-20deg); }
   .grille i { width:9px; height:34px; border-radius:99px; background:rgba(43,26,18,.38); }
@@ -134,7 +139,8 @@
   .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
   .tip { position:relative; padding:16px 18px 18px; background:var(--paper); border:3px solid var(--ink); border-radius:22px; box-shadow:5px 6px 0 var(--ink); }
   .tip::before { content:""; position:absolute; left:14px; right:14px; bottom:-14px; height:14px; z-index:-1; border:3px solid var(--ink); border-top:0; border-radius:0 0 18px 18px; background:var(--tab, var(--sun)); }
-  .tip.t1 { --tab:var(--sun); } .tip.t2 { --tab:var(--teal); } .tip.t3 { --tab:var(--coral); }
+  .tip.t1 { --tab:var(--sun); } .tip.t2 { --tab:var(--teal); } .tip.t3 { --tab:var(--coral); } .tip.t4 { --tab:#FF9F43; }
+  html[data-season="2"] .cards { grid-template-columns:repeat(2,1fr); }
   .tip h3 { margin:0 0 6px; font-family:var(--display); font-weight:800; font-size:24px; line-height:1.1; }
   .tip p { margin:0; font-size:15px; font-weight:700; line-height:1.45; color:rgba(43,26,18,.82); }
   .tip .ico { float:right; width:54px; height:54px; margin:0 0 6px 10px; display:grid; place-items:center; background:var(--sky); border:3px solid var(--ink); border-radius:16px; }
@@ -253,7 +259,8 @@
     </div></div>
     <div class="deck">
       <div class="padbox"><button id="duckBtn" type="button" class="arc b" aria-label="Duck (hold)">B</button><small>DUCK</small></div>
-      <div class="mid" aria-hidden="true"><div class="grille"><i></i><i></i><i></i><i></i><i></i><i></i></div><p><kbd>Space</kbd> <kbd>↑</kbd> jump &nbsp;·&nbsp; <kbd>↓</kbd> duck</p></div>
+      <div class="mid" aria-hidden="true"><div class="grille"><i></i><i></i><i></i><i></i><i></i><i></i></div><p><kbd>Space</kbd> <kbd>↑</kbd> jump &nbsp;·&nbsp; <kbd>↓</kbd> duck<span class="s2only"> &nbsp;·&nbsp; <kbd>Ctrl</kbd> fire</span></p></div>
+      <div class="padbox fire-pad"><button id="fireBtn" type="button" class="arc f empty" aria-label="Breathe fire">F<i class="ammo" aria-hidden="true">0</i></button><small>FIRE</small></div>
       <div class="padbox"><button id="jumpBtn" type="button" class="arc a" aria-label="Jump">A</button><small>JUMP</small></div>
     </div>
   </section>
@@ -263,6 +270,7 @@
     <div class="cards">
       <div class="tip t1"><span class="ico"><svg viewBox="0 0 22 24" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#43602F" d="M8 6h2v2h-2zM8 8h2v2h-2zM8 10h2v2h-2zM8 12h2v2h-2zM8 14h2v2h-2zM8 16h2v2h-2zM8 18h2v2h-2zM8 20h2v2h-2zM8 22h2v2h-2z"/><path fill="#6B8F52" d="M8 2h2v2h-2zM14 2h2v2h-2zM8 4h2v2h-2zM14 4h2v2h-2zM2 6h4v2h-4zM10 6h4v2h-4zM2 8h4v2h-4zM10 8h4v2h-4zM2 10h4v2h-4zM10 10h4v2h-4zM2 12h6v2h-6zM10 12h4v2h-4zM2 14h6v2h-6zM10 14h4v2h-4zM2 16h6v2h-6zM10 16h4v2h-4zM12 18h2v2h-2zM10 20h4v2h-4zM10 22h4v2h-4z"/><path fill="#9CBF80" d="M14 6h2v2h-2zM14 8h2v2h-2zM14 10h2v2h-2zM14 12h2v2h-2zM14 14h2v2h-2zM14 16h2v2h-2zM14 18h2v2h-2zM14 20h2v2h-2zM14 22h2v2h-2z"/><path fill="#E6EBD2" d="M16 10h2v2h-2zM10 18h2v2h-2zM16 18h2v2h-2z"/><path fill="#F472B6" d="M10 0h4v2h-4zM10 2h4v2h-4zM10 4h4v2h-4z"/><path fill="#2D3C22" d="M8 0h2v2h-2zM14 0h2v2h-2zM6 2h2v2h-2zM16 2h2v2h-2zM2 4h6v2h-6zM16 4h2v2h-2zM0 6h2v2h-2zM6 6h2v2h-2zM16 6h2v2h-2zM0 8h2v2h-2zM6 8h2v2h-2zM16 8h2v2h-2zM0 10h2v2h-2zM6 10h2v2h-2zM18 10h2v2h-2zM0 12h2v2h-2zM16 12h2v2h-2zM0 14h2v2h-2zM16 14h2v2h-2zM0 16h2v2h-2zM16 16h2v2h-2zM2 18h6v2h-6zM18 18h2v2h-2zM6 20h2v2h-2zM16 20h2v2h-2zM6 22h2v2h-2zM16 22h2v2h-2z"/></svg></span><h3>Jump</h3><p>Press <kbd>Space</kbd> or <kbd>↑</kbd>, tap the screen, or hit the A button to leap over cacti, boulders and lava.</p></div>
       <div class="tip t2"><span class="ico"><svg viewBox="0 0 48 28" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><path fill="#161616" d="M10 10h2v2h-2zM10 12h2v2h-2z"/><path fill="#FFFFFF" d="M10 8h4v2h-4zM8 10h2v2h-2zM12 10h4v2h-4zM12 12h4v2h-4zM12 14h2v2h-2z"/><path fill="#F472B6" d="M16 16h2v2h-2z"/><path fill="#B79CF2" d="M10 6h8v2h-8zM8 8h2v2h-2zM14 8h6v2h-6zM6 10h2v2h-2zM16 10h18v2h-18zM8 12h2v2h-2zM16 12h20v2h-20zM8 14h4v2h-4zM14 14h24v2h-24zM8 16h8v2h-8zM18 16h20v2h-20zM10 18h6v2h-6zM30 18h6v2h-6zM32 20h2v2h-2zM28 22h2v2h-2z"/><path fill="#8E6FD8" d="M26 2h6v2h-6zM34 2h2v2h-2zM20 4h16v2h-16zM20 6h14v2h-14zM20 8h14v2h-14zM40 10h6v2h-6zM36 12h8v2h-8zM38 14h6v2h-6zM38 16h6v2h-6zM36 18h10v2h-10z"/><path fill="#FF9F43" d="M6 12h2v2h-2zM0 14h8v2h-8zM6 16h2v2h-2z"/><path fill="#2E2157" d="M26 0h6v2h-6zM34 0h2v2h-2zM20 2h6v2h-6zM32 2h2v2h-2zM36 2h2v2h-2zM10 4h10v2h-10zM36 4h2v2h-2zM8 6h2v2h-2zM18 6h2v2h-2zM34 6h2v2h-2zM6 8h2v2h-2zM34 8h2v2h-2zM40 8h6v2h-6zM4 10h2v2h-2zM34 10h6v2h-6zM46 10h2v2h-2zM0 12h6v2h-6zM44 12h2v2h-2zM44 14h2v2h-2zM0 16h6v2h-6zM44 16h2v2h-2zM6 18h4v2h-4zM46 18h2v2h-2zM10 20h4v2h-4zM34 20h12v2h-12zM14 22h6v2h-6zM30 22h4v2h-4zM20 24h10v2h-10z"/><path fill="#E4D9FB" d="M16 18h14v2h-14zM14 20h18v2h-18zM20 22h8v2h-8z"/></svg></span><h3>Duck</h3><p>Hold <kbd>↓</kbd> or the B button to slide under the low-flying birds.</p></div>
+      <div class="tip t4 s2only"><span class="ico"><svg viewBox="0 0 30 30" width="30" height="30"><circle cx="15" cy="16" r="10" fill="#FF8A3D" stroke="#2B1A12" stroke-width="2.5"/><path d="M15 9c3 4 5 6 5 9a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3-1-3 0-6 1-8z" fill="#FFD166" stroke="#2B1A12" stroke-width="1.6" stroke-linejoin="round"/></svg></span><h3>Breathe fire</h3><p>Season 2: grab a glowing orb for 3 fireballs, then press <kbd>Ctrl</kbd> (or <kbd>F</kbd>, or the F button). They bounce along the ground and burn birds and small cacti. Big saguaros, boulders and meteors still need a jump.</p></div>
       <div class="tip t3"><span class="ico"><svg viewBox="0 0 30 30" width="30" height="30"><path d="M4 22 L7 8 L12 15 L15 5 L18 15 L23 8 L26 22 Z" fill="#FFC83D" stroke="#2B1A12" stroke-width="2.5" stroke-linejoin="round"/></svg></span><h3>Beat the crown</h3><p>Climb the leaderboard and try to pass my best run. Add your name when you set a new high score.</p></div>
     </div>
   </section>
@@ -476,12 +484,17 @@
   var speed, distance, score, hi = 0, frame, nextGap, diedAt, runMs = 0;
   var dino, obstacles, clouds, groundOff, ducking = false;
   var level = 0, fromLevel = 0, fade = 1, banner = null, spawnHold = 0, backOff = 0, sparks = [];
+  // Season 2 fire breath: orbs give fireballs, fireballs bounce along the ground and burn birds and small cacti
+  var ammo = 0, shots = [], orbs = [], floaters = [], kills = 0, bonus = 0, fireCool = 0, lastOrbMs = -4000;
+  var MAX_AMMO = 6, ORB_AMMO = 3, ORB_EVERY_MS = 8000, BIRD_PTS = 40, CACTUS_PTS = 25;
 
   try { hi = parseInt(localStorage.getItem('dinoHi'), 10) || 0; } catch (e) {}
 
   function reset() {
     speed = 6; distance = 0; score = 0; frame = 0; groundOff = 0; runMs = 0;
     level = 0; fromLevel = 0; fade = 1; banner = null; spawnHold = 0; backOff = 0; sparks = [];
+    ammo = 0; shots = []; orbs = []; floaters = []; kills = 0; bonus = 0; fireCool = 0; lastOrbMs = -4000;
+    if (typeof showAmmo === 'function') showAmmo();
     dino = { x: 60, y: GROUND - dinoA.h, vy: 0, onGround: true };
     obstacles = [];
     nextGap = 380;
@@ -496,12 +509,25 @@
     if (dino.onGround && !ducking) { dino.vy = -11.6; dino.onGround = false; }
   }
   function setDuck(v) { ducking = v; }
+  function fire() {                               // Season 2: breathe a fireball, if there is one to breathe
+    if (!s2 || state !== 'running' || fireCool > 0 || ammo <= 0) return;
+    ammo--; fireCool = 14; showAmmo();
+    var low = ducking && dino.onGround;
+    shots.push({ x: dino.x + (low ? duckA.w - 6 : dinoA.w - 8), y: low ? GROUND - duckA.h + 12 : dino.y + 23, vx: 9, vy: 3.6, r: 7, bounces: 0 });   // aimed down, so point-blank cacti burn too
+  }
+  var fireBtn = document.getElementById('fireBtn'), ammoTag = fireBtn ? fireBtn.querySelector('.ammo') : null;
+  function showAmmo() {
+    if (!fireBtn) return;
+    ammoTag.textContent = String(ammo); fireBtn.classList.toggle('empty', ammo <= 0);
+    fireBtn.setAttribute('aria-label', 'Breathe fire (' + ammo + ' left)');
+  }
 
   function typing(e) { return e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName); }
   window.addEventListener('keydown', function (e) {
     if (typing(e)) return;
     if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') { e.preventDefault(); if (!e.repeat) jump(); }
     else if (e.code === 'ArrowDown' || e.code === 'KeyS') { e.preventDefault(); setDuck(true); }
+    else if (e.code === 'ControlLeft' || e.code === 'ControlRight' || e.code === 'KeyF') { if (s2 && state === 'running') e.preventDefault(); if (!e.repeat) fire(); }
   });
   window.addEventListener('keyup', function (e) {
     if (typing(e)) return;
@@ -514,6 +540,7 @@
   duckBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); setDuck(true); });
   ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (n) { duckBtn.addEventListener(n, function () { setDuck(false); }); });
   jumpBtn.addEventListener('keydown', function (e) { if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); } });
+  if (fireBtn) fireBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); fire(); });
 
   // ---------- Game logic ----------
   function rnd(a, b) { return a + Math.random() * (b - a); }
@@ -551,7 +578,18 @@
     }
     if (kind !== 'bird' && kind !== 'cactus' && kind !== 'meteor') nextGap = speed * rnd(30, 50) + 140; else
     nextGap = speed * rnd(26, 46) + 120;
+    maybeOrb();
   }
+  function maybeOrb() {                           // a fire orb in the middle of the gap after the newest obstacle
+    if (!s2 || score < 60 || runMs - lastOrbMs < ORB_EVERY_MS || Math.random() > 0.45) return;
+    var lastO = obstacles[obstacles.length - 1];
+    if (!lastO) return;
+    lastOrbMs = runMs;
+    var high = Math.random() < 0.4;               // some float at jump height
+    orbs.push({ x: rightEdge(lastO) + Math.max(80, nextGap * 0.45), y: high ? GROUND - 92 : GROUND - 30, r: 11, ph: Math.random() * 6 });
+  }
+  function burnable(o) { return o.type === 'bird' || (o.type === 'cactus' && o.parts.every(function (p) { return p.name !== 'saguaro'; })); }
+  function burst(x, y, n, hot) { for (var k = 0; k < n; k++) sparks.push({ x: x, y: y, vx: rnd(-2.6, 2.6), vy: rnd(-4.5, -0.5), life: 1, hot: hot }); }
 
   function dinoBox() {
     if (ducking && dino.onGround) return { x: dino.x + 6, y: GROUND - duckA.h + 4, w: duckA.w - 20, h: duckA.h - 6 };
@@ -577,7 +615,7 @@
     frame += dt;
     runMs += dt * 16.667;
     distance += speed * dt;
-    score = Math.floor(distance * 0.025);
+    score = Math.floor(distance * 0.025) + bonus;
     var lv = s2 ? levelAt(score) : 0;
     if (lv > level) levelUp(lv);
     if (fade < 1) fade = Math.min(1, fade + dt / 90);
@@ -615,6 +653,7 @@
     obstacles = obstacles.filter(function (o) { return rightEdge(o) > -20; });
     sparks.forEach(function (sp) { sp.x += (sp.vx - speed) * dt; sp.y += sp.vy * dt; sp.vy += 0.25 * dt; sp.life -= dt / 40; });
     sparks = sparks.filter(function (sp) { return sp.life > 0; });
+    if (s2) updateFire(dt);
     var lastO = obstacles[obstacles.length - 1];
     if (spawnHold <= 0 && (!lastO || (W - rightEdge(lastO)) > nextGap)) spawn();
 
@@ -626,10 +665,50 @@
     }
   }
 
+  function updateFire(dt) {
+    if (fireCool > 0) fireCool -= dt;
+    var d = dinoBox();
+    orbs.forEach(function (o) {
+      o.x -= speed * dt; o.ph += dt / 12;
+      var oy = o.y + 3 * Math.sin(o.ph);
+      if (!o.got && hit(d, { x: o.x - o.r, y: oy - o.r, w: 2 * o.r, h: 2 * o.r })) {
+        o.got = true; ammo = Math.min(MAX_AMMO, ammo + ORB_AMMO); showAmmo();
+        floaters.push({ x: o.x, y: oy - 16, text: '+' + ORB_AMMO + ' FIRE', life: 1 });
+        burst(o.x, oy, 8, true);
+      }
+    });
+    orbs = orbs.filter(function (o) { return !o.got && o.x > -30; });
+    shots.forEach(function (f) {
+      f.x += f.vx * dt; f.vy += 0.26 * dt; f.y += f.vy * dt;
+      if (f.y + f.r >= GROUND) { f.y = GROUND - f.r; f.vy = -2.6; f.bounces++; }   // low hops: under its belly never clears the shortest cactus (17), its top still reaches a low bird (23)
+      if (f.bounces > 5 || f.x > W + 20) { f.dead = true; return; }
+      var fb = { x: f.x - f.r, y: f.y - f.r, w: 2 * f.r, h: 2 * f.r };
+      for (var i = 0; i < obstacles.length; i++) {
+        var o = obstacles[i];
+        if (o.type === 'lava' || o.dead) continue;
+        // a skimming fireball still reaches a low bird just above it (its flames lick upward); high birds need a jump-shot
+        var reach = o.type === 'bird' ? 12 : 0;
+        if (!boxesOf(o).some(function (b) { return hit(fb, { x: b.x, y: b.y, w: b.w, h: b.h + reach }); })) continue;
+        f.dead = true;
+        if (burnable(o)) {                          // burnt: gone, with sparks and points
+          o.dead = true; kills++;
+          var pts = o.type === 'bird' ? BIRD_PTS : CACTUS_PTS, cy = o.type === 'bird' ? o.y + o.h / 2 : GROUND - 20;
+          bonus += pts; burst(o.x + o.w / 2, cy, 14, true);
+          floaters.push({ x: o.x + o.w / 2, y: cy - 18, text: '+' + pts, life: 1 });
+        } else burst(f.x, f.y, 6, false);            // too tough: the fireball fizzles out
+        break;
+      }
+    });
+    shots = shots.filter(function (f) { return !f.dead; });
+    obstacles = obstacles.filter(function (o) { return !o.dead; });
+    floaters.forEach(function (t) { t.x -= speed * 0.3 * dt; t.y -= 0.6 * dt; t.life -= dt / 60; });
+    floaters = floaters.filter(function (t) { return t.life > 0; });
+  }
+
   function gameOver() {
     state = 'over'; diedAt = performance.now();
     if (score > hi) { hi = score; try { localStorage.setItem('dinoHi', String(hi)); } catch (e) {} }
-    if (window.DinoLB) window.DinoLB.runEnded(score, runMs, { season: season, level: level + 1 });
+    if (window.DinoLB) window.DinoLB.runEnded(score, runMs, { season: season, level: level + 1, kills: kills });
   }
 
   // ---------- Rendering ----------
@@ -955,8 +1034,38 @@
         blit(s, o.x, o.y);
       }
     });
-    sparks.forEach(function (sp) { ctx.globalAlpha = Math.max(0, sp.life); ctx.fillStyle = sp.life > .5 ? '#FFD166' : '#FF7A3D'; ctx.fillRect(sp.x - 2, sp.y - 2, 4, 4); });
+    sparks.forEach(function (sp) { ctx.globalAlpha = Math.max(0, sp.life); ctx.fillStyle = sp.hot === false ? 'rgba(120,110,105,.8)' : sp.life > .5 ? '#FFD166' : '#FF7A3D'; ctx.fillRect(sp.x - 2, sp.y - 2, 4, 4); });
     ctx.globalAlpha = 1;
+  }
+  function fireball(x, y, r) {                    // an outlined fireball: orange with a hot yellow heart
+    ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(x, y, r + 2, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = '#FF7A3D'; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = '#FFD166'; ctx.beginPath(); ctx.arc(x + r * .2, y - r * .2, r * .5, 0, 6.2832); ctx.fill();
+  }
+  function drawFire() {
+    orbs.forEach(function (o) {                   // glowing orbs that bob, with a flame inside
+      var oy = o.y + 3 * Math.sin(o.ph), pulse = 0.5 + 0.5 * Math.sin(o.ph * 2);
+      ctx.fillStyle = 'rgba(255,138,61,' + (0.18 + 0.15 * pulse).toFixed(3) + ')'; ctx.beginPath(); ctx.arc(o.x, oy, o.r + 7 + 2 * pulse, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(o.x, oy, o.r + 2.5, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = '#FF8A3D'; ctx.beginPath(); ctx.arc(o.x, oy, o.r, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = '#FFD166'; ctx.beginPath(); ctx.moveTo(o.x, oy - 7); ctx.quadraticCurveTo(o.x + 7, oy + 1, o.x + 3, oy + 6);
+      ctx.quadraticCurveTo(o.x, oy + 8, o.x - 3, oy + 6); ctx.quadraticCurveTo(o.x - 6, oy + 1, o.x, oy - 7); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.beginPath(); ctx.arc(o.x - 4, oy - 4, 2.4, 0, 6.2832); ctx.fill();
+    });
+    shots.forEach(function (f) {                  // fireballs, each with a fading trail
+      [[3, .25, .55], [2, .45, .7], [1, .7, .85]].forEach(function (t) {
+        ctx.globalAlpha = t[1]; ctx.fillStyle = '#FF9F43'; ctx.beginPath(); ctx.arc(f.x - t[0] * 7, f.y - t[0] * f.vy * .8, f.r * t[2], 0, 6.2832); ctx.fill();
+      });
+      ctx.globalAlpha = 1; fireball(f.x, f.y, f.r);
+    });
+    ctx.font = '800 16px ' + COL.font; ctx.textAlign = 'center'; ctx.lineJoin = 'round';
+    floaters.forEach(function (t) {               // "+40" and "+3 FIRE", rising and fading
+      ctx.globalAlpha = Math.min(1, t.life * 1.6);
+      ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.strokeText(t.text, t.x, t.y);
+      ctx.fillStyle = '#FFD166'; ctx.fillText(t.text, t.x, t.y);
+    });
+    ctx.globalAlpha = 1;
+    if (state !== 'ready') for (var i = 0; i < ammo; i++) fireball(80 + i * 17, 90, 5.5);   // ammo, under the sun
   }
   function drawBanner() {                                         // "LEVEL 2 · CANYON", dropping in for about 2.5 s
     if (!banner) return;
@@ -985,7 +1094,7 @@
     ctx.clearRect(0, 0, W, H);
     if (playful) drawSky(); else { ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H); }
     clouds.forEach(function (c) { drawCloud(c.x, c.y); });
-    drawGround(); drawObstacles(); drawDino(); drawBanner();
+    drawGround(); drawObstacles(); drawDino(); if (s2) drawFire(); drawBanner();
 
     // score
     ctx.font = '700 18px ' + COL.font;
@@ -998,10 +1107,11 @@
     if (state === 'ready') {
       if (s2) centerText('SEASON 2', 70, 13, COL.sub);
       centerText('PRESS SPACE OR TAP TO START', 100, 22, COL.title);
-      centerText('↑ jump   ·   ↓ duck', 132, 14, COL.text);
+      centerText(s2 ? '↑ jump   ·   ↓ duck   ·   Ctrl fire' : '↑ jump   ·   ↓ duck', 132, 14, COL.text);
     } else if (state === 'over') {
       centerText('G A M E   O V E R', 96, 28, COL.title);
       centerText('SPACE / TAP TO RESTART', 128, 14, COL.sub);
+      if (s2 && kills) centerText(kills + ' BLASTED   ·   +' + bonus + ' BONUS', 154, 13, COL.text);
     }
   }
 
@@ -1060,7 +1170,7 @@
   
 })();
 </script>
-<script src="leaderboard.js?v=00ce532ac8"></script>
+<script src="leaderboard.js?v=f48560ccb0"></script>
 <script>
 (function () {
   // Hero scene: a cactus and then a bird slide past at a constant speed. The dino runs (legs alternate),

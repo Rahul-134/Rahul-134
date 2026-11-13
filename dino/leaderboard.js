@@ -5,7 +5,11 @@
  * Setup: see /leaderboard/README.md. Until `databaseURL` is set in leaderboard-config.js
  * this file does nothing and the game behaves exactly as before.
  *
- * The game calls:  DinoLB.runStarted()  and  DinoLB.runEnded(score, runMs)
+ * The game calls:  DinoLB.runStarted(),  DinoLB.runEnded(score, runMs, {season, level})  and  DinoLB.setSeason(1 | 2)
+ *
+ * Two boards: Season 1 (the original game, in either look) at /scores and /owner, and Season 2 (the remake with
+ * levels) at /s2scores and /s2owner. The panel shows the board of the season being played; a player's name and
+ * anonymous id are shared, while their best score and their own entries are remembered per season.
  */
 (function () {
   'use strict';
@@ -24,10 +28,13 @@
   var POLL_MS = 45000;
   var TIMEOUT_MS = 9000;
 
+  var season = window.DINO_SEASON === 1 || (!window.DINO_SEASON && recall('dinoSeason') === '1') ? 1 : 2;   // the game's season (Season 2 by default)
+  function seasonKey(name) { return season === 2 ? name + '2' : name; }   // per-season local memory: dinoLbBest / dinoLbBest2 ...
+  function dbPath(name) { return '/' + (season === 2 ? 's2' : '') + name + '.json'; }
   var board = [];             // [{id,name,score}] best run per name, best first
-  var owner = normaliseOwner(CFG.owner);
+  var owner = season === 1 ? normaliseOwner(CFG.owner) : null;
   var mine = loadMine();      // ids of entries submitted from this browser
-  var myBest = Number(recall('dinoLbBest')) || 0;   // best score this browser has put on the board
+  var myBest = Number(recall(seasonKey('dinoLbBest'))) || 0;   // best score this browser has put on the board
   var myUid = recall('dinoLbUid');                  // anonymous id that ties this browser's entries together
   if (!/^[A-Za-z0-9]{12,32}$/.test(myUid || '')) { myUid = randomId(); store('dinoLbUid', myUid); }
   var legacy = false;         // true once the database rules turned out not to accept the optional id
@@ -59,7 +66,7 @@
     for (var i = 0; i < n; i++) s += ((b ? b[i] : Math.floor(Math.random() * 256)) % 36).toString(36);
     return s;
   }
-  function loadMine() { try { return JSON.parse(recall('dinoLbMine') || '[]').slice(-40); } catch (e) { return []; } }
+  function loadMine() { try { return JSON.parse(recall(seasonKey('dinoLbMine')) || '[]').slice(-40); } catch (e) { return []; } }
   function normaliseOwner(o) {
     if (!o || typeof o !== 'object') return null;
     var s = Number(o.score);
@@ -220,7 +227,7 @@
     '.sub-card .row button.ghost{background:#fff}',
     '.sub-card .row button:disabled{opacity:.6;cursor:default}',
     '.sub-card .msg{margin:8px 0 0;min-height:1.3em;font-size:14px;font-weight:800;color:#C23A1C}',
-    '@media (max-width:560px){.lb{padding:14px 12px;border-radius:24px;box-shadow:6px 8px 0 var(--ink)}.lb h2{font-size:26px}.lb h2 small{display:none}.lb .podium{gap:4px;padding:8px 2px 0}.lb .pod{--d:54px}.lb .pod.p1{--d:70px}.lb .mw{width:calc(var(--d) + 36px);height:calc(var(--d) + 34px)}.lb .pod .nm{font-size:16px}.lb .pod .sc{font-size:16px;padding:1px 10px 1px 6px}.lb .pod .sc::before{width:14px;height:14px}.lb .pod .blk{font-size:40px}.lb .p1 .blk{height:86px}.lb .p2 .blk{height:64px}.lb .p3 .blk{height:48px}.lb .rest{padding:12px 8px}.lb .rowbtn{grid-template-columns:30px 40px minmax(0,1fr) auto;gap:9px;padding:8px 10px 8px 8px}.lb .row .av{--d:40px}.lb .row .rk{width:30px;height:30px;font-size:16px}.lb .row .nm{font-size:18px}.lb .rowbtn .sc{font-size:17px;padding:1px 10px 1px 6px}.lb .own .d{display:none}.lb .own b{font-size:20px}.lb .dscore{font-size:32px}.lb .tab{padding:4px 11px;font-size:15px}}',
+    '@media (max-width:560px){.lb{padding:14px 12px;border-radius:24px;box-shadow:6px 8px 0 var(--ink)}.lb h2{font-size:26px}.lb h2 small{font-size:11px;padding:3px 9px}.lb .podium{gap:4px;padding:8px 2px 0}.lb .pod{--d:54px}.lb .pod.p1{--d:70px}.lb .mw{width:calc(var(--d) + 36px);height:calc(var(--d) + 34px)}.lb .pod .nm{font-size:16px}.lb .pod .sc{font-size:16px;padding:1px 10px 1px 6px}.lb .pod .sc::before{width:14px;height:14px}.lb .pod .blk{font-size:40px}.lb .p1 .blk{height:86px}.lb .p2 .blk{height:64px}.lb .p3 .blk{height:48px}.lb .rest{padding:12px 8px}.lb .rowbtn{grid-template-columns:30px 40px minmax(0,1fr) auto;gap:9px;padding:8px 10px 8px 8px}.lb .row .av{--d:40px}.lb .row .rk{width:30px;height:30px;font-size:16px}.lb .row .nm{font-size:18px}.lb .rowbtn .sc{font-size:17px;padding:1px 10px 1px 6px}.lb .own .d{display:none}.lb .own b{font-size:20px}.lb .dscore{font-size:32px}.lb .tab{padding:4px 11px;font-size:15px}}',
     // Night: the page's Day / Night toggle sets data-mode="dark" on <html>; these only recolour, the layout stays
     'html[data-mode=dark] .lb,html[data-mode=dark] .lb .detail,html[data-mode=dark] .lb .foot,html[data-mode=dark] .lb .rest,html[data-mode=dark] .lb .msg,html[data-mode=dark] .lb .empty-state{color:var(--tx)}',
     'html[data-mode=dark] .lb h2,html[data-mode=dark] .lb .pod .nm,html[data-mode=dark] .lb .dscore,html[data-mode=dark] .lb .empty-state b,html[data-mode=dark] .lb .msg{color:var(--tx)}',
@@ -258,7 +265,9 @@
   var stage = $('.stage');
   var panel = el('section', 'lb' + (motion ? ' fx' : '')); panel.id = 'board'; panel.setAttribute('aria-label', 'Leaderboard');
   var head = el('header');
-  var title = el('h2', null, '🏆 Leaderboard'); title.appendChild(el('small', null, 'top runners'));
+  var title = el('h2', null, '🏆 Leaderboard'); var seasonTag = el('small', 'season'); title.appendChild(seasonTag);
+  function showSeasonTag() { seasonTag.textContent = season === 2 ? 'Season 2 · Remake' : 'Season 1 · Original'; }
+  showSeasonTag();
   var tools = el('div', 'tools');
   var tabs = el('div', 'tabs'); tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', 'Time range');
   var TABS = [['all', 'All time'], ['week', 'This week'], ['day', 'Today']];
@@ -543,13 +552,15 @@
   /* ---------- data ---------- */
   function loadBoard() {
     refreshBtn.classList.add('spin');
-    return request('/scores.json?orderBy=%22score%22&limitToLast=' + FETCH).then(function (data) {
+    var forSeason = season;
+    return request(dbPath('scores') + '?orderBy=%22score%22&limitToLast=' + FETCH).then(function (data) {
+      if (forSeason !== season) return board;                 // the player switched seasons while this was loading
       var rows = [];
       Object.keys(data || {}).forEach(function (id) {
         var v = data[id];
         if (v && typeof v.name === 'string' && typeof v.score === 'number') {
           var u = typeof v.u === 'string' ? v.u : '';
-          rows.push({ id: id, name: v.name, score: v.score, ms: typeof v.ms === 'number' ? v.ms : 0, t: v.t || 0, u: u, mine: (u !== '' && u === myUid) || isMine(id) });
+          rows.push({ id: id, name: v.name, score: v.score, ms: typeof v.ms === 'number' ? v.ms : 0, t: v.t || 0, u: u, lv: typeof v.lv === 'number' ? v.lv : 0, mine: (u !== '' && u === myUid) || isMine(id) });
         }
       });
       // One row per player. Entries share a player when they carry the same anonymous id; this
@@ -562,11 +573,11 @@
         var first = tops[0], last = tops[tops.length - 1];
         // the name comes from the newest entry at the best score (so a rename wins), the time from the first
         // (so renaming an old best does not make it look new)
-        return { id: last.id, name: last.name, score: max, ms: last.ms, t: first.t, u: last.u, mine: g.some(function (r) { return r.mine; }) };
+        return { id: last.id, name: last.name, score: max, ms: last.ms, t: first.t, u: last.u, lv: last.lv, mine: g.some(function (r) { return r.mine; }) };
       });
       reps.sort(function (x, y) { return y.score - x.score || x.t - y.t; });
       var mineTop = reps.filter(function (r) { return r.mine; })[0];
-      if (mineTop && mineTop.score > myBest) { myBest = mineTop.score; store('dinoLbBest', String(myBest)); }
+      if (mineTop && mineTop.score > myBest) { myBest = mineTop.score; store(seasonKey('dinoLbBest'), String(myBest)); }
       allRows = reps;
       var names = {}, best = [];
       allRows.forEach(function (r) { var k = r.name.toLowerCase(); if (!names[k]) { names[k] = 1; best.push(r); } });
@@ -584,7 +595,9 @@
   }
 
   function loadOwner() {
-    return request('/owner.json').then(function (o) {
+    var forSeason = season;
+    return request(dbPath('owner')).then(function (o) {
+      if (forSeason !== season) return;
       var n = normaliseOwner(o); if (n) owner = n; render(true);
     }).catch(noop);
   }
@@ -614,11 +627,12 @@
 
   /* POST an entry. It carries this browser's anonymous id; if the database rules predate ids and reject it,
      retry once without it so scoring keeps working. */
-  function post(name, score, ms) {
+  function post(name, score, ms, lv) {
     function send(withId) {
       var body = { name: name, score: score, ms: ms, t: { '.sv': 'timestamp' } };
       if (withId) body.u = myUid;
-      return request('/scores.json', { method: 'POST', body: JSON.stringify(body) });
+      if (season === 2 && lv) body.lv = lv;                      // Season 2 entries also record the level reached
+      return request(dbPath('scores'), { method: 'POST', body: JSON.stringify(body) });
     }
     if (legacy) return send(false);
     return send(true).catch(function (err) {
@@ -628,9 +642,9 @@
   }
 
   function remember(res, name, score) {
-    if (res && res.name) { mine.push(res.name); store('dinoLbMine', JSON.stringify(mine.slice(-40))); }
+    if (res && res.name) { mine.push(res.name); store(seasonKey('dinoLbMine'), JSON.stringify(mine.slice(-40))); }
     store('dinoLbName', name);
-    myBest = Math.max(myBest, score); store('dinoLbBest', String(myBest));
+    myBest = Math.max(myBest, score); store(seasonKey('dinoLbBest'), String(myBest));
     showWho();
   }
 
@@ -669,7 +683,7 @@
   /* a returning player's new personal best is saved straight away under their saved name */
   function autoSave(r, name) {
     busy = true; lastSubmitAt = Date.now(); setStatus('Saving your new best…');
-    post(name, r.score, r.ms).then(function (res) {
+    post(name, r.score, r.ms, r.lv).then(function (res) {
       r.submitted = true; remember(res, name, r.score);
       return afterSave(r.score, function (rank) { return pad5(r.score) + ' saved as ' + name + (rank > 0 ? ' — you are #' + rank + '.' : '.'); }, 'New personal best!');
     }).catch(function (err) {
@@ -685,7 +699,7 @@
       setStatus('Saved — "' + name + '" will be used for your next score.', 'ok', true); return;
     }
     busy = true; submitBtn.disabled = true; subMsg.textContent = ''; lastSubmitAt = Date.now();
-    post(name, me.score, Math.max(1000, me.ms)).then(function (res) {
+    post(name, me.score, Math.max(1000, me.ms), me.lv).then(function (res) {
       remember(res, name, me.score); closeSubmit();
       return afterSave(0, function () {
         return 'Name updated to ' + name + '.' + (legacy ? ' (Other visitors may still see your old name until the database rules are updated — see leaderboard/README.md.)' : '');
@@ -704,7 +718,7 @@
     if (!run || run.submitted) return;
     busy = true; submitBtn.disabled = true; subMsg.textContent = ''; lastSubmitAt = Date.now();
     var r = run;
-    post(name, r.score, r.ms).then(function (res) {
+    post(name, r.score, r.ms, r.lv).then(function (res) {
       r.submitted = true; remember(res, name, r.score); closeSubmit();
       return afterSave(r.score, function (rank) { return rank > 0 ? 'Submitted — you are #' + rank + '! Press Space to play again.' : 'Submitted! Press Space to play again.'; });
     }).catch(function (err) { submitBtn.disabled = false; subMsg.textContent = failText(err); })
@@ -721,12 +735,27 @@
   input.addEventListener('keyup', function (e) { e.stopPropagation(); });
   refreshBtn.addEventListener('click', function () { setStatus('Refreshing…'); loadBoard(); loadOwner(); });
 
+  /* switch the panel to the other season's board */
+  function setSeason(n) {
+    n = n === 1 ? 1 : 2;
+    if (n === season) return;
+    season = n; showSeasonTag();
+    owner = season === 1 ? normaliseOwner(CFG.owner) : null;
+    mine = loadMine(); myBest = Number(recall(seasonKey('dinoLbBest'))) || 0;
+    board = []; allRows = []; seen = {}; seenInit = false; selected = null; lastSig = ''; detail.hidden = true;
+    run = null; if (!ov.hidden) ov.hidden = true; setStatus('');
+    loading = true; render(true);
+    loadBoard(); loadOwner();
+  }
+
   /* ---------- game hooks ---------- */
   window.DinoLB = {
     enabled: true,
+    setSeason: setSeason,
     runStarted: function () { run = null; if (!ov.hidden) ov.hidden = true; if (sticky) setStatus(''); },
-    runEnded: function (score, ms) {
-      run = { score: score, ms: Math.max(1000, Math.round(ms)), id: ++runCounter, submitted: false };
+    runEnded: function (score, ms, info) {
+      if (info && info.season && info.season !== season) setSeason(info.season);
+      run = { score: score, ms: Math.max(1000, Math.round(ms)), id: ++runCounter, submitted: false, lv: info && info.level || 0 };
       var mineRun = run;
       if (owner && score > owner.score) setStatus("👑 You beat the creator's best!", 'ok', true);
       if (score < MIN_SCORE) return;

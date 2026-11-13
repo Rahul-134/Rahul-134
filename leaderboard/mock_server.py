@@ -2,7 +2,8 @@
 """A tiny local stand-in for the Firebase Realtime Database, for trying the leaderboard offline.
 
     python3 leaderboard/mock_server.py                      # serves http://127.0.0.1:9000
-    python3 leaderboard/mock_server.py --owner Rahul:1337   # also pins a creator score
+    python3 leaderboard/mock_server.py --owner Rahul:1337   # also pins a creator score (Season 1)
+    python3 leaderboard/mock_server.py --owner2 Rahul:900   # and one for the Season 2 board
 
 Then point dino/leaderboard-config.js at "http://127.0.0.1:9000" and open dino/index.html.
 
@@ -10,7 +11,8 @@ It applies the same checks as database.rules.json (name, score cap, score-vs-run
 fields, no overwrites, owner node read-only). Data lives in memory and vanishes on exit.
 Test helpers: GET /__mode?v=down makes every request fail with 503, /__mode?v=ok restores it;
 GET /__legacy?v=on rejects the optional player id, like rules from before it existed (v=off undoes it);
-POST /__seed with a JSON list of {name,score,ms,agoSeconds[,u]} adds entries with a back-dated time.
+POST /__seed with a JSON list of {name,score,ms,agoSeconds[,u][,season][,lv]} adds entries with a back-dated time.
+Season 1 lives at /scores.json and /owner.json, Season 2 at /s2scores.json and /s2owner.json.
 """
 import argparse
 import json
@@ -21,17 +23,21 @@ import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
-SCORES = {}
-OWNER = {}
+BOARDS = {1: {}, 2: {}}          # season -> {key: entry}
+OWNERS = {1: {}, 2: {}}
+SCORES, OWNER = BOARDS[1], OWNERS[1]                 # Season 1, under the names older helpers used
+PATHS = {"/scores.json": 1, "/s2scores.json": 2}
+OWNER_PATHS = {"/owner.json": 1, "/s2owner.json": 2}
 MODE = {"down": False, "legacy": False}
 UID_OK = re.compile(r"^[A-Za-z0-9]{12,32}$")
 NAME_OK = re.compile(r"^[A-Za-z0-9 ._-]+$")
 
 
-def valid(entry):
-    """Mirror of the .validate rules in database.rules.json."""
+def valid(entry, season=1):
+    """Mirror of the .validate rules in database.rules.json (scores for Season 1, s2scores for Season 2)."""
     base = {"name", "score", "ms", "t"}
-    if not isinstance(entry, dict) or not (set(entry) == base or set(entry) == base | {"u"}):
+    extra = {"u"} | ({"lv", "k"} if season == 2 else set())
+    if not isinstance(entry, dict) or not (base <= set(entry) <= base | extra):
         return False
     if "u" in entry and (MODE["legacy"] or not (isinstance(entry["u"], str) and UID_OK.match(entry["u"]))):
         return False   # the optional player id (rejected by rules from before it existed)
@@ -39,11 +45,17 @@ def valid(entry):
     if not (isinstance(name, str) and 1 <= len(name) <= 12 and NAME_OK.match(name) and "rahul" not in name.lower()):
         return False
     num = lambda v: isinstance(v, (int, float)) and not isinstance(v, bool)
-    if not (num(score) and 1 <= score <= 30000 and score == int(score)):
+    top, rate, slack = (30000, 25, 30) if season == 1 else (200000, 40, 500)
+    if not (num(score) and 1 <= score <= top and score == int(score)):
         return False
     if not (num(ms) and 1000 <= ms <= 3600000):
         return False
-    return score <= ms / 1000 * 25 + 30
+    if season == 2:
+        if "lv" in entry and not (num(entry["lv"]) and 1 <= entry["lv"] <= 9 and entry["lv"] == int(entry["lv"])):
+            return False
+        if "k" in entry and not (num(entry["k"]) and 0 <= entry["k"] <= 9999 and entry["k"] == int(entry["k"])):
+            return False
+    return score <= ms / 1000 * rate + slack
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -74,13 +86,13 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, {"down": MODE["down"]})
         if MODE["down"]:
             return self._send(503, {"error": "down"})
-        if u.path == "/scores.json":
+        if u.path in PATHS:
             q = parse_qs(u.query)
             n = int(q.get("limitToLast", ["100"])[0])
-            top = sorted(SCORES.items(), key=lambda kv: kv[1]["score"])[-n:]
+            top = sorted(BOARDS[PATHS[u.path]].items(), key=lambda kv: kv[1]["score"])[-n:]
             return self._send(200, dict(top) or None)
-        if u.path == "/owner.json":
-            return self._send(200, OWNER or None)
+        if u.path in OWNER_PATHS:
+            return self._send(200, OWNERS[OWNER_PATHS[u.path]] or None)
         return self._send(401, {"error": "Permission denied"})
 
     def do_POST(self):
@@ -90,11 +102,14 @@ class Handler(BaseHTTPRequestHandler):
                        "t": int((time.time() - e.get("agoSeconds", 0)) * 1000)}
                 if e.get("u"):
                     row["u"] = e["u"]
-                SCORES["-" + secrets.token_urlsafe(9)] = row
-            return self._send(200, {"seeded": len(SCORES)})
+                if e.get("lv"):
+                    row["lv"] = e["lv"]
+                BOARDS[e.get("season", 1)]["-" + secrets.token_urlsafe(9)] = row
+            return self._send(200, {"seeded": len(SCORES) + len(BOARDS[2])})
         if MODE["down"]:
             return self._send(503, {"error": "down"})
-        if urlparse(self.path).path != "/scores.json":
+        season = PATHS.get(urlparse(self.path).path)
+        if not season:
             return self._send(401, {"error": "Permission denied"})
         try:
             entry = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
@@ -104,10 +119,10 @@ class Handler(BaseHTTPRequestHandler):
             entry["t"] = int(time.time() * 1000)
         else:
             return self._send(401, {"error": "Permission denied"})
-        if not valid(entry):
+        if not valid(entry, season):
             return self._send(401, {"error": "Permission denied"})
         key = "-" + secrets.token_urlsafe(9)
-        SCORES[key] = entry
+        BOARDS[season][key] = entry
         return self._send(200, {"name": key})
 
     def do_PUT(self):
@@ -119,11 +134,13 @@ class Handler(BaseHTTPRequestHandler):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--port", type=int, default=9000)
-    ap.add_argument("--owner", help="pin a creator score, e.g. Rahul:1337")
+    ap.add_argument("--owner", help="pin a creator score for Season 1, e.g. Rahul:1337")
+    ap.add_argument("--owner2", help="pin a creator score for Season 2, e.g. Rahul:900")
     args = ap.parse_args()
-    if args.owner:
-        name, _, score = args.owner.partition(":")
-        OWNER.update({"name": name or "Rahul", "score": int(score)})
+    for flag, season in ((args.owner, 1), (args.owner2, 2)):
+        if flag:
+            name, _, score = flag.partition(":")
+            OWNERS[season].update({"name": name or "Rahul", "score": int(score)})
     srv = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     print(f"mock leaderboard on http://127.0.0.1:{args.port}  (Ctrl+C to stop)", file=sys.stderr)
     try:

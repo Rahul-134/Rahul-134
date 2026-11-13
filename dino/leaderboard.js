@@ -5,7 +5,7 @@
  * Setup: see /leaderboard/README.md. Until `databaseURL` is set in leaderboard-config.js
  * this file does nothing and the game behaves exactly as before.
  *
- * The game calls:  DinoLB.runStarted(),  DinoLB.runEnded(score, runMs, {season, level})  and  DinoLB.setSeason(1 | 2)
+ * The game calls:  DinoLB.runStarted(),  DinoLB.runEnded(score, runMs, {season, level, kills})  and  DinoLB.setSeason(1 | 2)
  *
  * Two boards: Season 1 (the original game, in either look) at /scores and /owner, and Season 2 (the remake with
  * levels) at /s2scores and /s2owner. The panel shows the board of the season being played; a player's name and
@@ -560,7 +560,7 @@
         var v = data[id];
         if (v && typeof v.name === 'string' && typeof v.score === 'number') {
           var u = typeof v.u === 'string' ? v.u : '';
-          rows.push({ id: id, name: v.name, score: v.score, ms: typeof v.ms === 'number' ? v.ms : 0, t: v.t || 0, u: u, lv: typeof v.lv === 'number' ? v.lv : 0, mine: (u !== '' && u === myUid) || isMine(id) });
+          rows.push({ id: id, name: v.name, score: v.score, ms: typeof v.ms === 'number' ? v.ms : 0, t: v.t || 0, u: u, lv: typeof v.lv === 'number' ? v.lv : 0, k: typeof v.k === 'number' ? v.k : 0, mine: (u !== '' && u === myUid) || isMine(id) });
         }
       });
       // One row per player. Entries share a player when they carry the same anonymous id; this
@@ -573,7 +573,7 @@
         var first = tops[0], last = tops[tops.length - 1];
         // the name comes from the newest entry at the best score (so a rename wins), the time from the first
         // (so renaming an old best does not make it look new)
-        return { id: last.id, name: last.name, score: max, ms: last.ms, t: first.t, u: last.u, lv: last.lv, mine: g.some(function (r) { return r.mine; }) };
+        return { id: last.id, name: last.name, score: max, ms: last.ms, t: first.t, u: last.u, lv: last.lv, k: last.k, mine: g.some(function (r) { return r.mine; }) };
       });
       reps.sort(function (x, y) { return y.score - x.score || x.t - y.t; });
       var mineTop = reps.filter(function (r) { return r.mine; })[0];
@@ -627,11 +627,12 @@
 
   /* POST an entry. It carries this browser's anonymous id; if the database rules predate ids and reject it,
      retry once without it so scoring keeps working. */
-  function post(name, score, ms, lv) {
+  function post(name, score, ms, lv, k) {
     function send(withId) {
       var body = { name: name, score: score, ms: ms, t: { '.sv': 'timestamp' } };
       if (withId) body.u = myUid;
       if (season === 2 && lv) body.lv = lv;                      // Season 2 entries also record the level reached
+      if (season === 2 && k) body.k = k;                         // and how many enemies the fire breath burnt
       return request(dbPath('scores'), { method: 'POST', body: JSON.stringify(body) });
     }
     if (legacy) return send(false);
@@ -683,7 +684,7 @@
   /* a returning player's new personal best is saved straight away under their saved name */
   function autoSave(r, name) {
     busy = true; lastSubmitAt = Date.now(); setStatus('Saving your new best…');
-    post(name, r.score, r.ms, r.lv).then(function (res) {
+    post(name, r.score, r.ms, r.lv, r.k).then(function (res) {
       r.submitted = true; remember(res, name, r.score);
       return afterSave(r.score, function (rank) { return pad5(r.score) + ' saved as ' + name + (rank > 0 ? ' — you are #' + rank + '.' : '.'); }, 'New personal best!');
     }).catch(function (err) {
@@ -699,7 +700,7 @@
       setStatus('Saved — "' + name + '" will be used for your next score.', 'ok', true); return;
     }
     busy = true; submitBtn.disabled = true; subMsg.textContent = ''; lastSubmitAt = Date.now();
-    post(name, me.score, Math.max(1000, me.ms), me.lv).then(function (res) {
+    post(name, me.score, Math.max(1000, me.ms), me.lv, me.k).then(function (res) {
       remember(res, name, me.score); closeSubmit();
       return afterSave(0, function () {
         return 'Name updated to ' + name + '.' + (legacy ? ' (Other visitors may still see your old name until the database rules are updated — see leaderboard/README.md.)' : '');
@@ -718,7 +719,7 @@
     if (!run || run.submitted) return;
     busy = true; submitBtn.disabled = true; subMsg.textContent = ''; lastSubmitAt = Date.now();
     var r = run;
-    post(name, r.score, r.ms, r.lv).then(function (res) {
+    post(name, r.score, r.ms, r.lv, r.k).then(function (res) {
       r.submitted = true; remember(res, name, r.score); closeSubmit();
       return afterSave(r.score, function (rank) { return rank > 0 ? 'Submitted — you are #' + rank + '! Press Space to play again.' : 'Submitted! Press Space to play again.'; });
     }).catch(function (err) { submitBtn.disabled = false; subMsg.textContent = failText(err); })
@@ -755,7 +756,7 @@
     runStarted: function () { run = null; if (!ov.hidden) ov.hidden = true; if (sticky) setStatus(''); },
     runEnded: function (score, ms, info) {
       if (info && info.season && info.season !== season) setSeason(info.season);
-      run = { score: score, ms: Math.max(1000, Math.round(ms)), id: ++runCounter, submitted: false, lv: info && info.level || 0 };
+      run = { score: score, ms: Math.max(1000, Math.round(ms)), id: ++runCounter, submitted: false, lv: info && info.level || 0, k: info && info.kills || 0 };
       var mineRun = run;
       if (owner && score > owner.score) setStatus("👑 You beat the creator's best!", 'ok', true);
       if (score < MIN_SCORE) return;

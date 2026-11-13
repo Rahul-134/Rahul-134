@@ -431,7 +431,7 @@
   var EASY_COMBOS = [['small'], ['barrel'], ['saguaro'], ['small', 'small'], ['barrel', 'small']];
   var HARD_COMBOS = EASY_COMBOS.concat([['saguaro', 'small'], ['saguaro', 'barrel'], ['barrel', 'small', 'barrel'], ['small', 'saguaro', 'small']]);
 
-  // ---------- Season 2: levels ----------
+  // ---------- Season 2: levels (Playful only; Classic stays the original game) ----------
   // One endless run in stages. Every 500 points the world changes (sky, backdrop, ground), the top speed rises a
   // little and new hazards join the mix: boulders roll in the Canyon, meteors fall and lava pools open in the
   // Volcano, and Starfall mixes everything. `mix` is the share of spawns that are each hazard (the rest are cacti).
@@ -504,6 +504,7 @@
   function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 
   function pickKind() {
+    if (!playful) return score > 250 && Math.random() < 0.3 ? 'bird' : 'cactus';      // Classic: the original mix
     var mix = LEVELS[level].mix, r = Math.random(), acc = 0, kind = 'cactus';
     ['bird', 'boulder', 'meteor', 'lava'].some(function (k) { acc += mix[k] || 0; if (r < acc) { kind = k; return true; } return false; });
     return kind === 'bird' && score <= 250 ? 'cactus' : kind;
@@ -561,11 +562,11 @@
     runMs += dt * 16.667;
     distance += speed * dt;
     score = Math.floor(distance * 0.025);
-    var lv = levelAt(score);
+    var lv = playful ? levelAt(score) : 0;
     if (lv > level) levelUp(lv);
     if (fade < 1) fade = Math.min(1, fade + dt / 90);
     if (spawnHold > 0) spawnHold -= dt;
-    speed = Math.min(6 + distance * 0.00045, LEVELS[level].cap);
+    speed = Math.min(6 + distance * 0.00045, playful ? LEVELS[level].cap : 14);   // Classic keeps its original top speed
     groundOff = (groundOff + speed * dt) % 200;
     backOff += speed * 0.12 * dt;
 
@@ -746,10 +747,114 @@
       g.fillStyle = v[3]; g.strokeStyle = INK; g.lineWidth = 2.5; g.lineJoin = 'round';
       g.beginPath(); g.moveTo(x, GROUND); g.lineTo(x + w * .42, top); g.lineTo(x + w * .58, top); g.lineTo(x + w, GROUND); g.closePath(); g.fill(); g.stroke();
       g.fillStyle = '#FF8A3D'; g.beginPath(); g.moveTo(x + w * .42, top); g.lineTo(x + w * .58, top); g.lineTo(x + w * .54, top + 12); g.lineTo(x + w * .46, top + 12); g.closePath(); g.fill(); g.stroke();
-      g.fillStyle = 'rgba(255,138,61,.25)'; g.beginPath(); g.arc(x + w / 2, top, 26, 0, 6.2832); g.fill();
-      g.fillStyle = night ? 'rgba(199,207,230,.35)' : 'rgba(110,90,85,.35)';
-      [[0, -22, 11], [10, -38, 14], [-4, -58, 17]].forEach(function (p) { g.beginPath(); g.arc(x + w / 2 + p[0], top + p[1], p[2], 0, 6.2832); g.fill(); });
     });
+  }
+  // The volcanoes' moving parts, drawn over the still cones each frame: a pulsing crater glow, lava spilling over the
+  // rim and running down both slopes (with a bright current flowing downhill), molten blobs thrown up and falling
+  // back, and smoke rising and fading.
+  var VOLCANOES = [[120, 230, 120, 0], [540, 300, 165, 1]];     // x, width, height, which one (they get different timing)
+  function lavaStream(x0, y0, x1, y1, len, wob, ph) {
+    var pts = [], n = 10;
+    for (var i = 0; i <= n; i++) {
+      var t = i / n * len, x = x0 + (x1 - x0) * t, y = y0 + (y1 - y0) * t;
+      pts.push([x + wob * Math.sin(t * 9 + ph) * t, y]);
+    }
+    return pts;
+  }
+  // Lava on the cones: each flow is a tapered tongue (thick where it leaves the rim, thinning to a rounded tip that
+  // creeps forward and back). All of a mountain's flows are drawn together in layers (every outline, then every
+  // molten fill, then the hot cores and the moving bright current), so where a branch splits off its main stream the
+  // lava joins up with no outline between them.
+  function flowShape(x0, y0, x1, y1, len, w0, w1, ph, t) {
+    var reach = len * (0.93 + 0.07 * Math.sin(t / 55 + ph)), n = 16, L = [], R = [], C = [];
+    var dx = x1 - x0, dy = y1 - y0, d = Math.sqrt(dx * dx + dy * dy), nx = -dy / d, ny = dx / d;
+    for (var i = 0; i <= n; i++) {
+      var u = i / n, k = u * reach, cx = x0 + dx * k + 2.2 * Math.sin(u * 7 + ph) * u * 3, cy = y0 + dy * k;
+      var hw = (w0 + (w1 - w0) * u + 1.3 * Math.sin(u * 11 + ph + t / 30) * u) / 2;
+      C.push([cx, cy]); L.push([cx + nx * hw, cy + ny * hw]); R.push([cx - nx * hw, cy - ny * hw]);
+    }
+    return { L: L, R: R, C: C, n: n, tip: C[n], tipR: Math.max(2, w1 / 2), ang: Math.atan2(ny, nx), ux: dx / d, uy: dy / d, w0: w0, ph: ph,
+             width: function (u) { return w0 + (w1 - w0) * u; } };
+  }
+  function shapePath(f) {
+    ctx.beginPath(); ctx.moveTo(f.L[0][0], f.L[0][1]);
+    for (var i = 1; i <= f.n; i++) ctx.lineTo(f.L[i][0], f.L[i][1]);
+    ctx.arc(f.tip[0], f.tip[1], f.tipR, f.ang, f.ang + Math.PI);
+    for (var j = f.n; j >= 0; j--) ctx.lineTo(f.R[j][0], f.R[j][1]);
+    ctx.closePath();
+  }
+  function drawLavaNetwork(flows, t) {
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.strokeStyle = INK; ctx.lineWidth = 3.4; flows.forEach(function (f) { shapePath(f); ctx.stroke(); });       // 1. every outline
+    ctx.fillStyle = '#F2552C'; flows.forEach(function (f) { shapePath(f); ctx.fill(); });                          // 2. every molten body
+    flows.forEach(function (f) { ctx.strokeStyle = '#FF8A3D'; ctx.lineWidth = f.w0 * 0.55; strokePts(f.C.slice(0, f.n)); });   // 3. hot cores
+    ctx.strokeStyle = '#FFD166'; ctx.setLineDash([5, 11]);                                                        // 4. the bright current
+    flows.forEach(function (f) { ctx.lineWidth = Math.max(1.8, f.w0 * 0.2); ctx.lineDashOffset = -t * 0.7 - f.ph * 10; strokePts(f.C.slice(0, f.n)); });
+    ctx.setLineDash([]);
+    flows.forEach(function (f) {                                                                                  // 5. drips leaving the tips
+      var dp = ((t / 80 + f.ph) % 1);
+      if (dp > .7) return;
+      var x = f.tip[0] + f.ux * dp * 14, y = f.tip[1] + f.uy * dp * 14 + dp * dp * 6, r = f.tipR * (0.9 - dp * 0.5);
+      ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(x, y, r + 1.4, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = '#FF8A3D'; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
+    });
+  }
+  // A mountain's own flows: 3-5 streams from different spots on the rim, some with a branch, from a seed fixed to that
+  // mountain (each copy of the scrolling backdrop gets a different seed, so no two cones look alike).
+  function volcanoFlows(x, w, top, seed, t) {
+    var r = function () { seed = (seed * 16807 + 11) % 2147483647; return seed / 2147483647; };
+    var big = w > 260, count = 3 + Math.floor(r() * (big ? 3 : 2)), flows = [];
+    for (var i = 0; i < count; i++) {
+      var side = i % 2 ? 1 : -1, rimX = x + w * (0.5 + side * (0.015 + r() * 0.06)), rimY = top + 3;
+      var baseX = side < 0 ? x + w * (0.03 + r() * 0.36) : x + w * (0.61 + r() * 0.36);
+      var len = 0.32 + r() * 0.46, w0 = (big ? 15 : 13) + r() * 6, ph = r() * 6.28;
+      var main = flowShape(rimX, rimY, baseX, GROUND, len, w0, w0 * 0.36, ph, t);
+      flows.push(main);
+      if (len > 0.5 && r() < 0.65) {                                     // a branch that grows out of the main stream
+        var at = 0.3 + r() * 0.25, k = Math.round(at * main.n), p0 = main.C[k];
+        var outX = baseX + side * (20 + r() * 40), bw = main.width(at) * 0.8;
+        flows.push(flowShape(p0[0] - side * 1.5, p0[1], outX, GROUND, 0.35 + r() * 0.3, bw, bw * 0.4, ph + 2.3, t));
+      }
+    }
+    return flows;
+  }
+  function strokePts(pts) { ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]); ctx.stroke(); }
+  function drawVolcanoLife(alpha) {
+    var off = backOff % BACK_W;
+    ctx.save(); ctx.globalAlpha = alpha; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    var firstTile = Math.floor(backOff / BACK_W);
+    for (var kk = 0; kk < 4; kk++) VOLCANOES.forEach(function (v) {
+      var x = kk * BACK_W + v[0] - off, w = v[1], top = GROUND - v[2], cx = x + w / 2, id = v[3], tile = firstTile + kk;
+      if (x > W + 40 || x + w < -40) return;
+      var t = frame + id * 37, pulse = 0.5 + 0.5 * Math.sin(t / 14);
+      // smoke: puffs rise from the crater, grow and fade, one after another
+      for (var s = 0; s < 4; s++) {
+        var ph = ((t / 150 + s / 4) % 1), r = 8 + ph * 16, sy = top - 10 - ph * 70;
+        var a = 0.3 * (1 - ph) * Math.max(0, Math.min(1, (sy - r - 38) / 26));            // gone before the score line
+        if (a <= 0) continue;
+        ctx.fillStyle = (night ? 'rgba(199,207,230,' : 'rgba(110,90,85,') + a.toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(cx + Math.sin(ph * 5 + id) * 10 + ph * 14, sy, r, 0, 6.2832); ctx.fill();
+      }
+      // crater glow
+      ctx.fillStyle = 'rgba(255,138,61,' + (0.18 + 0.2 * pulse).toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(cx, top + 2, 22 + 8 * pulse, 0, 6.2832); ctx.fill();
+      // lava spilling over the rim and running down the slopes, different on every mountain
+      drawLavaNetwork(volcanoFlows(x, w, top, 1000 + tile * 97 + id * 31, t), t);
+      // lava filling the crater, bright at the brim
+      ctx.fillStyle = '#FF7A3D'; ctx.strokeStyle = INK; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(x + w * .42, top); ctx.lineTo(x + w * .58, top); ctx.lineTo(x + w * .54, top + 12); ctx.lineTo(x + w * .46, top + 12); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,209,102,' + (0.6 + 0.4 * pulse).toFixed(3) + ')'; ctx.fillRect(x + w * .43, top + 1, w * .14, 3);
+      // eruption: molten blobs thrown up in arcs, falling back
+      for (var bl = 0; bl < 4; bl++) {
+        var bp = ((t / 70 + bl * 0.27) % 1.6);
+        if (bp > 1) continue;                                                  // pauses between bursts
+        var vx = (bl % 2 ? 1 : -1) * (6 + bl * 5), bx = cx + vx * bp * 3, by = top - (90 + bl * 12) * bp + (90 + bl * 12) * bp * bp;
+        if (by < 46) continue;                                                 // stay clear of the score
+        ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(bx, by, 4.4, 0, 6.2832); ctx.fill();
+        ctx.fillStyle = bp < .5 ? '#FFD166' : '#FF7A3D'; ctx.beginPath(); ctx.arc(bx, by, 3, 0, 6.2832); ctx.fill();
+      }
+    });
+    ctx.restore();
   }
   function drawBackdrop(li, alpha) {
     var kind = LOOKS[li].back;
@@ -766,12 +871,16 @@
       var L = look(li), art = cachedArt(kind + ':' + li, 2 * BACK_W, GROUND, function (g) { (kind === 'mesas' ? paintMesas : paintVolcano)(g, L); });
       var off = backOff % BACK_W;
       blitArt(art, -off, 0); if (W > BACK_W - off) blitArt(art, BACK_W * 2 - off, 0);
+      if (kind === 'volcano') drawVolcanoLife(alpha);
     }
     ctx.globalAlpha = 1;
   }
-  function drawSky() {
+  function drawSky() {                                            // sky, then sun / moon / stars, then the backdrop in front
     ctx.fillStyle = look(fade < 1 ? fromLevel : level).sky; ctx.fillRect(0, 0, W, H);
-    if (fade < 1) { drawBackdrop(fromLevel, 1); ctx.globalAlpha = fade; ctx.fillStyle = look(level).sky; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
+    if (fade < 1) { ctx.globalAlpha = fade; ctx.fillStyle = look(level).sky; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
+    if (night || level === 3) { blitArt(cachedArt('stars' + W, W, GROUND, paintStars), 0, 0); blitArt(cachedArt('moon', 60, 60, paintMoon), 104 - 30, 44 - 30); }
+    else blitArt(cachedArt('sun', 60, 60, paintSun), 104 - 30, 44 - 30);                // Starfall has a moon and stars even by day
+    if (fade < 1) drawBackdrop(fromLevel, 1 - fade);
     drawBackdrop(level, fade);
   }
 
@@ -791,11 +900,18 @@
     var K = playful ? PSET : CSET;
     obstacles.forEach(function (o) {
       if (o.type === 'lava') {                                    // a pool of lava cut into the ground
-        ctx.fillStyle = '#FF7A3D'; ctx.fillRect(o.x, GROUND - 1, o.w, H - GROUND + 1);
-        ctx.fillStyle = '#FFD166'; ctx.fillRect(o.x, GROUND + 2, o.w, 5);
-        ctx.fillStyle = playful ? INK : '#FF7A3D'; ctx.fillRect(o.x - 3, GROUND - 2, 3, H - GROUND + 2); ctx.fillRect(o.x + o.w, GROUND - 2, 3, H - GROUND + 2);
+        var deep = H - GROUND, surf = function (xx) { return GROUND + 2 + 1.6 * Math.sin(xx / 9 + frame / 7); };
+        ctx.fillStyle = 'rgba(255,122,61,.22)'; ctx.beginPath(); ctx.ellipse(o.x + o.w / 2, GROUND, o.w * .7, 16, 0, Math.PI, 0); ctx.fill();   // heat glow
+        ctx.fillStyle = '#D9431F'; ctx.fillRect(o.x, GROUND, o.w, deep);                            // deep, darker lava
+        ctx.fillStyle = '#FF7A3D'; ctx.beginPath(); ctx.moveTo(o.x, GROUND + deep * .65);
+        for (var sx = 0; sx <= o.w; sx += 4) ctx.lineTo(o.x + sx, surf(o.x + sx));
+        ctx.lineTo(o.x + o.w, GROUND + deep * .65); ctx.closePath(); ctx.fill();                  // the hot upper layer, rippling
+        ctx.strokeStyle = '#FFD166'; ctx.lineWidth = 2.5; ctx.beginPath();
+        for (var sx2 = 0; sx2 <= o.w; sx2 += 4) ctx[sx2 ? 'lineTo' : 'moveTo'](o.x + sx2, surf(o.x + sx2) + 1);
+        ctx.stroke();                                                                               // bright skin on top
         ctx.fillStyle = 'rgba(255,240,180,.9)';
-        for (var b = 0; b < 3; b++) { var bx = o.x + o.w * (b + 0.5) / 3, ph = (frame / 20 + b * 1.3) % 2; if (ph < 1) { ctx.beginPath(); ctx.arc(bx, GROUND + 14 - ph * 8, 2 + ph * 2, 0, 6.2832); ctx.fill(); } }
+        for (var b = 0; b < 3; b++) { var bx = o.x + o.w * (b + 0.5) / 3, ph = (frame / 20 + b * 1.3) % 2; if (ph < 1) { ctx.beginPath(); ctx.arc(bx, GROUND + 18 - ph * 10, 2 + ph * 2, 0, 6.2832); ctx.fill(); } }
+        ctx.fillStyle = INK; ctx.fillRect(o.x - 3, GROUND - 2, 3, deep + 2); ctx.fillRect(o.x + o.w, GROUND - 2, 3, deep + 2);   // the cut edges
         return;
       }
       if (o.type === 'boulder') { blitTurned(K.boulder, o.x + o.w / 2, o.y + o.h / 2, o.rot); return; }
@@ -852,9 +968,6 @@
   function render() {
     ctx.clearRect(0, 0, W, H);
     if (playful) drawSky(); else { ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H); }
-    var starry = playful && (night || level === 3);               // Starfall has a moon and stars even by day
-    if (starry) { blitArt(cachedArt('stars' + W, W, GROUND, paintStars), 0, 0); blitArt(cachedArt('moon', 60, 60, paintMoon), 104 - 30, 44 - 30); }
-    else if (playful) blitArt(cachedArt('sun', 60, 60, paintSun), 104 - 30, 44 - 30);
     clouds.forEach(function (c) { drawCloud(c.x, c.y); });
     drawGround(); drawObstacles(); drawDino(); drawBanner();
 
@@ -863,11 +976,11 @@
     ctx.textAlign = 'right';
     var flash = state === 'running' && score > 0 && score % 100 < 6 && Math.floor(frame / 5) % 2;
     ctx.fillStyle = COL.text; ctx.fillText('HI ' + padScore(hi), W - 120, 32);
-    if (state !== 'ready') ctx.fillText('LV ' + (level + 1), W - 240, 32);
+    if (playful && state !== 'ready') ctx.fillText('LV ' + (level + 1), W - 240, 32);
     ctx.fillStyle = flash ? COL.flash : COL.hot; ctx.fillText(padScore(score), W - 24, 32);
 
     if (state === 'ready') {
-      centerText('SEASON 2', 70, 13, COL.sub);
+      if (playful) centerText('SEASON 2', 70, 13, COL.sub);
       centerText('PRESS SPACE OR TAP TO START', 100, 22, COL.title);
       centerText('↑ jump   ·   ↓ duck', 132, 14, COL.text);
     } else if (state === 'over') {
@@ -897,6 +1010,8 @@
   }
   skinBtns.forEach(function (b) {
     b.addEventListener('click', function () {
+      // a run follows one set of rules (Classic: the original game, Playful: Season 2), so switching mid-run ends it
+      if (state === 'running' && b.dataset.skin !== skinName) { reset(); state = 'ready'; }
       showSkin(b.dataset.skin);
       try { localStorage.setItem('dinoSkin', skinName); } catch (e) {}
       cv.focus({ preventScroll: true });          // so Space plays the game instead of pressing this button again

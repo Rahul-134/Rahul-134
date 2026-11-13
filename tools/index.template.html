@@ -113,7 +113,8 @@
   .bezel { padding:12px; background:var(--ink); border-radius:24px; }
   .stage { position:relative; }
   canvas {
-    display:block; width:100%; height:auto; background:var(--bg); border-radius:12px;
+    display:block; width:100%; height:auto; margin:0 auto; background:var(--bg); border-radius:12px;
+    image-rendering:pixelated;   /* shown at exactly its drawn size, so a fraction-of-a-pixel offset (125%, 150% screens) copies pixels 1:1 instead of blending them */
     touch-action:manipulation; -webkit-tap-highlight-color:transparent; cursor:pointer;
   }
   canvas:focus-visible { outline:3px solid #fff; outline-offset:2px; }
@@ -293,17 +294,27 @@
   // ---------- Setup ----------
   var W = 900, H = 260, GROUND = 214;
   var dirty = true;                 // redraw needed even though nothing is moving (resize, skin, state change)
-  var DPR = Math.min(window.devicePixelRatio || 1, 3);
+  var DPR = Math.min(window.devicePixelRatio || 1, 3);    // updated by resize() (browser zoom changes it)
   var cv = document.getElementById('game');
   var ctx = cv.getContext('2d');
   // The world is 900 wide on big screens. On narrow screens it shows less of the road (down to 500), so
   // everything is drawn larger instead of being shrunk to a thin strip.
-  function fitWidth() { var w = cv.clientWidth || 900; return Math.round(Math.min(900, Math.max(500, w * 1.55))); }
-  // The backing store matches the canvas's real size in device pixels, so the browser never stretches the
-  // finished picture; the world (W x H) is mapped onto it by the transform instead.
+  function fitWidth(w) { return Math.round(Math.min(900, Math.max(500, (w || 900) * 1.55))); }
+  // The canvas is shown at exactly the size it is drawn, so the browser never resamples the finished picture. Its size
+  // is a whole number of CSS pixels that is also a whole number of screen pixels (on a 125% screen: a multiple of 4
+  // CSS px). Before, a 125% screen showed a 1098-pixel picture 1097.5 pixels wide and a 200% screen squeezed 507 rows
+  // into 506 or 508, which blurred every edge a little. The world (W x H) is mapped onto the backing store by the transform.
+  function crisp(css, d) {                        // the largest size <= css (CSS px) that is whole in both units
+    for (var c = Math.floor(css), k = 0; k < 24; k++, c--) if (Math.abs(c * d - Math.round(c * d)) < 1e-6) return c;
+    return Math.floor(css);
+  }
   function resize() {
-    var nw = fitWidth(), cssW = cv.clientWidth || nw;
-    var pw = Math.max(1, Math.round(cssW * DPR)), ph = Math.max(1, Math.round(cssW * DPR * H / nw));
+    DPR = Math.min(window.devicePixelRatio || 1, 3);
+    var d = window.devicePixelRatio || 1;
+    var box = cv.parentNode.getBoundingClientRect().width || 900;            // the room the console gives the screen
+    var cssW = crisp(box, d), nw = fitWidth(cssW), cssH = crisp(cssW * H / nw + 0.5, d);
+    var pw = Math.max(1, Math.round(cssW * DPR)), ph = Math.max(1, Math.round(cssH * DPR));
+    cv.style.width = cssW + 'px'; cv.style.height = cssH + 'px';
     if (nw === W && cv.width === pw && cv.height === ph) return;
     W = nw; cv.width = pw; cv.height = ph;
     ctx.setTransform(pw / W, 0, 0, ph / H, 0, 0);
@@ -316,7 +327,11 @@
     requestAnimationFrame(function () { resizeQueued = false; resize(); });
   }
   window.addEventListener('resize', queueResize);
-  if (window.ResizeObserver) new ResizeObserver(queueResize).observe(cv);
+  if (window.ResizeObserver) {                    // the console's width, and anything above the game that moves it
+    var ro = new ResizeObserver(queueResize); ro.observe(cv.parentNode); ro.observe(document.body);
+  }
+  window.addEventListener('load', queueResize);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(queueResize);
 
   // Two looks for the same game: Classic (the dark original) and Playful (sky, sand and outlined sprites).
   var MONO = '"JetBrains Mono",ui-monospace,Consolas,Menlo,monospace';

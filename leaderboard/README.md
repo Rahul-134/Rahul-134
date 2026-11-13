@@ -29,6 +29,32 @@ Until you finish the setup below the game behaves exactly as before and no leade
 
 Then play a run of 30+ points: when it ends you should be asked for a name.
 
+## Season 2
+
+The game has two seasons, picked with the switch above the screen (or a `?season=1` / `?season=2`
+link). **Season 1** is the original game, in the Classic or Playful look, and keeps using the board
+above. **Season 2** is the remake with four worlds, and has a board of its own:
+
+- Season 1: `scores` and the crown in `owner` (unchanged).
+- Season 2: `s2scores` and the crown in `s2owner`. Its entries can also carry `lv` (the level
+  reached) and, later, `k` (enemies beaten).
+
+To switch it on:
+
+1. Open **Realtime Database -> Rules**, replace everything with the current
+   [`database.rules.json`](database.rules.json) and press **Publish**. The Season 1 rules inside it
+   are unchanged, so nothing about the existing board changes.
+2. Optional: pin your Season 2 best the same way as before, as a node `s2owner` with `name` and
+   `score`. Until it exists, the Season 2 board simply shows no crown.
+3. Run `bash leaderboard/verify.sh <your database url>` again: it now checks both boards.
+
+Until the rules are published, Season 2 can't save scores (the board says it couldn't be reached),
+and Season 1 keeps working as before.
+
+Each visitor's name and anonymous id are shared by both seasons; their best score and their own
+entries are remembered per season. Season 2 allows up to 40 points a second plus 500, and
+scores up to 200,000, to leave room for the bonus points of later updates.
+
 ## What visitors see
 
 - A **podium** for the top three and a list with score bars for ranks 4-10, topped by a pinned
@@ -50,7 +76,7 @@ missing from "This week" or "Today". For a profile game that is rarely noticeabl
 
 ## How it works
 
-- Scores are stored under `scores/<id>` as `{ name, score, ms, t, u }`. `ms` is how long the run
+- Scores are stored under `scores/<id>` (Season 2: `s2scores/<id>`, with an optional `lv`) as `{ name, score, ms, t, u }`. `ms` is how long the run
   lasted, `t` is the server timestamp, and `u` is an anonymous random id that this browser generates
   once. It is what lets the board treat "the same player under a new name" as one row.
 - The page reads the top entries, keeps each player's best run, and shows the top 10.
@@ -83,7 +109,7 @@ tampering as posting a fake score, and the same clean-up applies: delete the ent
 ## Try it locally without Firebase
 
 ```bash
-python3 leaderboard/mock_server.py --owner Rahul:1337
+python3 leaderboard/mock_server.py --owner Rahul:1337 --owner2 Rahul:900
 # then set databaseURL to "http://127.0.0.1:9000" in dino/leaderboard-config.js
 # and open dino/index.html in a browser (change it back before committing)
 ```

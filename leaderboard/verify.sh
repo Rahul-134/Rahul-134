@@ -21,6 +21,8 @@ NOW='{".sv":"timestamp"}'
 echo "Reads that must work:"
 expect "anyone can read the scores"        200 "$DB/scores.json?orderBy=%22score%22&limitToLast=1"
 expect "anyone can read the owner node"    200 "$DB/owner.json"
+expect "anyone can read Season 2 scores"   200 "$DB/s2scores.json?orderBy=%22score%22&limitToLast=1"
+expect "anyone can read the Season 2 owner" 200 "$DB/s2owner.json"
 
 echo "Writes that must be refused:"
 expect "score above the cap"               401 -X POST -d "{\"name\":\"Cheat\",\"score\":99999,\"ms\":600000,\"t\":$NOW}" "$DB/scores.json"
@@ -35,6 +37,16 @@ expect "fake timestamp"                    401 -X POST -d '{"name":"Bob","score"
 expect "writing the owner node"            401 -X PUT  -d '{"name":"Me","score":99999}'                                       "$DB/owner.json"
 expect "deleting all scores"               401 -X DELETE                                                                      "$DB/scores.json"
 expect "reading the whole database"        401 "$DB/.json"
+
+echo "Season 2 writes that must be refused:"
+expect "S2: score above the cap"           401 -X POST -d "{\"name\":\"Cheat\",\"score\":999999,\"ms\":3600000,\"t\":$NOW}" "$DB/s2scores.json"
+expect "S2: score impossible for run time" 401 -X POST -d "{\"name\":\"Cheat\",\"score\":9000,\"ms\":5000,\"t\":$NOW}"    "$DB/s2scores.json"
+expect "S2: reserved name"                 401 -X POST -d "{\"name\":\"Rahul\",\"score\":40,\"ms\":4000,\"t\":$NOW}"        "$DB/s2scores.json"
+expect "S2: level out of range"            401 -X POST -d "{\"name\":\"Bob\",\"score\":40,\"ms\":4000,\"t\":$NOW,\"lv\":12}" "$DB/s2scores.json"
+expect "S2: extra field"                   401 -X POST -d "{\"name\":\"Bob\",\"score\":40,\"ms\":4000,\"t\":$NOW,\"x\":1}"  "$DB/s2scores.json"
+expect "S1: a level is not a Season 1 field" 401 -X POST -d "{\"name\":\"Bob\",\"score\":40,\"ms\":4000,\"t\":$NOW,\"lv\":2}" "$DB/scores.json"
+expect "writing the Season 2 owner node"   401 -X PUT  -d '{"name":"Me","score":99999}'                                       "$DB/s2owner.json"
+expect "deleting all Season 2 scores"      401 -X DELETE                                                                      "$DB/s2scores.json"
 
 echo
 if [ "$fail" = 0 ]; then echo "All checks passed."; else echo "Some checks failed - re-publish leaderboard/database.rules.json and try again."; fi

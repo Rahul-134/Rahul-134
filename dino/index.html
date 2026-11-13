@@ -102,10 +102,14 @@
   .lights { display:inline-flex; gap:7px; }
   .lights i { width:15px; height:15px; border-radius:50%; border:2.5px solid var(--ink); background:var(--coral); }
   .lights i:nth-child(2) { background:var(--sun); } .lights i:nth-child(3) { background:var(--mint); }
-  .skins { display:inline-flex; gap:2px; padding:3px; background:var(--paper); border:2.5px solid var(--ink); border-radius:99px; }
-  .skin-btn { padding:2px 14px; border:0; border-radius:99px; background:transparent; font-family:var(--display); font-weight:800; font-size:15px; letter-spacing:.04em; line-height:1.5; transition:background .15s, color .15s; }
-  .skin-btn:hover { background:rgba(43,26,18,.1); }
-  .skin-btn[aria-pressed=true] { background:var(--ink); color:#fff; }
+  .console-top { flex-wrap:wrap; gap:8px; }
+  .switches { display:inline-flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
+  html[data-season="2"] .skins { display:none; }          /* Season 2 has one look of its own */
+  .season-btn .short { display:none; }
+  .skins, .seasons { display:inline-flex; gap:2px; padding:3px; background:var(--paper); border:2.5px solid var(--ink); border-radius:99px; }
+  .skin-btn, .season-btn { padding:2px 14px; border:0; border-radius:99px; background:transparent; font-family:var(--display); font-weight:800; font-size:15px; letter-spacing:.04em; line-height:1.5; transition:background .15s, color .15s; }
+  .skin-btn:hover, .season-btn:hover { background:rgba(43,26,18,.1); }
+  .skin-btn[aria-pressed=true], .season-btn[aria-pressed=true] { background:var(--ink); color:#fff; }
   .bezel { padding:12px; background:var(--ink); border-radius:24px; }
   .stage { position:relative; }
   canvas {
@@ -170,10 +174,10 @@
   html[data-mode=dark] body { background:radial-gradient(rgba(var(--tx-rgb),.07) 1.6px, transparent 1.8px) 0 0/24px 24px, var(--cream); }
   html[data-mode=dark] .logo, html[data-mode=dark] h1, html[data-mode=dark] .how h2, html[data-mode=dark] .tip h3,
   html[data-mode=dark] .links a, html[data-mode=dark] .btn.alt, html[data-mode=dark] .mode, html[data-mode=dark] kbd,
-  html[data-mode=dark] .hint a, html[data-mode=dark] .skin-btn { color:var(--tx); }
+  html[data-mode=dark] .hint a, html[data-mode=dark] .skin-btn, html[data-mode=dark] .season-btn { color:var(--tx); }
   html[data-mode=dark] p.sub, html[data-mode=dark] .tip p { color:rgba(var(--tx-rgb),.8); }
-  html[data-mode=dark] .links a:hover, html[data-mode=dark] .skin-btn:hover { background:rgba(var(--tx-rgb),.1); }
-  html[data-mode=dark] .skin-btn[aria-pressed=true] { background:var(--ink); color:#fff; }
+  html[data-mode=dark] .links a:hover, html[data-mode=dark] .skin-btn:hover, html[data-mode=dark] .season-btn:hover { background:rgba(var(--tx-rgb),.1); }
+  html[data-mode=dark] .skin-btn[aria-pressed=true], html[data-mode=dark] .season-btn[aria-pressed=true] { background:var(--ink); color:#fff; }
   html[data-mode=dark] h1 .hl, html[data-mode=dark] .console, html[data-mode=dark] .btn:not(.alt) { color:#1A1626; }
   html[data-mode=dark] .console kbd { color:var(--tx); }
   html[data-mode=dark] button:focus-visible, html[data-mode=dark] a:focus-visible { outline-color:var(--tx); }
@@ -200,7 +204,8 @@
     .logo { font-size:25px; } .logo .mascot { width:38px; height:42px; }
     .console { padding:10px 10px 16px; border-radius:28px; box-shadow:6px 8px 0 var(--ink); }
     .bezel { padding:8px; border-radius:18px; } .console-top { font-size:16px; padding-bottom:8px; }
-    .lights { display:none; } .skin-btn { padding:2px 11px; font-size:14px; }
+    .lights { display:none; } .skin-btn, .season-btn { padding:2px 11px; font-size:14px; }
+    .season-btn .full { display:none; } .season-btn .short { display:inline; }
     .deck { padding:16px 4px 0; gap:10px; } .arc { width:74px; height:74px; font-size:30px; }
     .mid p { display:none; } .grille i { height:28px; }
     .hint { justify-content:center; text-align:center; }
@@ -242,7 +247,7 @@
   </header>
 
   <section class="console" id="play" aria-label="Dino Run game">
-    <div class="console-top"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><b>DINO RUN</b><span class="skins" role="group" aria-label="Game look"><button type="button" class="skin-btn" data-skin="classic" aria-pressed="true">Classic</button><button type="button" class="skin-btn" data-skin="playful" aria-pressed="false">Playful</button></span></div>
+    <div class="console-top"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><b>DINO RUN</b><span class="switches"><span class="seasons" role="group" aria-label="Season"><button type="button" class="season-btn" data-season="1" aria-pressed="false" title="Season 1: the original game"><span class="full">Season 1</span><span class="short">S1</span></button><button type="button" class="season-btn" data-season="2" aria-pressed="true" title="Season 2: the remake, with four worlds"><span class="full">Season 2 · Remake</span><span class="short">S2 · Remake</span></button></span><span class="skins" role="group" aria-label="Game look"><button type="button" class="skin-btn" data-skin="classic" aria-pressed="true">Classic</button><button type="button" class="skin-btn" data-skin="playful" aria-pressed="false">Playful</button></span></span></div>
     <div class="bezel"><div class="stage">
       <canvas id="game" tabindex="0" aria-label="Dino runner game. Press space or tap to jump, down arrow to duck."></canvas>
     </div></div>
@@ -431,7 +436,18 @@
   var EASY_COMBOS = [['small'], ['barrel'], ['saguaro'], ['small', 'small'], ['barrel', 'small']];
   var HARD_COMBOS = EASY_COMBOS.concat([['saguaro', 'small'], ['saguaro', 'barrel'], ['barrel', 'small', 'barrel'], ['small', 'saguaro', 'small']]);
 
-  // ---------- Season 2: levels (Playful only; Classic stays the original game) ----------
+  // ---------- Seasons ----------
+  // Season 1 is the original game, exactly as it was, in either look (Classic or Playful). Season 2 is the remake:
+  // the levels below, always in the Playful look. Each season has its own leaderboard.
+  var season = 2;
+  try { season = localStorage.getItem('dinoSeason') === '1' ? 1 : 2; } catch (e) {}
+  var askedSeason = /[?&]season=([12])(?:&|$)/.exec(location.search);       // a link can pick it: ?season=1 or ?season=2
+  if (askedSeason) { season = Number(askedSeason[1]); try { localStorage.setItem('dinoSeason', askedSeason[1]); } catch (e) {} }
+  var s2 = season === 2;
+  window.DINO_SEASON = season;                                             // read by the leaderboard when it starts
+  document.documentElement.setAttribute('data-season', String(season));
+
+  // ---------- Season 2: levels ----------
   // One endless run in stages. Every 500 points the world changes (sky, backdrop, ground), the top speed rises a
   // little and new hazards join the mix: boulders roll in the Canyon, meteors fall and lava pools open in the
   // Volcano, and Starfall mixes everything. `mix` is the share of spawns that are each hazard (the rest are cacti).
@@ -504,7 +520,7 @@
   function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 
   function pickKind() {
-    if (!playful) return score > 250 && Math.random() < 0.3 ? 'bird' : 'cactus';      // Classic: the original mix
+    if (!s2) return score > 250 && Math.random() < 0.3 ? 'bird' : 'cactus';           // Season 1: the original mix
     var mix = LEVELS[level].mix, r = Math.random(), acc = 0, kind = 'cactus';
     ['bird', 'boulder', 'meteor', 'lava'].some(function (k) { acc += mix[k] || 0; if (r < acc) { kind = k; return true; } return false; });
     return kind === 'bird' && score <= 250 ? 'cactus' : kind;
@@ -562,11 +578,11 @@
     runMs += dt * 16.667;
     distance += speed * dt;
     score = Math.floor(distance * 0.025);
-    var lv = playful ? levelAt(score) : 0;
+    var lv = s2 ? levelAt(score) : 0;
     if (lv > level) levelUp(lv);
     if (fade < 1) fade = Math.min(1, fade + dt / 90);
     if (spawnHold > 0) spawnHold -= dt;
-    speed = Math.min(6 + distance * 0.00045, playful ? LEVELS[level].cap : 14);   // Classic keeps its original top speed
+    speed = Math.min(6 + distance * 0.00045, s2 ? LEVELS[level].cap : 14);        // Season 1 keeps its original top speed
     groundOff = (groundOff + speed * dt) % 200;
     backOff += speed * 0.12 * dt;
 
@@ -613,7 +629,7 @@
   function gameOver() {
     state = 'over'; diedAt = performance.now();
     if (score > hi) { hi = score; try { localStorage.setItem('dinoHi', String(hi)); } catch (e) {} }
-    if (window.DinoLB) window.DinoLB.runEnded(score, runMs);
+    if (window.DinoLB) window.DinoLB.runEnded(score, runMs, { season: season, level: level + 1 });
   }
 
   // ---------- Rendering ----------
@@ -976,11 +992,11 @@
     ctx.textAlign = 'right';
     var flash = state === 'running' && score > 0 && score % 100 < 6 && Math.floor(frame / 5) % 2;
     ctx.fillStyle = COL.text; ctx.fillText('HI ' + padScore(hi), W - 120, 32);
-    if (playful && state !== 'ready') ctx.fillText('LV ' + (level + 1), W - 240, 32);
+    if (s2 && state !== 'ready') ctx.fillText('LV ' + (level + 1), W - 240, 32);
     ctx.fillStyle = flash ? COL.flash : COL.hot; ctx.fillText(padScore(score), W - 24, 32);
 
     if (state === 'ready') {
-      if (playful) centerText('SEASON 2', 70, 13, COL.sub);
+      if (s2) centerText('SEASON 2', 70, 13, COL.sub);
       centerText('PRESS SPACE OR TAP TO START', 100, 22, COL.title);
       centerText('↑ jump   ·   ↓ duck', 132, 14, COL.text);
     } else if (state === 'over') {
@@ -1002,19 +1018,36 @@
   requestAnimationFrame(loop);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { dirty = true; });
 
-  // ---------- Look: Classic / Playful ----------
+  // ---------- Look (Classic / Playful, for Season 1) and Season (1 / 2) ----------
   var skinBtns = Array.prototype.slice.call(document.querySelectorAll('.skin-btn'));
+  var seasonBtns = Array.prototype.slice.call(document.querySelectorAll('.season-btn'));
+  var skinPref = 'classic';                       // the look chosen for Season 1; Season 2 is always Playful
   function showSkin(name) {
-    setSkin(name);
-    skinBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.skin === skinName ? 'true' : 'false'); });
+    skinPref = SKINS[name] && name !== 'night' ? name : 'classic';
+    setSkin(s2 ? 'playful' : skinPref);
+    skinBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.skin === skinPref ? 'true' : 'false'); });
+  }
+  function showSeason(n) {
+    season = n === 1 ? 1 : 2; s2 = season === 2; window.DINO_SEASON = season;
+    document.documentElement.setAttribute('data-season', String(season));
+    seasonBtns.forEach(function (b) { b.setAttribute('aria-pressed', Number(b.dataset.season) === season ? 'true' : 'false'); });
+    showSkin(skinPref);
+    if (window.DinoLB && window.DinoLB.setSeason) window.DinoLB.setSeason(season);
   }
   skinBtns.forEach(function (b) {
     b.addEventListener('click', function () {
-      // a run follows one set of rules (Classic: the original game, Playful: Season 2), so switching mid-run ends it
-      if (state === 'running' && b.dataset.skin !== skinName) { reset(); state = 'ready'; }
-      showSkin(b.dataset.skin);
-      try { localStorage.setItem('dinoSkin', skinName); } catch (e) {}
+      showSkin(b.dataset.skin);                   // both looks play the same original game, so a run carries on
+      try { localStorage.setItem('dinoSkin', skinPref); } catch (e) {}
       cv.focus({ preventScroll: true });          // so Space plays the game instead of pressing this button again
+    });
+  });
+  seasonBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var n = Number(b.dataset.season);
+      if (n !== season && state !== 'ready') { reset(); state = 'ready'; }   // a run belongs to one season
+      showSeason(n);
+      try { localStorage.setItem('dinoSeason', String(season)); } catch (e) {}
+      cv.focus({ preventScroll: true });
     });
   });
   document.addEventListener('dinomode', function () {
@@ -1023,10 +1056,11 @@
   });
   var savedSkin = 'classic'; try { savedSkin = localStorage.getItem('dinoSkin') || 'classic'; } catch (e) {}
   showSkin(savedSkin);
+  seasonBtns.forEach(function (b) { b.setAttribute('aria-pressed', Number(b.dataset.season) === season ? 'true' : 'false'); });
   
 })();
 </script>
-<script src="leaderboard.js?v=be3774eba6"></script>
+<script src="leaderboard.js?v=00ce532ac8"></script>
 <script>
 (function () {
   // Hero scene: a cactus and then a bird slide past at a constant speed. The dino runs (legs alternate),

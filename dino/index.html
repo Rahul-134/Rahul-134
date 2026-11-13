@@ -471,8 +471,8 @@
   document.documentElement.setAttribute('data-season', String(season));
 
   // ---------- Season 2: levels ----------
-  // One endless run in stages. Every 500 points the world changes (sky, backdrop, ground), the top speed rises a
-  // little and new hazards join the mix: boulders roll in the Canyon, meteors fall and lava pools open in the
+  // One endless run in stages. Each world ends with a boss (BOSSES below); beating it opens the next world: new sky,
+  // backdrop and ground, a slightly higher top speed and new hazards in the mix: boulders roll in the Canyon, meteors fall and lava pools open in the
   // Volcano, and Starfall mixes everything. `mix` is the share of spawns that are each hazard (the rest are cacti).
   var LEVELS = [
     { at: 0,    name: 'DESERT',   cap: 12, mix: { bird: .30 } },
@@ -480,7 +480,6 @@
     { at: 1000, name: 'VOLCANO',  cap: 14, mix: { bird: .16, boulder: .12, meteor: .22, lava: .18 } },
     { at: 1500, name: 'STARFALL', cap: 15, mix: { bird: .24, boulder: .12, meteor: .28, lava: .12 } }
   ];
-  function levelAt(sc) { for (var i = LEVELS.length - 1; i > 0; i--) if (sc >= LEVELS[i].at) return i; return 0; }
   // Playful scenery per level, by day and by night: sky, sand layers, pebbles, grass (null: none) and backdrop.
   var LOOKS = [
     { day:   { sky: '#BFE7F7', sand: '#F2D9A6', top: '#F9E8C4', low: '#E5C48C', peb: '#CFA86E', tuft: '#7BC86C' },
@@ -502,6 +501,17 @@
   // Season 2 fire breath: orbs give fireballs, fireballs bounce along the ground and burn birds and small cacti
   var ammo = 0, shots = [], orbs = [], floaters = [], kills = 0, bonus = 0, fireCool = 0, lastOrbMs = -4000;
   var MAX_AMMO = 6, ORB_AMMO = 3, ORB_EVERY_MS = 8000, BIRD_PTS = 40, CACTUS_PTS = 25;
+  // Season 2 bosses: one guards the end of each world (at 450 running points, then every 500). The run's distance
+  // pauses during the fight, fire flies straight, orbs drop every few seconds, and the next world opens once it falls.
+  // After the fourth, they come round again, a little tougher each time.
+  var BOSSES = [
+    { name: 'SKY TYRANT', hp: 5, pts: 250, every: 110 },     // hovers and drops rocks
+    { name: 'ROCK GOLEM', hp: 6, pts: 300, every: 100 },     // hurls rolling boulders
+    { name: 'LAVA SERPENT', hp: 7, pts: 350, every: 88 },    // spits fire, low or high
+    { name: 'STAR DRAGON', hp: 8, pts: 500, every: 78 }      // rocks and fire
+  ];
+  var BOSS_FIRST = 450, BOSS_GAP = 500, SPIT_PTS = 10;
+  var boss = null, beaten = 0;
 
   try { hi = parseInt(localStorage.getItem('dinoHi'), 10) || 0; } catch (e) {}
 
@@ -509,6 +519,7 @@
     speed = 6; distance = 0; score = 0; frame = 0; groundOff = 0; runMs = 0;
     level = 0; fromLevel = 0; fade = 1; banner = null; spawnHold = 0; backOff = 0; sparks = [];
     ammo = 0; shots = []; orbs = []; floaters = []; kills = 0; bonus = 0; fireCool = 0; lastOrbMs = -4000;
+    boss = null; beaten = 0;
     if (typeof showAmmo === 'function') showAmmo();
     dino = { x: 60, y: GROUND - dinoA.h, vy: 0, onGround: true };
     obstacles = [];
@@ -528,7 +539,8 @@
     if (!s2 || state !== 'running' || fireCool > 0 || ammo <= 0) return;
     ammo--; fireCool = 14; showAmmo();
     var low = ducking && dino.onGround;
-    shots.push({ x: dino.x + (low ? duckA.w - 6 : dinoA.w - 8), y: low ? GROUND - duckA.h + 12 : dino.y + 23, vx: 9, vy: 3.6, r: 7, bounces: 0 });   // aimed down, so point-blank cacti burn too
+    var straight = !!boss;                         // facing a boss, fire flies straight: your height picks what it hits
+    shots.push({ x: dino.x + (low ? duckA.w - 6 : dinoA.w - 8), y: low ? GROUND - duckA.h + 12 : dino.y + 23, vx: 9, vy: straight ? 0 : 3.6, r: 7, bounces: 0, straight: straight });   // otherwise aimed down, so point-blank cacti burn too
   }
   var fireBtn = document.getElementById('fireBtn'), ammoTag = fireBtn ? fireBtn.querySelector('.ammo') : null;
   function showAmmo() {
@@ -603,7 +615,7 @@
     var high = Math.random() < 0.4;               // some float at jump height
     orbs.push({ x: rightEdge(lastO) + Math.max(80, nextGap * 0.45), y: high ? GROUND - 92 : GROUND - 30, r: 11, ph: Math.random() * 6 });
   }
-  function burnable(o) { return o.type === 'bird' || (o.type === 'cactus' && o.parts.every(function (p) { return p.name !== 'saguaro'; })); }
+  function burnable(o) { return o.type === 'bird' || o.type === 'spit' || (o.type === 'cactus' && o.parts.every(function (p) { return p.name !== 'saguaro'; })); }
   function burst(x, y, n, hot) { for (var k = 0; k < n; k++) sparks.push({ x: x, y: y, vx: rnd(-2.6, 2.6), vy: rnd(-4.5, -0.5), life: 1, hot: hot }); }
 
   function dinoBox() {
@@ -615,24 +627,81 @@
 
   function boxesOf(o) {                          // slightly forgiving hitboxes
     if (o.type === 'bird') return [{ x: o.x + 5, y: o.y + 5, w: o.w - 10, h: o.h - 8 }];
-    if (o.type === 'boulder' || o.type === 'meteor') return [{ x: o.x + 5, y: o.y + 5, w: o.w - 10, h: o.h - 8 }];
+    if (o.type === 'boulder' || o.type === 'meteor' || o.type === 'spit') return [{ x: o.x + 4, y: o.y + 4, w: o.w - 8, h: o.h - 8 }];
     if (o.type === 'lava') return [{ x: o.x + 12, y: GROUND - 8, w: o.w - 24, h: 8 }];   // only feet on the ground touch it
     return o.parts.map(function (p) { return { x: o.x + p.dx + 4, y: GROUND - p.s.h + 3, w: p.s.w - 8, h: p.s.h - 5 }; });
   }
 
   function levelUp(to) {
     fromLevel = level; level = to; fade = 0;
-    banner = { at: frame }; spawnHold = 100;                       // a short breather while the banner shows
+    banner = { at: frame, text: 'LEVEL ' + (to + 1) + '  ·  ' + LEVELS[to].name }; spawnHold = 100;   // a short breather
+  }
+
+  // ---------- bosses ----------
+  function startBoss() {
+    var k = beaten % 4, round = Math.floor(beaten / 4), B = BOSSES[k], hp = B.hp + 2 * round;
+    boss = { k: k, hp: hp, max: hp, pts: B.pts + 100 * round, x: W + 130, tx: W - (k === 1 ? 140 : 165), t: 0, phase: 'enter',
+             cool: 70, wind: 0, flash: 0, orb: 20, n: 0, y: GROUND - 105, headY: GROUND - 88, aimY: 0, next: '' };
+    banner = { at: frame, text: 'BOSS  ·  ' + B.name }; spawnHold = 1e9;   // no other obstacles during the fight
+  }
+  function bossBoxes(b) {
+    if (b.k === 0) return [{ x: b.x - 62, y: b.y - 26, w: 112, h: 52 }];
+    if (b.k === 3) return [{ x: b.x - 74, y: b.y - 30, w: 134, h: 60 }];
+    if (b.k === 1) return [{ x: b.x - 52, y: GROUND - 128, w: 104, h: 128 }];
+    return [{ x: b.x - 40, y: b.headY - 20, w: 66, h: 40 }];
+  }
+  function bossCenter(b) { return b.k === 1 ? { x: b.x, y: GROUND - 64 } : b.k === 2 ? { x: b.x - 8, y: b.headY } : { x: b.x, y: b.y }; }
+  function updateBoss(dt) {
+    var b = boss;
+    b.t += dt; if (b.flash > 0) b.flash -= dt;
+    if (b.phase === 'down') { b.t2 += dt; if (b.t2 > 110) { boss = null; afterBoss(); } return; }
+    if (b.phase === 'enter') { b.x += (b.tx - b.x) * Math.min(1, 0.05 * dt); if (Math.abs(b.x - b.tx) < 1.5) { b.x = b.tx; b.phase = 'fight'; } }
+    var aiming = b.wind > 0 && b.next === 'spit';
+    if (b.k === 0 || b.k === 3) b.y += ((aiming ? b.aimY + 8 : GROUND - 105 + 40 * Math.sin(b.t / 45)) - b.y) * Math.min(1, 0.12 * dt);   // bobs high and low
+    if (b.k === 2) b.headY += ((aiming ? b.aimY : GROUND - 88 + 42 * Math.sin(b.t / 38)) - b.headY) * Math.min(1, 0.15 * dt);
+    b.orb -= dt;                                   // a fire orb every few seconds, low or high
+    if (b.orb <= 0) { b.orb = 190; orbs.push({ x: W + 10, y: Math.random() < 0.5 ? GROUND - 30 : GROUND - 92, r: 11, ph: 0 }); }
+    if (b.phase !== 'fight') return;
+    if (b.wind > 0) { b.wind -= dt; if (b.wind <= 0) bossAttack(b); return; }
+    b.cool -= dt;
+    if (b.cool <= 0) {                             // wind up (a visible tell), then attack
+      b.next = b.k === 3 ? (b.n++ % 2 ? 'spit' : 'rock') : ['rock', 'boulder', 'spit'][b.k];
+      b.aimY = Math.random() < 0.45 ? GROUND - 72 : GROUND - 26;   // spit lane: high (duck) or low (jump)
+      b.wind = 24; b.cool = BOSSES[b.k].every * (0.85 + Math.random() * 0.3);
+    }
+  }
+  function bossAttack(b) {
+    if (b.next === 'rock') {                       // falls on a curve; a pulsing ring shows where it lands
+      var F = 52, land = dino.x + 190 + rnd(0, Math.max(60, W * 0.28)), gx = land + speed * F, sx = b.x - 20, sy = b.y + 18;
+      obstacles.push({ type: 'meteor', gx: gx, x: sx, ox: sx - gx, y0: sy, y: sy, w: meteor.w, h: meteor.h, p: 0, F: F, landed: false });
+    } else if (b.next === 'boulder') {
+      obstacles.push({ type: 'boulder', x: b.x - 80, w: boulder.w, h: boulder.h, y: GROUND - boulder.h, rot: 0 });
+    } else {
+      obstacles.push({ type: 'spit', x: b.x - (b.k === 2 ? 52 : 92), y: b.aimY - 9, w: 18, h: 18 });
+    }
+  }
+  function defeatBoss() {
+    var b = boss, c = bossCenter(b);
+    b.phase = 'down'; b.t2 = 0; beaten++; bonus += b.pts;
+    burst(c.x, c.y, 40, true);
+    floaters.push({ x: c.x, y: Math.max(c.y, 96), text: '+' + b.pts, life: 1.8, big: true });   // below the score row
+    banner = { at: frame, text: 'BOSS DEFEATED  ·  +' + b.pts };
+    obstacles = obstacles.filter(function (o) { return o.type !== 'spit'; });   // its last spit fizzles
+  }
+  function afterBoss() {
+    spawnHold = 60;
+    if (level < LEVELS.length - 1) levelUp(level + 1);                     // the next world opens
   }
   function rightEdge(o) { return (o.type === 'meteor' && !o.landed ? o.gx : o.x) + o.w; }
 
   function update(dt) {
     frame += dt;
     runMs += dt * 16.667;
-    distance += speed * dt;
-    score = Math.floor(distance * 0.025) + bonus;
-    var lv = s2 ? levelAt(score) : 0;
-    if (lv > level) levelUp(lv);
+    if (!boss) distance += speed * dt;               // the run's distance pauses while a boss is being fought
+    var ran = Math.floor(distance * 0.025);
+    score = ran + bonus;
+    if (s2 && !boss && ran >= BOSS_FIRST + BOSS_GAP * beaten) startBoss();
+    if (boss) updateBoss(dt);
     if (fade < 1) fade = Math.min(1, fade + dt / 90);
     if (spawnHold > 0) spawnHold -= dt;
     speed = Math.min(6 + distance * 0.00045, s2 ? LEVELS[level].cap : 14);        // Season 1 keeps its original top speed
@@ -654,14 +723,15 @@
     obstacles.forEach(function (o) {
       if (o.type === 'meteor' && !o.landed) {
         o.gx -= speed * dt; o.p = Math.min(1, o.p + dt / o.F);
-        o.x = o.gx + 150 * (1 - o.p); o.y = -40 + (GROUND - o.h + 40) * o.p * o.p;
+        var y0 = o.y0 == null ? -40 : o.y0;                     // meteors fall from the sky; a boss's rocks from the boss
+        o.x = o.gx + (o.ox == null ? 150 : o.ox) * (1 - o.p); o.y = y0 + (GROUND - o.h - y0) * o.p * o.p;
         if (o.p >= 1) {                                          // lands: a burst of sparks, then a glowing rock to jump
           o.landed = true; o.x = o.gx; o.y = GROUND - o.h;
           for (var k = 0; k < 8; k++) sparks.push({ x: o.x + o.w / 2, y: GROUND - 4, vx: rnd(-2.2, 2.2), vy: rnd(-4.5, -1.5), life: 1 });
         }
         return;
       }
-      o.x -= (speed + (o.type === 'bird' ? 1.5 : o.type === 'boulder' ? 2.4 : 0)) * dt;
+      o.x -= (speed + (o.type === 'bird' ? 1.5 : o.type === 'boulder' ? 2.4 : o.type === 'spit' ? 4 : 0)) * dt;
       if (o.type === 'bird') o.f += dt;
       if (o.type === 'boulder') o.rot -= (speed + 2.4) * dt / (o.w / 2);
     });
@@ -694,10 +764,17 @@
     });
     orbs = orbs.filter(function (o) { return !o.got && o.x > -30; });
     shots.forEach(function (f) {
-      f.x += f.vx * dt; f.vy += 0.26 * dt; f.y += f.vy * dt;
-      if (f.y + f.r >= GROUND) { f.y = GROUND - f.r; f.vy = -2.6; f.bounces++; }   // low hops: under its belly never clears the shortest cactus (17), its top still reaches a low bird (23)
+      f.x += f.vx * dt;
+      if (!f.straight) { f.vy += 0.26 * dt; f.y += f.vy * dt; }
+      if (!f.straight && f.y + f.r >= GROUND) { f.y = GROUND - f.r; f.vy = -2.6; f.bounces++; }   // low hops: under its belly never clears the shortest cactus (17), its top still reaches a low bird (23)
       if (f.bounces > 5 || f.x > W + 20) { f.dead = true; return; }
       var fb = { x: f.x - f.r, y: f.y - f.r, w: 2 * f.r, h: 2 * f.r };
+      if (boss && boss.phase === 'fight' && bossBoxes(boss).some(function (b) { return hit(fb, b); })) {
+        f.dead = true; boss.hp--; boss.flash = 10; burst(f.x, f.y, 10, true);
+        floaters.push({ x: f.x, y: Math.max(f.y - 20, 84), text: 'HIT!', life: 0.8 });   // kept below the score row
+        if (boss.hp <= 0) defeatBoss();
+        return;
+      }
       for (var i = 0; i < obstacles.length; i++) {
         var o = obstacles[i];
         if (o.type === 'lava' || o.dead) continue;
@@ -707,7 +784,7 @@
         f.dead = true;
         if (burnable(o)) {                          // burnt: gone, with sparks and points
           o.dead = true; kills++;
-          var pts = o.type === 'bird' ? BIRD_PTS : CACTUS_PTS, cy = o.type === 'bird' ? o.y + o.h / 2 : GROUND - 20;
+          var pts = o.type === 'bird' ? BIRD_PTS : o.type === 'spit' ? SPIT_PTS : CACTUS_PTS, cy = o.type === 'cactus' ? GROUND - 20 : o.y + o.h / 2;
           bonus += pts; burst(o.x + o.w / 2, cy, 14, true);
           floaters.push({ x: o.x + o.w / 2, y: cy - 18, text: '+' + pts, life: 1 });
         } else burst(f.x, f.y, 6, false);            // too tough: the fireball fizzles out
@@ -1025,6 +1102,13 @@
         return;
       }
       if (o.type === 'boulder') { blitTurned(K.boulder, o.x + o.w / 2, o.y + o.h / 2, o.rot); return; }
+      if (o.type === 'spit') {                                    // a boss's fire: pink-hot, with a trail
+        [[1, .5, .8], [2, .3, .62], [3, .15, .45]].forEach(function (t) { ctx.globalAlpha = t[1]; ctx.fillStyle = '#FF5E7A'; ctx.beginPath(); ctx.arc(o.x + o.w / 2 + t[0] * 9, o.y + o.h / 2, 9 * t[2], 0, 6.2832); ctx.fill(); });
+        ctx.globalAlpha = 1; ctx.fillStyle = INK; ctx.beginPath(); ctx.arc(o.x + 9, o.y + 9, 11, 0, 6.2832); ctx.fill();
+        ctx.fillStyle = '#FF5E7A'; ctx.beginPath(); ctx.arc(o.x + 9, o.y + 9, 9, 0, 6.2832); ctx.fill();
+        ctx.fillStyle = '#FFE0A3'; ctx.beginPath(); ctx.arc(o.x + 7, o.y + 7, 4, 0, 6.2832); ctx.fill();
+        return;
+      }
       if (o.type === 'meteor') {
         if (!o.landed) {                                          // its shadow on the ground, then the fiery trail
           var cx = o.gx + o.w / 2, pulse = 0.5 + 0.5 * Math.sin(frame / 4);
@@ -1075,19 +1159,98 @@
     });
     ctx.font = '800 16px ' + COL.font; ctx.textAlign = 'center'; ctx.lineJoin = 'round';
     floaters.forEach(function (t) {               // "+40" and "+3 FIRE", rising and fading
-      ctx.globalAlpha = Math.min(1, t.life * 1.6);
+      ctx.globalAlpha = Math.min(1, t.life * 1.6); ctx.font = '800 ' + (t.big ? 28 : 16) + 'px ' + COL.font;
       ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.strokeText(t.text, t.x, t.y);
       ctx.fillStyle = '#FFD166'; ctx.fillText(t.text, t.x, t.y);
     });
     ctx.globalAlpha = 1;
     if (state !== 'ready') for (var i = 0; i < ammo; i++) fireball(80 + i * 17, 90, 5.5);   // ammo, under the sun
   }
+  // ---------- boss drawing (cartoon shapes in the Playful style: ink outlines, flat fills) ----------
+  function shape(path, fill, lw) { path(); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = lw || 3; ctx.strokeStyle = INK; ctx.lineJoin = 'round'; ctx.stroke(); }
+  function poly(pts, fill, lw) { shape(function () { ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]); ctx.closePath(); }, fill, lw); }
+  function oval(x, y, rx, ry, fill, lw) { shape(function () { ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 6.2832); }, fill, lw); }
+  function box(x, y, w, h, r, fill, lw) { shape(function () { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); }, fill, lw); }
+  function drawFlyer(b, dragon) {                 // the Sky Tyrant, and the Star Dragon (bigger, darker, starry)
+    var white = b.flash > 0 && Math.floor(b.flash / 2) % 2, c = function (col) { return white ? '#FFFFFF' : col; };
+    var flap = Math.sin(b.t / 7), body = c(dragon ? '#3B2F6E' : '#8E6FD8'), wing = c(dragon ? '#2E2157' : '#B79CF2'), belly = c(dragon ? '#6F5FB8' : '#E4D9FB');
+    ctx.save(); ctx.translate(b.x, b.y); if (dragon) ctx.scale(1.15, 1.15);
+    poly([[10, -10], [74, -54 - 30 * flap], [42, -2]], wing);                                 // far wing
+    poly([[38, -6], [84, 4], [40, 10]], body);                                               // tail
+    oval(0, 0, 48, 22, body); oval(-6, 8, 30, 9, belly, 2);
+    if (dragon) [[-10, -8], [12, -12], [26, 2], [2, 4]].forEach(function (s) { ctx.fillStyle = white ? '#fff' : '#FFF3C4'; ctx.beginPath(); ctx.arc(s[0], s[1], 2.2, 0, 6.2832); ctx.fill(); });
+    poly([[-4, -8], [46, -60 - 34 * flap], [26, 2]], wing);                                  // near wing
+    poly([[-38, -22], [-4, -42], [-26, -12]], body);                                         // crest
+    oval(-46, -12, 21, 15, body);                                                            // head
+    var open = b.wind > 0 && b.next === 'spit';
+    poly([[-60, -18], [-100, -10], [-60, -6]], c('#FF9F43'));                                 // beak / upper jaw
+    if (open) poly([[-60, -4], [-94, 2], [-60, 4]], c('#FF9F43'));                            // lower jaw, open to spit
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-50, -16, 4.6, 0, 6.2832); ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+    ctx.fillStyle = dragon ? '#FFD166' : INK; ctx.beginPath(); ctx.arc(-51, -16, 2.2, 0, 6.2832); ctx.fill();
+    [[-14, 20], [10, 20]].forEach(function (l) { poly([[l[0], l[1] - 4], [l[0] - 4, l[1] + 10], [l[0] + 6, l[1] + 10]], c('#FF9F43'), 2); });   // claws
+    if (b.wind > 0 && b.next === 'rock') { ctx.fillStyle = c('#5E4C4A'); ctx.beginPath(); ctx.arc(-2, 30, 9, 0, 6.2832); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 2.5; ctx.stroke(); }  // a rock in its claws
+    ctx.restore();
+  }
+  function drawGolem(b) {
+    var white = b.flash > 0 && Math.floor(b.flash / 2) % 2, c = function (col) { return white ? '#FFFFFF' : col; };
+    var x = b.x, G = GROUND, lift = b.wind > 0 ? 1 - b.wind / 24 : 0, step = Math.sin(b.t / 10) * 2;
+    box(x - 40, G - 32, 28, 32, 6, c('#7D6E62')); box(x + 12, G - 32 + step * 0.5, 28, 32 - step * 0.5, 6, c('#7D6E62'));   // legs
+    box(x + 36, G - 96, 26, 60, 10, c('#8C7B6D'));                                           // back arm
+    box(x - 52, G - 108, 104, 80, 16, c('#9C8A7A'));                                         // body
+    ctx.strokeStyle = c('#5E5148'); ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(x - 20, G - 98); ctx.lineTo(x - 8, G - 78); ctx.lineTo(x - 18, G - 60);
+    ctx.moveTo(x + 22, G - 70); ctx.lineTo(x + 34, G - 52); ctx.stroke();                     // cracks
+    box(x - 32, G - 136, 64, 34, 12, c('#AE9C8B'));                                          // head
+    [[-14], [10]].forEach(function (e) { ctx.fillStyle = white ? '#fff' : '#FFD166'; ctx.beginPath(); ctx.arc(x + e[0], G - 120, 5, 0, 6.2832); ctx.fill(); });
+    oval(x - 22, G - 136, 10, 4, c('#7BC86C'), 2); oval(x + 14, G - 137, 8, 3.5, c('#7BC86C'), 2);   // moss
+    ctx.save(); ctx.translate(x - 52, G - 96); ctx.rotate(-lift * 2.2);                      // the throwing arm swings up
+    box(-14, -8, 26, 64, 10, c('#8C7B6D')); if (lift > 0) oval(0, 60, 15, 15, c('#C77B54'));
+    ctx.restore();
+  }
+  function drawSerpent(b) {
+    var white = b.flash > 0 && Math.floor(b.flash / 2) % 2, c = function (col) { return white ? '#FFFFFF' : col; };
+    var x = b.x, hy = b.headY, G = GROUND;
+    oval(x + 12, G + 2, 62, 12, '#FF7A3D'); ctx.fillStyle = '#FFD166'; ctx.fillRect(x - 30, G - 1, 84, 3);   // its lava pool
+    for (var i = 7; i >= 0; i--) {                                                           // the neck, from the pool to the head
+      var t = i / 7, nx = x + 18 - 22 * t + 9 * Math.sin(t * 5 + b.t / 14), ny = G - 4 + (hy - G + 4) * t;
+      oval(nx, ny, 17 - 5 * t, 15 - 4 * t, c('#E2552C'), 2.5);
+      ctx.fillStyle = c('#FFB347'); ctx.beginPath(); ctx.ellipse(nx - 8 + 3 * t, ny, 5, 9 - 3 * t, 0, 0, 6.2832); ctx.fill();
+    }
+    var open = b.wind > 0;
+    poly([[x - 2, hy - 18], [x + 8, hy - 34], [x + 12, hy - 14]], c('#FFB347'), 2);           // horn
+    oval(x - 10, hy - 2, 30, 18, c('#E2552C'));                                              // head
+    poly([[x - 30, hy + 2], [x - 56, hy + (open ? 14 : 6)], [x - 26, hy + 12]], c('#C8401F'), 2.5);   // jaw
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x - 18, hy - 8, 5, 0, 6.2832); ctx.fill(); ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#FFD166'; ctx.beginPath(); ctx.arc(x - 19, hy - 8, 2.4, 0, 6.2832); ctx.fill();
+    if (open) { ctx.fillStyle = 'rgba(255,94,122,.6)'; ctx.beginPath(); ctx.arc(x - 42, hy + 6, 6 + 3 * Math.sin(b.t), 0, 6.2832); ctx.fill(); }
+  }
+  function drawBoss() {
+    var b = boss;
+    if (!b) return;
+    ctx.save();
+    if (b.phase === 'down') { var k = b.t2 / 110; ctx.globalAlpha = Math.max(0, 1 - k); ctx.translate(0, k * k * 60); }
+    if (b.k === 0 || b.k === 3) drawFlyer(b, b.k === 3); else if (b.k === 1) drawGolem(b); else drawSerpent(b);
+    ctx.restore();
+  }
+  function drawBossBar() {                        // the boss's name and health, at the top
+    var b = boss;
+    if (!b || b.phase === 'down') return;
+    var w = Math.min(320, W - 90), x = (W - w) / 2, y = 44, seg = (w - 128) / b.max;
+    ctx.fillStyle = INK; rr(x + 3, y + 3, w, 24); ctx.fillStyle = '#FFFDF7'; rr(x, y, w, 24);
+    ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, 24, 4); else ctx.rect(x, y, w, 24); ctx.stroke();
+    ctx.font = '800 12px ' + COL.font; ctx.textAlign = 'left'; ctx.fillStyle = INK; ctx.fillText(BOSSES[b.k].name, x + 10, y + 16.5);
+    for (var i = 0; i < b.max; i++) {
+      ctx.fillStyle = i < b.hp ? '#FF5E7A' : 'rgba(43,26,18,.15)';
+      ctx.fillRect(x + 122 + i * seg, y + 6, seg - 3, 12);
+    }
+  }
+
   function drawBanner() {                                         // "LEVEL 2 · CANYON", dropping in for about 2.5 s
     if (!banner) return;
     var t = (frame - banner.at) / 150;
     if (t >= 1) { banner = null; return; }
     var a = t < .12 ? t / .12 : t > .82 ? (1 - t) / .18 : 1, y = 74 - (1 - Math.min(1, t / .12)) * 24;
-    var label = 'LEVEL ' + (level + 1) + '  ·  ' + LEVELS[level].name;
+    var label = banner.text || ('LEVEL ' + (level + 1) + '  ·  ' + LEVELS[level].name);
+    if (boss) y += 40;                                             // below the boss's health bar
     ctx.globalAlpha = a; ctx.font = '800 22px ' + COL.font; ctx.textAlign = 'center';
     if (playful) {
       var w = ctx.measureText(label).width + 44;
@@ -1109,7 +1272,9 @@
     ctx.clearRect(0, 0, W, H);
     if (playful) drawSky(); else { ctx.fillStyle = COL.bg; ctx.fillRect(0, 0, W, H); }
     clouds.forEach(function (c) { drawCloud(c.x, c.y); });
-    drawGround(); drawObstacles(); drawDino(); if (s2) drawFire(); drawBanner();
+    drawGround(); if (s2) drawBoss(); drawObstacles(); drawDino();
+    if (s2) { drawFire(); if (state !== 'over') drawBossBar(); }
+    if (state !== 'over') drawBanner();                           // the game-over text gets the screen to itself
 
     // score
     ctx.font = '700 18px ' + COL.font;
@@ -1126,7 +1291,7 @@
     } else if (state === 'over') {
       centerText('G A M E   O V E R', 96, 28, COL.title);
       centerText('SPACE / TAP TO RESTART', 128, 14, COL.sub);
-      if (s2 && kills) centerText(kills + ' BLASTED   ·   +' + bonus + ' BONUS', 154, 13, COL.text);
+      if (s2 && (kills || beaten)) centerText((beaten ? beaten + (beaten === 1 ? ' BOSS' : ' BOSSES') + '   ·   ' : '') + kills + ' BLASTED   ·   +' + bonus + ' BONUS', 154, 13, COL.text);
     }
   }
 

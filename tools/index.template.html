@@ -626,29 +626,61 @@
   function startBoss() {
     var k = beaten % 4, round = Math.floor(beaten / 4), B = BOSSES[k], hp = B.hp + 2 * round;
     boss = { k: k, hp: hp, max: hp, pts: B.pts + 100 * round, x: W + 130, tx: W - (k === 1 ? 140 : 165), t: 0, phase: 'enter',
-             cool: 70, wind: 0, atk: 0, flash: 0, orb: 20, n: 0, y: GROUND - 105, headY: GROUND - 74, aimY: 0, next: '' };
+             cool: 70, wind: 0, atk: 0, flash: 0, orb: 20, n: 0, y: GROUND - 105, headY: GROUND - 74, aimY: 0, next: '',
+             dodge: 0, curl: 0, lift: 0, lv: 0, dive: 0 };
     banner = { at: frame, text: 'BOSS  ·  ' + B.name }; spawnHold = 1e9;   // no other obstacles during the fight
   }
   function bossBoxes(b) {                        // where fire hurts it, from its idle pose
+    if (b.curl > 0) { var c = golemBall(); return [{ x: b.x - c.w / 2 + 3, y: GROUND - c.h + 3, w: c.w - 6, h: c.h - 3 }]; }
     var p = bossAt(b, 0), w = p.s.w, h = p.s.h;
     if (b.k === 1) return [{ x: p.x + w * 0.15, y: p.y + h * 0.1, w: w * 0.7, h: h * 0.9 }];
     if (b.k === 2) return [{ x: p.x + w * 0.05, y: p.y, w: w * 0.8, h: h * 0.45 },                                   // head
-                           { x: p.x + w * 0.45, y: p.y + h * 0.45, w: w * 0.45, h: Math.max(0, GROUND - p.y - h * 0.45) }];   // neck
+                           { x: p.x + w * 0.45, y: p.y + h * 0.45, w: w * 0.45, h: h * 0.55 }]                        // neck
+      .map(function (r) { return { x: r.x, y: r.y, w: r.w, h: Math.min(r.y + r.h, GROUND) - r.y }; })             // only what is above the lava
+      .filter(function (r) { return r.h > 0; });
     return [{ x: p.x + w * 0.2, y: p.y + h * 0.2, w: w * 0.6, h: h * 0.6 }];
   }
-  function bossCenter(b) { var r = bossBoxes(b)[0]; return { x: r.x + r.w / 2, y: r.y + r.h / 2 }; }
+  function bossCenter(b) { var r = bossBoxes(b)[0]; return r ? { x: r.x + r.w / 2, y: r.y + r.h / 2 } : { x: b.x, y: GROUND - 20 }; }
+  // The ground bosses watch for fire. The Golem curls into a ball under high fire and hops over low fire (so mixing
+  // heights catches it), the Serpent dives into its pool. Each shot is judged once, as it comes close. Never while winding up or attacking (the moment to shoot), and not again straight away.
+  var dodgeP = null;                               // the odds of a dodge; the test hook can pin it
+  function dodgeOdds() { return dodgeP !== null ? dodgeP : Math.min(0.85, 0.65 + 0.1 * Math.floor(beaten / 4)); }
+  function watchFire(b) {
+    if (b.wind > 0 || b.atk > 0 || b.dodge > 0 || b.curl > 0 || b.lift > 0 || b.dive > 0) return;
+    var boxes = bossBoxes(b);
+    for (var i = 0; i < shots.length; i++) {
+      var f = shots[i];
+      if (f.seen || !f.straight) continue;
+      var coming = boxes.some(function (r) { var gap = r.x - (f.x + f.r); return gap > 0 && gap < 130 && f.y + f.r > r.y && f.y - f.r < r.y + r.h; });
+      if (!coming) continue;
+      f.seen = true;
+      if (Math.random() >= dodgeOdds()) continue;
+      if (b.k === 1 && f.y + f.r < GROUND - golemBall().h + 3) { b.curl = 50; b.dodge = 62; burst(b.x, GROUND - 30, 12, false); }   // high: a ball of rock, 3/4 s
+      else if (b.k === 1) { b.lift = 0.01; b.lv = 7.8; b.dodge = 52; }                  // low: a hop (about 75 px), 2/3 s in the air
+      else { b.dive = 48; b.dodge = 64; burst(b.x, GROUND - 4, 14, true); }               // under the lava for 3/4 s, ready again soon after
+      return;
+    }
+  }
   function updateBoss(dt) {
     var b = boss;
-    b.t += dt; if (b.flash > 0) b.flash -= dt; if (b.atk > 0) b.atk -= dt;
+    b.t += dt; if (b.flash > 0) b.flash -= dt; if (b.atk > 0) b.atk -= dt; if (b.dodge > 0) b.dodge -= dt;
     if (b.phase === 'down') { b.t2 += dt; if (b.t2 > 110) { boss = null; afterBoss(); } return; }
     if (b.phase === 'enter') { b.x += (b.tx - b.x) * Math.min(1, 0.05 * dt); if (Math.abs(b.x - b.tx) < 1.5) { b.x = b.tx; b.phase = 'fight'; } }
     var aiming = b.wind > 0 && b.next === 'spit';
     if (b.k === 0) b.y += (GROUND - 105 + 40 * Math.sin(b.t / 45) - b.y) * Math.min(1, 0.12 * dt);   // bobs high and low
     if (b.k === 3) b.y += (GROUND - 106 + 26 * Math.sin(b.t / 45) - b.y) * Math.min(1, 0.12 * dt);   // bigger, so less room
-    if (b.k === 2) b.headY += ((aiming ? b.aimY : GROUND - 74 + 22 * Math.sin(b.t / 38)) - b.headY) * Math.min(1, 0.15 * dt);
+    if (b.k === 2) b.headY += ((b.dive > 0 ? GROUND + 72 : aiming ? b.aimY : GROUND - 74 + 22 * Math.sin(b.t / 38)) - b.headY) * Math.min(1, (b.dive > 0 ? 0.32 : 0.15) * dt);
+    if (b.curl > 0) { b.curl -= dt; if (b.curl <= 0) burst(b.x, GROUND - 40, 12, false); }   // and back up
+    if (b.lift > 0) {
+      b.lift += b.lv * dt; b.lv -= 0.4 * dt;
+      if (b.lift <= 0) { b.lift = 0; burst(b.x - 34, GROUND - 4, 6, false); burst(b.x + 34, GROUND - 4, 6, false); }   // thud
+    }
+    if (b.dive > 0) { b.dive -= dt; if (b.dive <= 0) burst(b.x, GROUND - 4, 16, true); }   // bursts back out of the lava
     b.orb -= dt;                                   // a fire orb every few seconds, low or high
     if (b.orb <= 0) { b.orb = 190; orbs.push({ x: W + 10, y: Math.random() < 0.5 ? GROUND - 30 : GROUND - 92, r: 11, ph: 0 }); }
     if (b.phase !== 'fight') return;
+    if (b.k === 1 || b.k === 2) watchFire(b);
+    if (b.curl > 0 || b.lift > 0 || b.dive > 0) return;   // no attacks while dodging
     if (b.wind > 0) { b.wind -= dt; if (b.wind <= 0) bossAttack(b); return; }
     b.cool -= dt;
     if (b.cool <= 0) {                             // wind up (a visible tell), then attack
@@ -1155,7 +1187,14 @@
       ctx.fillStyle = '#FFD166'; ctx.fillText(t.text, t.x, t.y);
     });
     ctx.globalAlpha = 1;
-    if (state !== 'ready') for (var i = 0; i < ammo; i++) fireball(80 + i * 17, 90, 5.5);   // ammo, under the sun
+    if (state !== 'ready') {                       // ammo: six slots at the top in the middle; on narrow screens under the score
+      var half = MAX_AMMO * 8.5, narrow = W / 2 + half > W - 290, cx = narrow ? W - 24 - half : W / 2, cy = narrow ? 54 : 26;
+      for (var i = 0; i < MAX_AMMO; i++) {
+        var ax = cx + (i - (MAX_AMMO - 1) / 2) * 17;
+        if (i < ammo) fireball(ax, cy, 5.5);
+        else { ctx.beginPath(); ctx.arc(ax, cy, 5, 0, 6.2832); ctx.lineWidth = 1.5; ctx.strokeStyle = COL.text; ctx.globalAlpha = 0.6; ctx.stroke(); ctx.globalAlpha = 1; }
+      }
+    }
   }
   // ---------- boss drawing ----------
   function oval(x, y, rx, ry, fill) {
@@ -1183,10 +1222,29 @@
     });
     return BOSS_SPR[k];
   }
+  function golemBall() {                          // the Golem curled up: a disc of its own rock (shoulder and moss), ringed dark
+    if (golemBall.s) return golemBall.s;
+    var A = BOSS_ART.golem, rows = A.frames[0].rows, R = 10, CX = 53, CY = 21, out = [], dark = null, lum = 1e9;
+    Object.keys(A.pal).forEach(function (ch) {
+      var h = A.pal[ch], v = parseInt(h.slice(1, 3), 16) * 3 + parseInt(h.slice(3, 5), 16) * 6 + parseInt(h.slice(5, 7), 16);
+      if (v < lum) { lum = v; dark = ch; }
+    });
+    for (var y = -R; y <= R; y++) {
+      var r = '';
+      for (var x = -R; x <= R; x++) {
+        var d = Math.sqrt(x * x + y * y), src = (rows[CY + y] || '')[CX + x] || '.';
+        r += d > R + 0.3 ? '.' : d > R - 1.2 ? dark : src === '.' ? 'C' : src;
+      }
+      out.push(r);
+    }
+    var s = sprite(out, BOSS_U[1], A.pal);
+    s.flash = { paths: [], sil: s.sil, base: '#FFFFFF', w: s.w, h: s.h };
+    return (golemBall.s = s);
+  }
   function bossPose(b) { return b.phase === 'fight' && b.wind > 0 ? 1 : b.atk > 0 ? 2 : 0; }
   function bossAt(b, i) {                         // a pose and its top-left corner
     var S = bossSprites(b.k), s = S[i], y = b.y;
-    if (b.k === 1) y = GROUND;
+    if (b.k === 1) y = GROUND - b.lift;
     if (b.k === 2) y = Math.max(GROUND + 4, b.headY + S[0].h - SERPENT_MOUTH * BOSS_U[2]);   // rises out of its pool
     return { s: s, x: b.x - s.ax, y: y - s.ay };
   }
@@ -1196,13 +1254,29 @@
     var p = bossAt(b, bossPose(b));
     ctx.save();
     if (b.phase === 'down') { var k = b.t2 / 110; ctx.globalAlpha = Math.max(0, 1 - k); ctx.translate(0, k * k * 60); }
+    var white = b.flash > 0 && Math.floor(b.flash / 2) % 2;
+    if (b.lift > 2) {                              // the Golem's shadow while it is in the air
+      ctx.fillStyle = 'rgba(43,26,18,.22)'; ctx.beginPath(); ctx.ellipse(b.x, GROUND + 1, 58 * (1 - b.lift / 260), 5, 0, 0, 6.2832); ctx.fill();
+    }
     ctx.save();
-    if (b.k === 2) { ctx.beginPath(); ctx.rect(-100, -100, W + 200, GROUND + 103); ctx.clip(); }   // below the surface of the pool
-    blit(p.s, p.x, p.y);
-    if (b.flash > 0 && Math.floor(b.flash / 2) % 2) { ctx.globalAlpha *= 0.8; blit(p.s.flash, p.x, p.y); }
+    if (b.curl > 0) {                              // the Golem, curled up, rocking in place
+      var c = golemBall(), ang = 0.5 * Math.sin(b.t / 5);
+      blitTurned(c, b.x, GROUND - c.h / 2, ang);
+      if (white) { ctx.globalAlpha *= 0.8; blitTurned(c.flash, b.x, GROUND - c.h / 2, ang); }
+    } else {
+      if (b.k === 2) { ctx.beginPath(); ctx.rect(-100, -100, W + 200, GROUND + 103); ctx.clip(); }   // below the surface of the pool
+      blit(p.s, p.x, p.y);
+      if (white) { ctx.globalAlpha *= 0.8; blit(p.s.flash, p.x, p.y); }
+    }
     ctx.restore();
     if (b.k === 2) {                               // the Serpent's lava pool
       oval(b.x, GROUND + 3, 66, 11, '#FF7A3D'); ctx.fillStyle = '#FFD166'; ctx.fillRect(b.x - 46, GROUND, 92, 3);
+      var a0 = ctx.globalAlpha;
+      if (b.dive > 0) for (var i = 0; i < 4; i++) {  // bubbles while it hides under the lava
+        var q = ((b.t * 0.05 + i * 0.27) % 1), bx = b.x - 39 + i * 26 + 4 * Math.sin(b.t / 6 + i);
+        ctx.globalAlpha = a0 * (1 - q); ctx.fillStyle = '#FFD166'; ctx.beginPath(); ctx.arc(bx, GROUND - 2 - q * 14, 2.5 + 2 * (1 - q), 0, 6.2832); ctx.fill();
+        ctx.lineWidth = 1.5; ctx.strokeStyle = INK; ctx.stroke(); ctx.globalAlpha = a0;
+      }
     }
     ctx.restore();
   }

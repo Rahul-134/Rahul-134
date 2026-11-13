@@ -69,6 +69,7 @@ To recolour the cacti as well, add `"cactus": {"G": ..., "g": ..., "h": ..., "S"
 | `theme_colors.py` | the theme list and colour maths |
 | `sprites.py` | the shared pixel art (dino, cacti, birds) |
 | `gen_dino.py` | the `dino/` game page, and the README banner via `banner.py` |
+| `gen_boss_art.py` | the Season 2 bosses: turns the pictures in `boss_art/` into `boss_art.json`, which `gen_dino.py` puts in the game page (needs Pillow and NumPy; run it only when a picture changes) |
 | `banner.py` | `dino-banner.svg` (wide) and `dino-banner-mobile.svg` (phones); the README picks one with a `<picture>` media query |
 | `gen_about.py` | `about-card.svg` |
 | `gen_intro.py` | the `about/*.svg` intro and the Focus, Problem solving and Builds rows under it |

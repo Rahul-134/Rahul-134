@@ -187,6 +187,7 @@
   html[data-mode=dark] .skin-btn[aria-pressed=true], html[data-mode=dark] .season-btn[aria-pressed=true] { background:var(--ink); color:#fff; }
   html[data-mode=dark] h1 .hl, html[data-mode=dark] .console, html[data-mode=dark] .btn:not(.alt) { color:#1A1626; }
   html[data-mode=dark] .console kbd { color:var(--tx); }
+  html[data-mode=dark] .arc .ammo { background:var(--tx); color:#1A1626; }   /* the fireball count on the F button: a light pill at night too */
   html[data-mode=dark] button:focus-visible, html[data-mode=dark] a:focus-visible { outline-color:var(--tx); }
   html[data-mode=dark] .stk { filter:drop-shadow(2px 0 0 #F4ECDD) drop-shadow(-2px 0 0 #F4ECDD) drop-shadow(0 2px 0 #F4ECDD) drop-shadow(0 -2px 0 #F4ECDD) drop-shadow(3px 5px 0 rgba(0,0,0,.45)); }
   html[data-mode=dark] .scene { background:linear-gradient(180deg,#1F2A52 0%,#34437A 100%); }
@@ -200,6 +201,32 @@
   /* Night sand in its own colours (the same as the game's and the README cards'). A brightness filter used to darken it, but
      Chrome filters a moving layer tile by tile, which left thin vertical lines at the tile edges. */
   html[data-mode=dark] .scene .ground { --g-sand:#B3925F; --g-top:#C5A673; --g-low:#987A4D; --g-peb:#7E6240; --g-ink:#0C0B16; --g-tuft:#5E9A57; }
+  /* Season 2 extras on the console: sound and badges */
+  .extras { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
+  .xbtn { display:inline-flex; align-items:center; gap:6px; padding:3px 12px 3px 8px; border:2.5px solid var(--ink); border-radius:99px; background:var(--paper); color:var(--ink); font-family:var(--display); font-weight:800; font-size:14px; line-height:1.4; cursor:pointer; box-shadow:2px 3px 0 var(--ink); }
+  .xbtn:hover { transform:translate(-1px,-1px); box-shadow:3px 4px 0 var(--ink); }
+  .xbtn:active { transform:translate(1px,2px); box-shadow:1px 1px 0 var(--ink); }
+  .xbtn svg { width:20px; height:20px; flex:none; }
+  .xbtn[aria-pressed=true] { background:var(--accent); }
+  .xbtn .on, .xbtn[aria-pressed=true] .off { display:none; } .xbtn[aria-pressed=true] .on { display:inline; }
+  .bd-ov { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; padding:14px; background:rgba(43,26,18,.62); z-index:50; overflow:auto; }
+  .bd-ov[hidden] { display:none; }
+  .bd-card { width:min(100%,640px); max-height:calc(100vh - 28px); overflow:auto; padding:18px 20px 20px; border:3px solid var(--ink); border-radius:26px; background:var(--paper); color:var(--ink); box-shadow:6px 8px 0 var(--ink); }
+  .bd-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:4px; }
+  .bd-head h3 { margin:0; font-family:var(--display); font-size:26px; font-weight:800; }
+  .bd-head h3 b { display:inline-block; padding:0 10px; margin-left:6px; border:3px solid var(--ink); border-radius:99px; background:var(--accent); font-size:20px; vertical-align:2px; }
+  .bd-card > p { margin:0 0 14px; font-size:14px; font-weight:700; opacity:.75; }
+  .bd-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; margin:0; padding:0; list-style:none; }
+  .bd-grid li { display:grid; grid-template-columns:40px 1fr; gap:2px 10px; align-items:center; padding:9px 10px; border:2.5px solid var(--ink); border-radius:16px; background:var(--cream); }
+  .bd-grid li svg { grid-row:span 2; width:40px; height:40px; }
+  .bd-grid li b { font-family:var(--display); font-size:16px; font-weight:800; line-height:1.15; }
+  .bd-grid li span { font-size:12px; font-weight:700; line-height:1.3; opacity:.75; }
+  .bd-grid li.locked { border-style:dashed; background:transparent; }
+  .bd-grid li.locked svg { filter:grayscale(1); opacity:.4; } .bd-grid li.locked b { opacity:.6; }
+  html[data-mode=dark] .console .xbtn, html[data-mode=dark] .bd-card, html[data-mode=dark] .bd-card .xbtn { color:var(--tx); }
+  html[data-mode=dark] .console .xbtn[aria-pressed=true], html[data-mode=dark] .bd-head h3 b { color:#1A1626; }
+  html[data-mode=dark] .bd-ov { background:rgba(5,5,12,.72); }
+  @media (max-width:560px) { .xbtn { padding:4px; } .xbtn .lbl { display:none; } .bd-grid { grid-template-columns:1fr; } }
   @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .stk, .scene *, .btn, .arc { animation:none !important; transition:none !important; } }
   @media (max-width:820px) {
     .hero { grid-template-columns:1fr; } .scene { height:190px; }
@@ -260,7 +287,7 @@
     </div></div>
     <div class="deck">
       <div class="padbox"><button id="duckBtn" type="button" class="arc b" aria-label="Duck (hold)">B</button><small>DUCK</small></div>
-      <div class="mid" aria-hidden="true"><div class="grille"><i></i><i></i><i></i><i></i><i></i><i></i></div><p><kbd>Space</kbd> <kbd>↑</kbd> jump &nbsp;·&nbsp; <kbd>↓</kbd> duck<span class="s2only"> &nbsp;·&nbsp; <kbd>Ctrl</kbd> fire</span></p></div>
+      <div class="mid"><div class="grille" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="extras s2only"><button type="button" class="xbtn" id="soundBtn" aria-pressed="false" title="Sound (M)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7.5h3l4-3.5v12l-4-3.5H3z" fill="#FFC83D" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><g class="on" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M13 7.3a3.6 3.6 0 0 1 0 5.4"/><path d="M15.2 5a6.8 6.8 0 0 1 0 10"/></g><g class="off" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M13 7.5l4.5 5M17.5 7.5l-4.5 5"/></g></svg><span class="lbl"><span class="off">Sound off</span><span class="on">Sound on</span></span></button><button type="button" class="xbtn" id="badgeBtn" aria-haspopup="dialog"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 3h9v4a4.5 4.5 0 0 1-9 0z" fill="#FFC83D" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M5.5 4.5H3v1.2a2.6 2.6 0 0 0 2.8 2.6M14.5 4.5H17v1.2a2.6 2.6 0 0 1-2.8 2.6M10 11.5v3M6.5 17h7l-1-2.5h-5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="lbl">Badges</span><span class="cnt">0/0</span></button></div><p aria-hidden="true"><kbd>Space</kbd> <kbd>↑</kbd> jump &nbsp;·&nbsp; <kbd>↓</kbd> duck<span class="s2only"> &nbsp;·&nbsp; <kbd>Ctrl</kbd> fire &nbsp;·&nbsp; <kbd>M</kbd> sound</span></p></div>
       <div class="padbox fire-pad"><button id="fireBtn" type="button" class="arc f empty" aria-label="Breathe fire">F<i class="ammo" aria-hidden="true">0</i></button><small>FIRE</small></div>
       <div class="padbox"><button id="jumpBtn" type="button" class="arc a" aria-label="Jump">A</button><small>JUMP</small></div>
     </div>
@@ -520,7 +547,7 @@
     speed = 6; distance = 0; score = 0; frame = 0; groundOff = 0; runMs = 0;
     level = 0; fromLevel = 0; fade = 1; banner = null; spawnHold = 0; backOff = 0; sparks = [];
     ammo = 0; shots = []; orbs = []; floaters = []; kills = 0; bonus = 0; fireCool = 0; lastOrbMs = -4000;
-    boss = null; beaten = 0;
+    boss = null; beaten = 0; runBadges = []; toastQ = [];
     if (typeof showAmmo === 'function') showAmmo();
     dino = { x: 60, y: GROUND - dinoA.h, vy: 0, onGround: true };
     obstacles = [];
@@ -533,7 +560,7 @@
   function jump() {
     if (state === 'ready') { state = 'running'; last = performance.now(); if (window.DinoLB) window.DinoLB.runStarted(); }
     else if (state === 'over') { if (performance.now() - diedAt > 400) { reset(); state = 'running'; last = performance.now(); if (window.DinoLB) window.DinoLB.runStarted(); } return; }
-    if (dino.onGround && !ducking) { dino.vy = -11.6; dino.onGround = false; }
+    if (dino.onGround && !ducking) { dino.vy = -11.6; dino.onGround = false; sfx('jump'); }
   }
   function setDuck(v) { ducking = v; }
   function fire() {                               // Season 2: breathe a fireball, if there is one to breathe
@@ -542,6 +569,7 @@
     var low = ducking && dino.onGround;
     var straight = !!boss;                         // facing a boss, fire flies straight: your height picks what it hits
     shots.push({ x: dino.x + (low ? duckA.w - 6 : dinoA.w - 8), y: low ? GROUND - duckA.h + 12 : dino.y + 23, vx: 9, vy: straight ? 0 : 3.6, r: 7, bounces: 0, straight: straight });   // otherwise aimed down, so point-blank cacti burn too
+    sfx('fire'); unlock('flame');
   }
   var fireBtn = document.getElementById('fireBtn'), ammoTag = fireBtn ? fireBtn.querySelector('.ammo') : null;
   function showAmmo() {
@@ -569,6 +597,155 @@
   ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (n) { duckBtn.addEventListener(n, function () { setDuck(false); }); });
   jumpBtn.addEventListener('keydown', function (e) { if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); } });
   if (fireBtn) fireBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); fire(); });
+  // phones buzz only for players on the touch controls (a key press switches it off again)
+  [cv, jumpBtn, duckBtn, fireBtn].forEach(function (b) { if (b) b.addEventListener('pointerdown', function (e) { touchPlay = e.pointerType !== 'mouse'; }); });
+  window.addEventListener('keydown', function (e) {
+    if (typing(e)) return;
+    touchPlay = false;
+    if (e.code === 'KeyM' && s2 && !e.repeat && !e.ctrlKey && !e.metaKey && !e.altKey) setSound(!soundOn);
+  });
+
+  // ---------- Season 2 extras: sound, vibration and badges (Season 1 stays exactly as it was) ----------
+  // Sound is made on the fly with the Web Audio API (no sound files). It starts muted; the choice is remembered.
+  var soundOn = false, actx = null, master = null, noiseBuf = null, sfxLog = [], sfxErr = 0, touchPlay = false, buzzLog = [];
+  try { soundOn = localStorage.getItem('dinoSound') === 'on'; } catch (e) {}
+  var soundBtn = document.getElementById('soundBtn');
+  function showSound() {
+    if (soundBtn) { soundBtn.setAttribute('aria-pressed', String(soundOn)); soundBtn.setAttribute('aria-label', soundOn ? 'Sound on (press to mute)' : 'Sound off (press to unmute)'); }
+  }
+  function setSound(on) {                          // from a click or the M key, so the browser lets audio start
+    soundOn = on; showSound();
+    try { localStorage.setItem('dinoSound', on ? 'on' : 'off'); } catch (e) {}
+    if (on) sfx('orb');                            // a little chime to say it works
+  }
+  showSound();
+  if (soundBtn) soundBtn.addEventListener('click', function () { setSound(!soundOn); });
+  function audio() {
+    if (!soundOn || !s2) return null;
+    if (!actx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      try { actx = new AC(); } catch (e) { return null; }
+      master = actx.createGain(); master.gain.value = 0.22; master.connect(actx.destination);
+    }
+    if (actx.state === 'suspended' && actx.resume) actx.resume();
+    return actx;
+  }
+  function tone(type, f0, f1, dur, vol, at) {      // one note, gliding from f0 to f1
+    var t = actx.currentTime + (at || 0), o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t);
+    if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + 0.03);
+  }
+  function noise(dur, vol, freq, at) {             // a burst of filtered noise: whoosh, crackle, thud
+    var t = actx.currentTime + (at || 0);
+    if (!noiseBuf) {
+      noiseBuf = actx.createBuffer(1, Math.floor(actx.sampleRate * 0.6), actx.sampleRate);
+      var d = noiseBuf.getChannelData(0); for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    var src = actx.createBufferSource(), bp = actx.createBiquadFilter(), g = actx.createGain();
+    src.buffer = noiseBuf; bp.type = 'bandpass'; bp.frequency.setValueAtTime(freq, t); bp.Q.value = 0.8;
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(bp); bp.connect(g); g.connect(master); src.start(t); src.stop(t + dur + 0.03);
+  }
+  var SFX = {
+    jump:  function () { tone('square', 300, 620, 0.09, 0.1); },
+    fire:  function () { noise(0.24, 0.32, 900); tone('sawtooth', 240, 90, 0.18, 0.06); },
+    burn:  function () { noise(0.18, 0.4, 2000); tone('triangle', 520, 240, 0.12, 0.09); },
+    hit:   function () { noise(0.14, 0.5, 520); tone('square', 170, 80, 0.14, 0.12); },
+    orb:   function () { tone('triangle', 660, 660, 0.08, 0.16); tone('triangle', 990, 990, 0.14, 0.16, 0.07); },
+    dodge: function () { noise(0.28, 0.22, 380); },
+    boss:  function () { tone('sawtooth', 110, 80, 0.6, 0.12); tone('sawtooth', 165, 118, 0.6, 0.07, 0.06); },
+    down:  function () { [523, 659, 784, 1047].forEach(function (f, i) { tone('square', f, f, 0.15, 0.09, i * 0.09); }); },
+    level: function () { [392, 523, 659].forEach(function (f, i) { tone('triangle', f, f, 0.13, 0.14, i * 0.08); }); },
+    badge: function () { [880, 1175, 1568].forEach(function (f, i) { tone('sine', f, f, 0.18, 0.12, i * 0.07); }); },
+    over:  function () { tone('square', 392, 98, 0.55, 0.1); noise(0.3, 0.3, 300); }
+  };
+  function sfx(name) {
+    if (!s2) return;
+    var on = !!audio();
+    sfxLog.push((on ? '' : '-') + name); if (sfxLog.length > 60) sfxLog.shift();
+    if (on) try { SFX[name](); } catch (e) { sfxErr++; }   // a sound must never break the game
+  }
+  function buzz(pattern) {                          // vibration, on phones that have it
+    if (!s2 || !touchPlay || !navigator.vibrate) return;
+    buzzLog.push(pattern); if (buzzLog.length > 30) buzzLog.shift();
+    try { navigator.vibrate(pattern); } catch (e) {}
+  }
+
+  // Badges: unlocked once, kept on this device. A toast in the game when one unlocks, a line on the game-over screen.
+  var BADGES = [
+    ['flame', 'First Flame', 'Breathe your first fireball'],
+    ['spit', 'Spit Back', 'Burn a boss\u2019s fireball out of the air'],
+    ['pyro', 'Pyromaniac', 'Burn 20 obstacles in one run'],
+    ['tyrant', 'Tyrant Toppler', 'Defeat the Sky Tyrant'],
+    ['golem', 'Golem Breaker', 'Defeat the Rock Golem'],
+    ['serpent', 'Serpent Slayer', 'Defeat the Lava Serpent'],
+    ['dragon', 'Dragon Tamer', 'Defeat the Star Dragon'],
+    ['curl', 'Rock Bottom', 'Hit the Rock Golem while it is curled up'],
+    ['hop', 'Mid-Air', 'Hit the Rock Golem in the middle of a hop'],
+    ['surface', 'Pop Up', 'Hit the Lava Serpent right as it resurfaces'],
+    ['sharp', 'Sharpshooter', 'Defeat a boss without missing a shot'],
+    ['blitz', 'Blitz', 'Burn down a boss within 12 seconds'],
+    ['encore', 'Encore', 'Beat all four bosses in one run'],
+    ['five', 'High Five', 'Score 5,000 in one run']
+  ];
+  var BADGE_COL = { flame: '#FF8A3D', spit: '#FF5E7A', pyro: '#FF6B4A', tyrant: '#B79CF2', golem: '#C77B54', serpent: '#E2552C', dragon: '#6F5FB8',
+                    curl: '#9C8A7A', hop: '#8FB233', surface: '#FFB347', sharp: '#1FB5A8', blitz: '#FFC83D', encore: '#FF9F43', five: '#4ADE80' };
+  var badges = {}, runBadges = [], toastQ = [];
+  try { badges = JSON.parse(localStorage.getItem('dinoBadges') || '{}') || {}; } catch (e) { badges = {}; }
+  function badgeName(id) { for (var i = 0; i < BADGES.length; i++) if (BADGES[i][0] === id) return BADGES[i][1]; return id; }
+  function unlock(id) {
+    if (!s2 || badges[id]) return;
+    badges[id] = Date.now();
+    try { localStorage.setItem('dinoBadges', JSON.stringify(badges)); } catch (e) {}
+    runBadges.push(id); toastQ.push({ id: id, name: badgeName(id) });
+    sfx('badge'); buzz([20, 40, 20]); showBadgeCount();
+  }
+  var badgeBtn = document.getElementById('badgeBtn'), badgeCnt = badgeBtn ? badgeBtn.querySelector('.cnt') : null;
+  function showBadgeCount() {
+    if (!badgeCnt) return;
+    var n = BADGES.filter(function (b) { return badges[b[0]]; }).length;
+    badgeCnt.textContent = n + '/' + BADGES.length;
+    badgeBtn.setAttribute('aria-label', 'Badges: ' + n + ' of ' + BADGES.length + ' unlocked');
+  }
+  showBadgeCount();
+  function badgeIcon(id, col) {                    // a rosette in the badge's colour
+    return '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M13 24 9 37l6-3 3 5 3-12M27 24l4 13-6-3-3 5-3-12" fill="#FF5E7A" stroke="#2B1A12" stroke-width="2.2" stroke-linejoin="round"/>' +
+      '<circle cx="20" cy="17" r="13" fill="' + col + '" stroke="#2B1A12" stroke-width="2.6"/><path d="M20 9.5l2.3 4.8 5.2.7-3.8 3.6.9 5.2-4.6-2.5-4.6 2.5.9-5.2-3.8-3.6 5.2-.7z" fill="#FFF7DA" stroke="#2B1A12" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+  }
+  var bdOv = null, bdList = null, bdCount = null, bdBack = null;
+  function openBadges() {
+    if (!bdOv) {
+      bdOv = document.createElement('div'); bdOv.className = 'bd-ov'; bdOv.hidden = true;
+      bdOv.setAttribute('role', 'dialog'); bdOv.setAttribute('aria-modal', 'true'); bdOv.setAttribute('aria-labelledby', 'bdTitle');
+      bdOv.innerHTML = '<div class="bd-card"><div class="bd-head"><h3 id="bdTitle">Badges<b></b></h3><button type="button" class="xbtn">Close</button></div>' +
+        '<p>Season 2 · kept on this device</p><ul class="bd-grid"></ul></div>';
+      document.body.appendChild(bdOv);
+      bdList = bdOv.querySelector('.bd-grid'); bdCount = bdOv.querySelector('h3 b');
+      bdOv.querySelector('.bd-head button').addEventListener('click', closeBadges);
+      bdOv.addEventListener('click', function (e) { if (e.target === bdOv) closeBadges(); });
+      bdOv.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.stopPropagation(); closeBadges(); } });
+    }
+    var n = 0;
+    bdList.innerHTML = BADGES.map(function (b) {
+      var got = badges[b[0]]; if (got) n++;
+      var when = got ? new Date(got).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+      return '<li class="' + (got ? 'got' : 'locked') + '">' + badgeIcon(b[0], BADGE_COL[b[0]]) + '<b>' + b[1] + '</b><span>' + b[2] +
+        (got ? ' · ' + when : '') + '</span></li>';
+    }).join('');
+    bdCount.textContent = n + ' / ' + BADGES.length;
+    bdBack = document.activeElement; bdOv.hidden = false;
+    bdOv.querySelector('.bd-head button').focus();
+  }
+  function closeBadges() { if (!bdOv) return; bdOv.hidden = true; if (bdBack && bdBack.focus) bdBack.focus({ preventScroll: true }); }
+  if (badgeBtn) badgeBtn.addEventListener('click', openBadges);
+  function hitBadges(b) {                          // trick shots on a boss
+    if (b.k === 1 && b.curl > 0) unlock('curl');
+    if (b.k === 1 && b.lift > 20) unlock('hop');
+    if (b.k === 2 && b.surf > 0) unlock('surface');
+  }
 
   // ---------- Game logic ----------
   function rnd(a, b) { return a + Math.random() * (b - a); }
@@ -636,6 +813,7 @@
   function levelUp(to) {
     fromLevel = level; level = to; fade = 0;
     banner = { at: frame, text: 'LEVEL ' + (to + 1) + '  ·  ' + LEVELS[to].name }; spawnHold = 100;   // a short breather
+    sfx('level');
   }
 
   // ---------- bosses ----------
@@ -643,8 +821,9 @@
     var k = beaten % 4, round = Math.floor(beaten / 4), B = BOSSES[k], hp = B.hp + 2 * round;
     boss = { k: k, hp: hp, max: hp, pts: B.pts + 100 * round, x: W + 130, tx: W - (k === 1 ? 140 : 165), t: 0, phase: 'enter',
              cool: 70, wind: 0, atk: 0, flash: 0, orb: 20, n: 0, y: GROUND - 105, headY: GROUND - 74, aimY: 0, next: '',
-             dodge: 0, curl: 0, lift: 0, lv: 0, dive: 0 };
+             dodge: 0, curl: 0, lift: 0, lv: 0, dive: 0, surf: 0, hits: 0, missed: false, fightT: -1 };
     banner = { at: frame, text: 'BOSS  ·  ' + B.name }; spawnHold = 1e9;   // no other obstacles during the fight
+    sfx('boss');
   }
   function bossBoxes(b) {                        // where fire hurts it, from its idle pose
     if (b.curl > 0) { var c = golemBall(); return [{ x: b.x - c.w / 2 + 3, y: GROUND - c.h + 3, w: c.w - 6, h: c.h - 3 }]; }
@@ -671,6 +850,7 @@
       if (!coming) continue;
       f.seen = true;
       if (Math.random() >= dodgeOdds()) continue;
+      sfx('dodge');
       if (b.k === 1 && f.y + f.r < GROUND - golemBall().h + 3) { b.curl = 50; b.dodge = 62; burst(b.x, GROUND - 30, 12, false); }   // high: a ball of rock, 3/4 s
       else if (b.k === 1) { b.lift = 0.01; b.lv = 7.8; b.dodge = 52; }                  // low: a hop (about 75 px), 2/3 s in the air
       else { b.dive = 48; b.dodge = 64; burst(b.x, GROUND - 4, 14, true); }               // under the lava for 3/4 s, ready again soon after
@@ -681,7 +861,7 @@
     var b = boss;
     b.t += dt; if (b.flash > 0) b.flash -= dt; if (b.atk > 0) b.atk -= dt; if (b.dodge > 0) b.dodge -= dt;
     if (b.phase === 'down') { b.t2 += dt; if (b.t2 > 110) { boss = null; afterBoss(); } return; }
-    if (b.phase === 'enter') { b.x += (b.tx - b.x) * Math.min(1, 0.05 * dt); if (Math.abs(b.x - b.tx) < 1.5) { b.x = b.tx; b.phase = 'fight'; } }
+    if (b.phase === 'enter') { b.x += (b.tx - b.x) * Math.min(1, 0.05 * dt); if (Math.abs(b.x - b.tx) < 1.5) { b.x = b.tx; b.phase = 'fight'; b.fightT = b.t; } }
     var aiming = b.wind > 0 && b.next === 'spit';
     if (b.k === 0) b.y += (GROUND - 105 + 40 * Math.sin(b.t / 45) - b.y) * Math.min(1, 0.12 * dt);   // bobs high and low
     if (b.k === 3) b.y += (GROUND - 106 + 26 * Math.sin(b.t / 45) - b.y) * Math.min(1, 0.12 * dt);   // bigger, so less room
@@ -691,7 +871,8 @@
       b.lift += b.lv * dt; b.lv -= 0.4 * dt;
       if (b.lift <= 0) { b.lift = 0; burst(b.x - 34, GROUND - 4, 6, false); burst(b.x + 34, GROUND - 4, 6, false); }   // thud
     }
-    if (b.dive > 0) { b.dive -= dt; if (b.dive <= 0) burst(b.x, GROUND - 4, 16, true); }   // bursts back out of the lava
+    if (b.dive > 0) { b.dive -= dt; if (b.dive <= 0) { burst(b.x, GROUND - 4, 16, true); b.surf = 45; } }   // bursts back out of the lava
+    if (b.surf > 0) b.surf -= dt;
     b.orb -= dt;                                   // a fire orb every few seconds, low or high
     if (b.orb <= 0) { b.orb = 190; orbs.push({ x: W + 10, y: Math.random() < 0.5 ? GROUND - 30 : GROUND - 92, r: 11, ph: 0 }); }
     if (b.phase !== 'fight') return;
@@ -721,6 +902,11 @@
   function defeatBoss() {
     var b = boss, c = bossCenter(b);
     b.phase = 'down'; b.t2 = 0; beaten++; bonus += b.pts;
+    sfx('down'); buzz([40, 30, 40, 30, 90]);
+    unlock(['tyrant', 'golem', 'serpent', 'dragon'][b.k]);
+    if (b.hits >= b.max && !b.missed) unlock('sharp');                       // every shot in the fight landed
+    if (b.hits >= b.max && b.fightT >= 0 && b.t - b.fightT < 720) unlock('blitz');   // 12 s from taking its place
+    if (beaten >= 4) unlock('encore');
     burst(c.x, c.y, 40, true);
     floaters.push({ x: c.x, y: Math.max(c.y, 96), text: '+' + b.pts, life: 1.8, big: true });   // below the score row
     banner = { at: frame, text: 'BOSS DEFEATED  ·  +' + b.pts };
@@ -738,6 +924,7 @@
     if (!boss) distance += speed * dt;               // the run's distance pauses while a boss is being fought
     var ran = Math.floor(distance * 0.025);
     score = ran + bonus;
+    if (s2 && score >= 5000) unlock('five');
     if (s2 && !boss && ran >= BOSS_FIRST + BOSS_GAP * beaten) startBoss();
     if (boss) updateBoss(dt);
     if (fade < 1) fade = Math.min(1, fade + dt / 90);
@@ -796,7 +983,7 @@
       o.x -= speed * dt; o.ph += dt / 12;
       var oy = o.y + 3 * Math.sin(o.ph);
       if (!o.got && hit(d, { x: o.x - o.r, y: oy - o.r, w: 2 * o.r, h: 2 * o.r })) {
-        o.got = true; ammo = Math.min(MAX_AMMO, ammo + ORB_AMMO); showAmmo();
+        o.got = true; ammo = Math.min(MAX_AMMO, ammo + ORB_AMMO); showAmmo(); sfx('orb');
         floaters.push({ x: o.x, y: oy - 16, text: '+' + ORB_AMMO + ' FIRE', life: 1 });
         burst(o.x, oy, 8, true);
       }
@@ -806,10 +993,10 @@
       f.x += f.vx * dt;
       if (!f.straight) { f.vy += 0.26 * dt; f.y += f.vy * dt; }
       if (!f.straight && f.y + f.r >= GROUND) { f.y = GROUND - f.r; f.vy = -2.6; f.bounces++; }   // low hops: under its belly never clears the shortest cactus (17), its top still reaches a low bird (23)
-      if (f.bounces > 5 || f.x > W + 20) { f.dead = true; return; }
+      if (f.bounces > 5 || f.x > W + 20) { f.dead = true; if (f.straight && boss) boss.missed = true; return; }
       var fb = { x: f.x - f.r, y: f.y - f.r, w: 2 * f.r, h: 2 * f.r };
       if (boss && boss.phase === 'fight' && bossBoxes(boss).some(function (b) { return hit(fb, b); })) {
-        f.dead = true; boss.hp--; boss.flash = 10; burst(f.x, f.y, 10, true);
+        f.dead = true; boss.hp--; boss.hits++; boss.flash = 10; burst(f.x, f.y, 10, true); sfx('hit'); buzz(14); hitBadges(boss);
         floaters.push({ x: f.x, y: Math.max(f.y - 20, 84), text: 'HIT!', life: 0.8 });   // kept below the score row
         if (boss.hp <= 0) defeatBoss();
         return;
@@ -822,11 +1009,11 @@
         if (!boxesOf(o).some(function (b) { return hit(fb, { x: b.x, y: b.y, w: b.w, h: b.h + reach }); })) continue;
         f.dead = true;
         if (burnable(o)) {                          // burnt: gone, with sparks and points
-          o.dead = true; kills++;
+          o.dead = true; kills++; sfx('burn'); if (o.type === 'spit') unlock('spit'); if (kills >= 20) unlock('pyro');
           var pts = o.type === 'bird' ? BIRD_PTS : o.type === 'spit' ? SPIT_PTS : CACTUS_PTS, cy = o.type === 'cactus' ? GROUND - 20 : o.y + o.h / 2;
           bonus += pts; burst(o.x + o.w / 2, cy, 14, true);
           floaters.push({ x: o.x + o.w / 2, y: cy - 18, text: '+' + pts, life: 1 });
-        } else burst(f.x, f.y, 6, false);            // too tough: the fireball fizzles out
+        } else { burst(f.x, f.y, 6, false); if (f.straight && boss) boss.missed = true; }   // too tough: the fireball fizzles out
         break;
       }
     });
@@ -838,6 +1025,7 @@
 
   function gameOver() {
     state = 'over'; diedAt = performance.now();
+    sfx('over'); buzz([70, 40, 110]);
     if (score > hi) { hi = score; try { localStorage.setItem('dinoHi', String(hi)); } catch (e) {} }
     if (window.DinoLB) window.DinoLB.runEnded(score, runMs, { season: season, level: level + 1, kills: kills });
   }
@@ -1296,6 +1484,22 @@
     }
     ctx.restore();
   }
+  function drawToast() {                          // "BADGE · First Flame", on the sand for about 3 s
+    var t = toastQ[0];
+    if (!t) return;
+    if (t.at === undefined) t.at = frame;
+    var k = (frame - t.at) / 170;
+    if (k >= 1) { toastQ.shift(); return; }
+    var a = k < 0.08 ? k / 0.08 : k > 0.85 ? (1 - k) / 0.15 : 1, text = 'BADGE  ·  ' + t.name.toUpperCase();
+    ctx.save(); ctx.globalAlpha = a; ctx.font = '800 13px ' + COL.font; ctx.textAlign = 'left';
+    var w = ctx.measureText(text).width + 46, x = Math.round((W - w) / 2), y = GROUND + 12 + Math.round((1 - a) * 8);
+    ctx.fillStyle = INK; rr(x + 2, y + 3, w, 24); ctx.fillStyle = '#FFE08A'; rr(x, y, w, 24);
+    ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, 24, 4); else ctx.rect(x, y, w, 24); ctx.stroke();
+    ctx.fillStyle = BADGE_COL[t.id] || '#FFC83D'; ctx.beginPath(); ctx.arc(x + 17, y + 12, 7.5, 0, 6.2832); ctx.fill(); ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#FFF7DA'; ctx.beginPath(); ctx.arc(x + 17, y + 12, 2.6, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = INK; ctx.fillText(text, x + 32, y + 16.5);
+    ctx.restore();
+  }
   function drawBossBar() {                        // the boss's name and health, at the top
     var b = boss;
     if (!b || b.phase === 'down') return;
@@ -1342,6 +1546,7 @@
     drawGround(); if (s2) drawBoss(); drawObstacles(); drawDino();
     if (s2) { drawFire(); if (state !== 'over') drawBossBar(); }
     if (state !== 'over') drawBanner();                           // the game-over text gets the screen to itself
+    if (s2 && state === 'running') drawToast();
 
     // score
     ctx.font = '700 18px ' + COL.font;
@@ -1359,6 +1564,11 @@
       centerText('G A M E   O V E R', 96, 28, COL.title);
       centerText('SPACE / TAP TO RESTART', 128, 14, COL.sub);
       if (s2 && (kills || beaten)) centerText((beaten ? beaten + (beaten === 1 ? ' BOSS' : ' BOSSES') + '   ·   ' : '') + kills + ' BLASTED   ·   +' + bonus + ' BONUS', 154, 13, COL.text);
+      if (s2 && runBadges.length) {
+        var names = runBadges.slice(0, 2).map(function (id) { return badgeName(id).toUpperCase(); }).join('  ·  ');
+        if (runBadges.length > 2) names += '  +' + (runBadges.length - 2) + ' MORE';
+        centerText((runBadges.length > 1 ? 'NEW BADGES:  ' : 'NEW BADGE:  ') + names, 178, 13, COL.sub);
+      }
     }
   }
 

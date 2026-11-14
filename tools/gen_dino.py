@@ -68,6 +68,8 @@ hook = (
     " boss: function () { return boss ? { k: boss.k, hp: boss.hp, max: boss.max, phase: boss.phase, x: boss.x, beaten: beaten, lift: boss.lift, curl: boss.curl, dive: boss.dive, wind: boss.wind } : { beaten: beaten }; },"
     " bossNow: function () { if (!boss) startBoss(); },"
     " dodge: function (p) { dodgeP = p; },"
+    " extras: function () { return { sound: soundOn, err: sfxErr, sfx: sfxLog.slice(), buzz: buzzLog.slice(), badges: Object.keys(badges), run: runBadges.slice(), toasts: toastQ.length }; },"
+    " touch: function (v) { touchPlay = v; },"
     " bossSet: function (o) { if (boss) for (var k in o) boss[k] = o[k]; },"
     " beat: function () { if (boss && boss.phase !== 'down') { boss.hp = 0; defeatBoss(); } },"
     " fire: function () { return { ammo: ammo, kills: kills, bonus: bonus, shots: shots.length, orbs: orbs.length, cool: fireCool }; },"

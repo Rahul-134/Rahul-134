@@ -10,6 +10,7 @@ import sys
 sys.dont_write_bytecode = True
 import sprites as S
 import theme_colors
+import worlds
 
 T = theme_colors.current()
 ACCENT = T.accent
@@ -50,13 +51,17 @@ ART_HTML = {
     "{{ART_SAGUARO}}": art_svg(S.ART["saguaro"]),
     "{{ART_SMALL}}": art_svg(S.ART["small"]),
     "{{ART_BIRD}}": art_svg(S.ART["birdUp"]),
-    "{{ART_DINO_B}}": art_svg(S.pad(S.ART["dinoBody"], S.DINO_W) + S.pad(S.ART["legsB"], S.DINO_W), S.DINO_U),
-    "{{ART_DUCK_A}}": art_svg(S.pad(S.ART["duckBody"], S.DUCK_W) + S.pad(S.ART["duckLegsA"], S.DUCK_W), S.DINO_U),
-    "{{ART_DUCK_B}}": art_svg(S.pad(S.ART["duckBody"], S.DUCK_W) + S.pad(S.ART["duckLegsB"], S.DUCK_W), S.DINO_U),
-    "{{ART_BIRD_UP}}": art_svg(S.ART["birdUp"]),
-    "{{ART_BIRD_DOWN}}": art_svg(S.pad(S.ART["birdDown"], S.width(S.ART["birdUp"]))),
 }
 
+# the hero card: Season 2's world tour (tools/worlds.py), behind and in front of the page's sun, moon and clouds
+tour = worlds.Tour(460, 230, 180, 0.85, 50, 368, 0.7, 0.5, (40, 192))
+VB = 'viewBox="0 0 460 230" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false"'
+HERO = {
+    "{{HERO_CSS}}": tour.css(modes=[("day", ""), ("night", "html[data-mode=dark] ")], scope=".scene"),
+    "{{HERO_BACK}}": f'<svg class="tour" {VB}><defs>{tour.defs()}</defs>{tour.back()}</svg>',
+    "{{HERO_FRONT}}": f'<svg class="tour" {VB}>{tour.front()}</svg>',
+}
+tpl = tpl.replace("{{HERO_CSS}}", HERO["{{HERO_CSS}}"]).replace("{{HERO_BACK}}", HERO["{{HERO_BACK}}"]).replace("{{HERO_FRONT}}", HERO["{{HERO_FRONT}}"])
 html = tpl.replace("/*__SPRITES__*/", js).replace("{{ACCENT}}", T.accent).replace("{{ACCENT_RGB}}", T.rgb)
 html = html.replace("{{DINO_U}}", str(S.DINO_U)).replace("{{OBJ_U}}", str(S.OBJ_U))
 for key, markup in ART_HTML.items():

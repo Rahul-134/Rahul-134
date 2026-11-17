@@ -1529,7 +1529,7 @@
  "leetcode": {
   "active_days": 180,
   "badges": 2,
-  "ranking": 1105590,
+  "ranking": 1106033,
   "solved": {
    "All": 162,
    "Easy": 84,
@@ -1538,9 +1538,9 @@
   },
   "streak": 60,
   "total": {
-   "All": 4114,
+   "All": 4115,
    "Easy": 976,
-   "Hard": 990,
+   "Hard": 991,
    "Medium": 2148
   }
  }

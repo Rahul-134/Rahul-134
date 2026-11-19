@@ -214,6 +214,9 @@
   html[data-mode=dark] .console .xbtn[aria-pressed=true], html[data-mode=dark] .bd-head h3 b { color:#1A1626; }
   html[data-mode=dark] .bd-ov { background:rgba(5,5,12,.72); }
   @media (max-width:560px) { .xbtn { padding:4px; } .xbtn .lbl { display:none; } .bd-grid { grid-template-columns:1fr; } }
+  /* While a run is on, the hero card and the stickers hold still, so only the game moves (two moving scenes at once,
+     stacked on a phone screen, are hard on the eyes). They carry on when the run ends. */
+  html.playing .scene, html.playing .scene *, html.playing .stk { animation-play-state:paused !important; }
   @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .stk, .scene *, .btn, .arc { animation:none !important; transition:none !important; } }
   @media (max-width:820px) {
     .hero { grid-template-columns:1fr; } .scene { height:190px; }
@@ -1539,9 +1542,11 @@
 
   // ---------- Loop ----------
   var last = performance.now();
+  var shownState = '';
   function loop(now) {
     var dt = Math.min((now - last) / 16.667, 3);
     last = now;
+    if (state !== shownState) { shownState = state; document.documentElement.classList.toggle('playing', state === 'running'); }   // see html.playing
     if (state === 'running') { update(dt); dirty = true; }
     if (dirty) { render(); dirty = state === 'running'; }   // a paused screen is drawn once, not 60 times a second
     requestAnimationFrame(loop);

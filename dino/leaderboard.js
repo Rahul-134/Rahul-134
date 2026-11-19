@@ -201,6 +201,7 @@
     '.lb .foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px;padding:10px 16px 10px 12px;border:3px solid var(--ink);border-radius:18px;background:var(--sand);font-size:14px;font-weight:800}',
     '.lb .who{display:inline-flex;align-items:center;gap:11px}',
     '.lb .who .av{width:38px;height:38px;display:grid;place-items:center;border:3px solid var(--ink);border-radius:50%;background:var(--accent);font-family:var(--display);font-size:19px;font-weight:800;text-transform:uppercase}',
+    '.lb .who .av.guest{background:var(--paper);border-style:dashed}',
     '.lb .who .pn{display:grid;line-height:1.15}.lb .who .pn small{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(43,26,18,.65)}.lb .who .pn b{font-family:var(--display);font-size:20px;font-weight:800}',
     '.lb .linklike{padding:5px 14px;margin-left:4px;font-family:var(--body);font-size:13px;font-weight:800;background:#fff;box-shadow:2px 3px 0 var(--ink)}',
     '.lb .upd{display:inline-flex;align-items:center;gap:8px;color:rgba(43,26,18,.75)}.lb .upd:empty{display:none}.lb .upd::before{content:"";width:12px;height:12px;border:2.5px solid var(--ink);border-radius:50%;background:#5BD68A}',
@@ -245,6 +246,7 @@
     'html[data-mode=dark] .lb .dbadge{background:var(--sand)}',
     'html[data-mode=dark] .lb .dsub{color:rgba(var(--tx-rgb),.7)}',
     'html[data-mode=dark] .lb .dscore small,html[data-mode=dark] .lb .who .pn small{color:rgba(var(--tx-rgb),.65)}',
+    'html[data-mode=dark] .lb .who .av.guest{color:var(--tx)}',
     'html[data-mode=dark] .lb .empty-state{color:rgba(var(--tx-rgb),.8)}',
     'html[data-mode=dark] .lb .upd{color:rgba(var(--tx-rgb),.75)}',
     'html[data-mode=dark] .lb .skel i{background:linear-gradient(90deg,var(--sand) 25%,#4A4668 50%,var(--sand) 75%);background-size:300% 100%}',
@@ -615,13 +617,18 @@
   }
   function failText(err) { return err && err.status === 401 ? 'The leaderboard rejected that.' : "Couldn't save — check your connection and try again."; }
 
-  function showWho() {
+  function showWho() {                            // "Playing as …" under the board; a guest (no name yet) can add one here
     who.textContent = '';
-    var n = savedName(); if (!n) return;
-    who.appendChild(el('span', 'av', n.charAt(0)));
-    var pn = el('span', 'pn'); pn.appendChild(el('small', null, 'Playing as')); pn.appendChild(el('b', null, n)); who.appendChild(pn);
-    var b = el('button', 'linklike', '✎ Edit name'); b.type = 'button';
-    b.addEventListener('click', function () { openPrompt('rename'); });
+    var n = savedName();
+    var av = el('span', 'av' + (n ? '' : ' guest'), n ? n.charAt(0) : '?');
+    who.appendChild(av);
+    var pn = el('span', 'pn'); pn.appendChild(el('small', null, 'Playing as')); pn.appendChild(el('b', null, n || 'Guest')); who.appendChild(pn);
+    var b = el('button', 'linklike', n ? '✎ Edit name' : '✎ Add your name'); b.type = 'button';
+    b.addEventListener('click', function () {
+      // a guest who skipped a score that still makes the board gets that score's prompt back; otherwise just a name
+      if (!savedName() && run && !run.submitted && run.score >= MIN_SCORE && loadOk && qualifies(run.score)) openPrompt('score');
+      else openPrompt('rename');
+    });
     who.appendChild(b);
   }
 
@@ -668,7 +675,7 @@
     var me = myEntry();
     input.value = savedName() || (me ? cleanName(me.name) : '');
     if (m === 'rename') {
-      sTxt.nodeValue = 'EDIT YOUR NAME'; sNum.textContent = '';
+      sTxt.nodeValue = savedName() ? 'EDIT YOUR NAME' : 'ADD YOUR NAME'; sNum.textContent = '';
       hint.textContent = me ? 'Your best of ' + pad5(me.score) + ' will show under the new name' : 'This name will be used for your next score';
       submitBtn.textContent = 'Save name';
     } else {
@@ -727,7 +734,11 @@
   }
 
   submitBtn.addEventListener('click', submit);
-  skipBtn.addEventListener('click', closeSubmit);
+  skipBtn.addEventListener('click', function () {
+    var skippedScore = mode === 'score' && !savedName();
+    closeSubmit();
+    if (skippedScore) setStatus('No name yet? Add one anytime with "Add your name" below.', null, true);
+  });
   input.addEventListener('keydown', function (e) {
     e.stopPropagation();
     if (e.key === 'Enter') { e.preventDefault(); submit(); }

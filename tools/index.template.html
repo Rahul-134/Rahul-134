@@ -509,7 +509,18 @@
   var BOSS_FIRST = 450, BOSS_GAP = 500, SPIT_PTS = 10;
   var boss = null, beaten = 0;
 
-  try { hi = parseInt(localStorage.getItem('dinoHi'), 10) || 0; } catch (e) {}
+  // HI is this player's own best, one per season (Season 1 keeps its original key). Season 2 starts from the best
+  // this browser has put on the Season 2 board, if it has one.
+  function hiKey() { return s2 ? 'dinoHi2' : 'dinoHi'; }
+  function loadHi() {
+    var h = 0;
+    try {
+      h = parseInt(localStorage.getItem(hiKey()), 10) || 0;
+      if (s2) h = Math.max(h, parseInt(localStorage.getItem('dinoLbBest2'), 10) || 0);
+    } catch (e) {}
+    hi = h; dirty = true;
+  }
+  loadHi();
 
   function reset() {
     speed = 6; distance = 0; score = 0; frame = 0; groundOff = 0; runMs = 0;
@@ -994,7 +1005,7 @@
   function gameOver() {
     state = 'over'; diedAt = performance.now();
     sfx('over'); buzz([70, 40, 110]);
-    if (score > hi) { hi = score; try { localStorage.setItem('dinoHi', String(hi)); } catch (e) {} }
+    if (score > hi) { hi = score; try { localStorage.setItem(hiKey(), String(hi)); } catch (e) {} }
     if (window.DinoLB) window.DinoLB.runEnded(score, runMs, { season: season, level: level + 1, kills: kills });
   }
 
@@ -1567,6 +1578,7 @@
   function showSeason(n) {
     season = n === 1 ? 1 : 2; s2 = season === 2; window.DINO_SEASON = season;
     document.documentElement.setAttribute('data-season', String(season));
+    loadHi();                                       // each season shows its own best
     seasonBtns.forEach(function (b) { b.setAttribute('aria-pressed', Number(b.dataset.season) === season ? 'true' : 'false'); });
     showSkin(skinPref);
     if (window.DinoLB && window.DinoLB.setSeason) window.DinoLB.setSeason(season);

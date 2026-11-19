@@ -67,7 +67,7 @@ html = html.replace("{{DINO_U}}", str(S.DINO_U)).replace("{{OBJ_U}}", str(S.OBJ_
 for key, markup in ART_HTML.items():
     html = html.replace(key, markup)
 hook = (
-    "  window.__dino = { get: function () { return { state: state, score: score, speed: speed, obstacles: obstacles.length,"
+    "  window.__dino = { get: function () { return { state: state, score: score, hi: hi, speed: speed, obstacles: obstacles.length,"
     " dinoY: dino.y, dinoX: dino.x, onGround: dino.onGround, ducking: ducking, raw: obstacles.map(function (o) { return { t: o.type, x: o.x, w: o.w, y: o.y, h: o.h }; }), parts: obstacles.map(function (o) { return o.parts ? o.parts.map(function (p) { return p.name; }).join('+') : o.type; }) }; },"
     " setScore: function (n) { distance = n / 0.025; },"
     " boss: function () { return boss ? { k: boss.k, hp: boss.hp, max: boss.max, phase: boss.phase, x: boss.x, beaten: beaten, lift: boss.lift, curl: boss.curl, dive: boss.dive, wind: boss.wind } : { beaten: beaten }; },"

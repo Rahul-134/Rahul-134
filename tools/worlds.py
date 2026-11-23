@@ -6,7 +6,7 @@ the Dragon drops a meteor; in the Desert a cactus comes by), the T-rex jumps it,
 the boss falls before the next world fades in. The bosses are the game's sprites (tools/boss_art.json).
 
     t = Tour(W, H, ground, scale, dino_x, boss_x, ...)
-    t.defs()      shared <defs> (sprites, patterns, the white flash filter)
+    t.defs()      shared <defs> (sprites, their white flash silhouettes, ground patterns)
     t.back()      the four worlds: sky, backdrop, ground and label (behind the sun, clouds and any text)
     t.front()     bosses, attacks, fire and the T-rex (in front)
     t.css(...)    the animation, plus the colours for day and/or night
@@ -15,9 +15,12 @@ Colours that change between day and night are CSS classes (.wt-sky0, .wt-k ...),
 README banner has a file per mode, the game page switches with html[data-mode=dark]. Each world's moving parts run
 on the same 5-second timeline; only which world is showing changes.
 """
+import base64
 import json
 import math
 import os
+import struct
+import zlib
 
 import sprites as S
 
@@ -121,6 +124,33 @@ def sprite_svg(rows, colour_of, base=None):
         base = max(counts, key=counts.get)
     return (f'<g fill="none" stroke-width="1"><path stroke="{base}" d="{silhouette(rows)}"/>'
             + "".join(f'<path stroke="{c}" d="{d}"/>' for c, d in runs.items()) + "</g>")
+
+
+def png_sprite(rows, colour_of, scale=3, only=None):
+    """A sprite as a small palette PNG (data URI), each cell `scale` pixels square. The bosses are drawn this way:
+    one image is far cheaper to paint than hundreds of strokes, and phones repaint this picture on every frame.
+    `only` paints every opaque cell that one colour (the white flash). Plain Python, no imaging library needed."""
+    w, h = max(len(r) for r in rows), len(rows)
+    cols = [only] if only else sorted({colour_of(c) for r in rows for c in r if c != "."})
+    idx = {c: i + 1 for i, c in enumerate(cols)}                     # 0 is transparent
+    raw = bytearray()
+    for r in rows:
+        line = bytearray()
+        for x in range(w):
+            c = r[x] if x < len(r) else "."
+            line += bytes([0 if c == "." else idx[only or colour_of(c)]]) * scale
+        raw += (b"\x00" + line) * scale
+    chunk = lambda t, d: struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d) & 0xFFFFFFFF)
+    png = (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w * scale, h * scale, 8, 3, 0, 0, 0))
+           + chunk(b"PLTE", b"\x00\x00\x00" + b"".join(bytes.fromhex(c[1:]) for c in cols))
+           + chunk(b"tRNS", b"\x00" + b"\xff" * len(cols)) + chunk(b"IDAT", zlib.compress(bytes(raw), 9)) + chunk(b"IEND", b""))
+    return w, h, "data:image/png;base64," + base64.b64encode(png).decode()
+
+
+def png_image(id_, rows, colour_of, only=None):
+    w, h, uri = png_sprite(rows, colour_of, only=only)
+    return (f'<image id="{id_}" width="{w}" height="{h}" preserveAspectRatio="none" href="{uri}" '
+            f'style="image-rendering:-webkit-optimize-contrast;image-rendering:pixelated"/>')
 
 
 def art(name):
@@ -244,14 +274,14 @@ class Tour:
     # ---------- shared defs ----------
     def defs(self):
         p, out = self.p, []
-        out.append(f'<filter id="{p}-white" x="-5%" y="-5%" width="110%" height="110%"><feFlood flood-color="#fff"/>'
-                   f'<feComposite in2="SourceAlpha" operator="in"/></filter>')
         for b in self.B:
             for i, pose in enumerate(b["poses"]):
                 if i not in self.poses_used(b["k"]):
                     continue
                 pal = b["pal"]
-                out.append(f'<g id="{p}-{b["key"]}{i}">{sprite_svg(pose["rows"], lambda c, pal=pal: pal[c])}</g>')
+                out.append(png_image(f'{p}-{b["key"]}{i}', pose["rows"], lambda c, pal=pal: pal[c]))
+                if i == 0:                             # the white flash when it's hit: its silhouette, in white
+                    out.append(png_image(f'{p}-{b["key"]}w', pose["rows"], None, only="#FFFFFF"))
         for name in ("saguaro", "boulder", "meteor"):
             out.append(f'<g id="{p}-{name}">{art(name)[1]}</g>')
         for part in ("dinoBody", "legsA", "legsB"):
@@ -389,7 +419,7 @@ class Tour:
                 cls = f'{p}-pose12'                    # no attack pose of its own: it holds the wind-up through the attack
             layers.append(f'<g class="{cls}" transform="translate({x:.1f},{y:.1f}) scale({u:.3f})"{" opacity=\"0\"" if i else ""}><use href="#{p}-{key}{i}"/></g>')
         x, y = self.pose_xy(b, 0)
-        layers.append(f'<g class="{p}-flash{k}" opacity="0" transform="translate({x:.1f},{y:.1f}) scale({u:.3f})"><use href="#{p}-{key}0" filter="url(#{p}-white)"/></g>')
+        layers.append(f'<g class="{p}-flash{k}" opacity="0" transform="translate({x:.1f},{y:.1f}) scale({u:.3f})"><use href="#{p}-{key}w"/></g>')
         body = "".join(layers)
         if k == 2:                                     # the Serpent rises out of its lava pool
             cx, sc = b["anchor"][0] - 10 * self.sc, self.sc
@@ -492,22 +522,27 @@ class Tour:
                     if L.get(role):
                         r.append(f"{sel(role + str(k))}{{fill:{L[role]}}}")
             rules.append("".join(r))
-        # which world is showing: world 0 underneath, 1-3 fade in on top in turn, and 3 fades out to reveal 0 again
+        # which world is showing: world 0 underneath, 1-3 fade in on top in turn, and 3 fades out to reveal 0 again.
+        # Whatever can't be seen is switched off (visibility:hidden), not just transparent, so it costs nothing to draw:
+        # a phone draws this image in tiles, every frame, and a heavier picture left some tiles blank in the GitHub app.
+        kfs.append(keyframes(f"{p}-v0", [(0, "visibility:visible"), (P + 0.001, "visibility:visible"), (P + 0.002, "visibility:hidden"),
+                                         (T - FADE - 0.002, "visibility:hidden"), (T - FADE - 0.001, "visibility:visible")], T))
+        rules.append(f"{scope} .{p}-v0{{animation:{p}-v0 {T:g}s linear infinite}}")
         for k in (1, 2, 3):
             start, end = k * P, (k + 1) * P
-            pts = [(0, "opacity:0"), (start - FADE, "opacity:0"), (start, "opacity:1")]
+            pts = [(0, "opacity:0;visibility:hidden"), (start - FADE, "opacity:0;visibility:hidden"), (start, "opacity:1;visibility:visible")]
             if k < 3:
-                pts += [(end, "opacity:1"), (end + 0.001, "opacity:0")]
+                pts += [(end, "opacity:1;visibility:visible"), (end + 0.001, "opacity:0;visibility:hidden")]
             else:
-                pts += [(end - FADE, "opacity:1"), (end, "opacity:0")]
+                pts += [(end - FADE, "opacity:1;visibility:visible"), (end, "opacity:0;visibility:hidden")]
             kfs.append(keyframes(f"{p}-v{k}", pts, T))
             rules.append(f"{scope} .{p}-v{k}{{animation:{p}-v{k} {T:g}s linear infinite}}")
         for k in range(4):                             # a world's actors: in just after it begins, gone when it ends
             start, end = k * P, (k + 1) * P
             if k == 0:
-                pts = [(0, "opacity:1"), (end, "opacity:1"), (end + 0.001, "opacity:0"), (T - 0.001, "opacity:0")]
+                pts = [(0, "opacity:1;visibility:visible"), (end, "opacity:1;visibility:visible"), (end + 0.001, "opacity:0;visibility:hidden"), (T - 0.001, "opacity:0;visibility:hidden")]
             else:
-                pts = [(0, "opacity:0"), (start, "opacity:0"), (start + 0.25, "opacity:1"), (end, "opacity:1"), (min(T, end + 0.001), "opacity:0")]
+                pts = [(0, "opacity:0;visibility:hidden"), (start, "opacity:0;visibility:hidden"), (start + 0.25, "opacity:1;visibility:visible"), (end, "opacity:1;visibility:visible"), (min(T, end + 0.001), "opacity:0;visibility:hidden")]
             kfs.append(keyframes(f"{p}-a{k}", pts, T))
             rules.append(f"{scope} .{p}-a{k}{{animation:{p}-a{k} {T:g}s linear infinite}}")
         # the boss: in, then down

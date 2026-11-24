@@ -1,0 +1,42 @@
+All Rights Reserved
+
+Copyright (c) 2026 Rahul Lumbhani (https://github.com/Rahul-134)
+
+This repository and everything in it belong to Rahul Lumbhani, except the third-party
+material listed below. That includes the Dino Run game (both seasons), its source code,
+the tools that generate it, the leaderboard code, and all the graphics: sprites, boss
+artwork, animations, banners, cards and labels, as well as the text. No licence to any
+of it is granted, except as stated here.
+
+You may:
+
+  - play the game at https://rahul-134.github.io/Rahul-134/dino/
+  - view this repository on GitHub, and fork it on GitHub, only as far as GitHub's
+    Terms of Service require
+  - link to the game or to this repository
+  - share screenshots or short clips of yourself playing, with credit to Rahul Lumbhani
+
+Without written permission from Rahul Lumbhani, you may not:
+
+  - copy, modify, adapt or redistribute any part of this repository, whether code,
+    artwork or other content
+  - host, publish or deploy the game, or any version or copy of it, anywhere else
+  - use the artwork, sprites, banners or cards in any other project
+  - use any part of it for commercial purposes
+  - use any part of it to train or fine-tune machine-learning models
+
+Third-party material keeps its own licence:
+
+  - The Baloo 2 and Nunito fonts in dino/fonts/ (also embedded in some of the SVG
+    images) are licensed under the SIL Open Font License 1.1. See dino/fonts/OFL-Baloo2.txt
+    and dino/fonts/OFL-Nunito.txt.
+  - GitHub, LinkedIn and LeetCode names and logos are trademarks of their owners.
+  - Dino Run is an independent remake inspired by the Chrome dinosaur game. It is not
+    affiliated with or endorsed by Google.
+
+To ask for permission, contact Rahul Lumbhani on LinkedIn
+(https://www.linkedin.com/in/rahul-lumbhani-89304130b/) or on GitHub (https://github.com/Rahul-134).
+
+THIS REPOSITORY AND THE GAME ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY ARISING FROM THEM OR THEIR USE.

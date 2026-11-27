@@ -1539,12 +1539,12 @@
   "stars": 9
  },
  "leetcode": {
-  "active_days": 181,
+  "active_days": 182,
   "badges": 2,
-  "ranking": 1110032,
+  "ranking": 1096708,
   "solved": {
-   "All": 164,
-   "Easy": 86,
+   "All": 165,
+   "Easy": 87,
    "Hard": 6,
    "Medium": 72
   },
